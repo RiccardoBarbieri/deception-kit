@@ -1,0 +1,10 @@
+#!/bin/bash
+
+docker exec keycloak-keycloak-1 mkdir /opt/keycloak/export
+
+docker exec keycloak-keycloak-1 /opt/keycloak/bin/kc.sh export --file /opt/keycloak/export/export.json
+
+docker cp keycloak-keycloak-1:/opt/keycloak/export/export.json .
+
+jq . export.json | sponge pretty_export.json
+
