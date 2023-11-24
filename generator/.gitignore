@@ -1,9 +1,3 @@
-.idea
-
-llm/models
-
-venv
-
 # Ignore Gradle project-specific cache directory
 .gradle
 

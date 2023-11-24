@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.5.31)  12 NOV 2023 15:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.5.31)  24 NOV 2023 16:08
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -1021,20 +1021,20 @@ Package pgfplots notification 'compat/show suggested version=true': document has
 [1
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] (./main.aux)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./sections/introduction/1_introduction.tex) [2] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D0B355B6971B8FBF506A4109B2A8522A;105.
  ) 
 Here is how much of TeX's memory you used:
- 41295 strings out of 478287
- 954589 string characters out of 5849289
+ 41301 strings out of 478287
+ 954799 string characters out of 5849289
  1404729 words of memory out of 5000000
- 58836 multiletter control sequences out of 15000+600000
+ 58838 multiletter control sequences out of 15000+600000
  472178 words of font info for 38 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,6n,94p,725b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on main.pdf (2 pages, 38346 bytes).
+Output written on main.pdf (2 pages, 38375 bytes).
 PDF statistics:
  40 PDF objects out of 1000 (max. 8388607)
  29 compressed objects within 1 object stream
