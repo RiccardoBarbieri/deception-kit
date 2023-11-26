@@ -1,15 +1,18 @@
-package deceptionkit;
+package com.deceptionkit.config;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
-import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-public class TestClass {
+@Configuration
+public class KeycloakClientConfiguration {
 
-    public static void main(String[] args) {
-        Keycloak keycloak = KeycloakBuilder.builder()
+    @Bean
+    public Keycloak keycloak() {
+        return KeycloakBuilder.builder()
                 .serverUrl("http://localhost:8100")
                 .grantType(OAuth2Constants.PASSWORD)
                 .realm("master")
@@ -18,9 +21,7 @@ public class TestClass {
                 .password("admin")
                 .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(10).build())
                 .build();
-
-        for (UserRepresentation user : keycloak.realm("master").users().list()) {
-            System.out.println(user.getUsername());
-        }
     }
+
+
 }
