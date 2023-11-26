@@ -419,15 +419,6 @@
     },
     "groups": [
       {
-        "id": "1807798a-fc8b-4784-a60e-accd474332c5",
-        "name": "newgroup",
-        "path": "/newgroup",
-        "attributes": {},
-        "realmRoles": [],
-        "clientRoles": {},
-        "subGroups": []
-      },
-      {
         "id": "404d7029-a8f1-41de-8035-2b0c3bc0a47c",
         "name": "testgrroup",
         "path": "/testgrroup",
@@ -435,6 +426,9 @@
         "realmRoles": [],
         "clientRoles": {},
         "subGroups": []
+      },
+      {
+        "name": "newgroup"
       }
     ],
     "defaultRole": {
@@ -456,8 +450,8 @@
     "otpPolicyPeriod": 30,
     "otpPolicyCodeReusable": false,
     "otpSupportedApplications": [
-      "totpAppMicrosoftAuthenticatorName",
       "totpAppGoogleName",
+      "totpAppMicrosoftAuthenticatorName",
       "totpAppFreeOTPName"
     ],
     "webAuthnPolicyRpEntityName": "keycloak",
@@ -650,9 +644,7 @@
         "publicClient": true,
         "frontchannelLogout": false,
         "protocol": "openid-connect",
-        "attributes": {
-          "post.logout.redirect.uris": "+"
-        },
+        "attributes": {},
         "authenticationFlowBindingOverrides": {},
         "fullScopeAllowed": false,
         "nodeReRegistrationTimeout": 0,
@@ -690,9 +682,7 @@
         "publicClient": false,
         "frontchannelLogout": false,
         "protocol": "openid-connect",
-        "attributes": {
-          "post.logout.redirect.uris": "+"
-        },
+        "attributes": {},
         "authenticationFlowBindingOverrides": {},
         "fullScopeAllowed": false,
         "nodeReRegistrationTimeout": 0,
@@ -729,10 +719,7 @@
         "serviceAccountsEnabled": false,
         "publicClient": false,
         "frontchannelLogout": false,
-        "protocol": "openid-connect",
-        "attributes": {
-          "post.logout.redirect.uris": "+"
-        },
+        "attributes": {},
         "authenticationFlowBindingOverrides": {},
         "fullScopeAllowed": false,
         "nodeReRegistrationTimeout": 0,
@@ -834,8 +821,7 @@
             "consentRequired": false,
             "config": {
               "id.token.claim": "true",
-              "access.token.claim": "true",
-              "userinfo.token.claim": "true"
+              "access.token.claim": "true"
             }
           }
         ]
@@ -1173,7 +1159,6 @@
             "consentRequired": false,
             "config": {
               "multivalued": "true",
-              "userinfo.token.claim": "true",
               "user.attribute": "foo",
               "id.token.claim": "true",
               "access.token.claim": "true",
@@ -1345,8 +1330,8 @@
       "referrerPolicy": "no-referrer",
       "xRobotsTag": "none",
       "xFrameOptions": "SAMEORIGIN",
-      "contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
       "xXSSProtection": "1; mode=block",
+      "contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
       "strictTransportSecurity": "max-age=31536000; includeSubDomains"
     },
     "smtpServer": {},
@@ -1412,13 +1397,13 @@
           "subComponents": {},
           "config": {
             "allowed-protocol-mapper-types": [
-              "oidc-usermodel-attribute-mapper",
-              "saml-user-attribute-mapper",
-              "oidc-full-name-mapper",
               "oidc-address-mapper",
-              "saml-role-list-mapper",
-              "saml-user-property-mapper",
               "oidc-sha256-pairwise-sub-mapper",
+              "oidc-full-name-mapper",
+              "saml-role-list-mapper",
+              "saml-user-attribute-mapper",
+              "oidc-usermodel-attribute-mapper",
+              "saml-user-property-mapper",
               "oidc-usermodel-property-mapper"
             ]
           }
@@ -1443,14 +1428,14 @@
           "subComponents": {},
           "config": {
             "allowed-protocol-mapper-types": [
-              "oidc-full-name-mapper",
+              "oidc-usermodel-property-mapper",
               "oidc-address-mapper",
-              "saml-user-attribute-mapper",
               "oidc-usermodel-attribute-mapper",
               "saml-user-property-mapper",
+              "saml-user-attribute-mapper",
+              "oidc-full-name-mapper",
               "oidc-sha256-pairwise-sub-mapper",
-              "saml-role-list-mapper",
-              "oidc-usermodel-property-mapper"
+              "saml-role-list-mapper"
             ]
           }
         },
@@ -2190,13 +2175,7 @@
       "cibaBackchannelTokenDeliveryMode": "poll",
       "cibaExpiresIn": "120",
       "cibaAuthRequestedUserHint": "login_hint",
-      "oauth2DeviceCodeLifespan": "600",
-      "clientOfflineSessionMaxLifespan": "0",
-      "oauth2DevicePollingInterval": "5",
-      "clientSessionIdleTimeout": "0",
       "parRequestUriLifespan": "60",
-      "clientSessionMaxLifespan": "0",
-      "clientOfflineSessionIdleTimeout": "0",
       "cibaInterval": "5",
       "realmReusableOtpCode": "false"
     },

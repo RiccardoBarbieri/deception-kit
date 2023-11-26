@@ -1,0 +1,10 @@
+deception-component: idprovider
+definition:
+  groups:
+    file: groups.yaml
+  users:
+    file: users.yaml
+  roles:
+    file: roles.yaml
+  flows:
+    file: flows.yaml
