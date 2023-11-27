@@ -2,7 +2,6 @@
   {
     "username": "admin",
     "enabled": true,
-    "totp": "false",
     "firstName": "Administrator",
     "lastName": "User",
     "email": "admin.user@localhost.com",
@@ -21,7 +20,6 @@
   {
     "username": "admin2",
     "enabled": true,
-    "totp": false,
     "firstName": "Administrator2",
     "lastName": "User2",
     "email": "admin2.user2@localhost.com",

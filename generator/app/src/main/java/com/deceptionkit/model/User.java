@@ -6,7 +6,6 @@ public class User {
 
     protected String username;
     protected Boolean enabled;
-    protected Boolean totp;
     protected String firstName;
     protected String lastName;
     protected String email;
@@ -27,14 +26,6 @@ public class User {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public Boolean getTotp() {
-        return totp;
-    }
-
-    public void setTotp(Boolean totp) {
-        this.totp = totp;
     }
 
     public String getFirstName() {
