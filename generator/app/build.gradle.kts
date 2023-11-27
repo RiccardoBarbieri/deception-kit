@@ -45,6 +45,9 @@ dependencies {
 
     implementation("org.yaml:snakeyaml:2.2")
 
+    implementation("log4j:log4j:1.2.17")
+    implementation("org.slf4j:slf4j-api:2.0.9")
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
