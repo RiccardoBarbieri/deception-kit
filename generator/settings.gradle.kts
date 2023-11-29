@@ -12,4 +12,3 @@ plugins {
 }
 
 rootProject.name = "deception-kit"
-include("app")
