@@ -1,9 +1,0 @@
-[submodule "llm/llama.cpp"]
-	path = llm/llama.cpp
-	url = https://github.com/ggerganov/llama.cpp
-[submodule "llm/llama"]
-	path = llm/llama
-	url = https://github.com/facebookresearch/llama
-[submodule "llm/codellama"]
-	path = llm/codellama
-	url = https://github.com/facebookresearch/codellama
