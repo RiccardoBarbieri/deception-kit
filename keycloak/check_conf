@@ -6,5 +6,5 @@ docker exec keycloak-keycloak-1 /opt/keycloak/bin/kc.sh export --file /opt/keycl
 
 docker cp keycloak-keycloak-1:/opt/keycloak/export/export.json .
 
-jq . export.json | sponge pretty_export.json
+#jq . export.json | sponge pretty_export.json
 
