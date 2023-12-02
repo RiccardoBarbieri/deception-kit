@@ -4,8 +4,6 @@ import com.deceptionkit.model.Credential;
 import com.deceptionkit.model.User;
 import com.deceptionkit.response.model.SimpleResponse;
 import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.resource.ClientResource;
-import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.slf4j.Logger;
