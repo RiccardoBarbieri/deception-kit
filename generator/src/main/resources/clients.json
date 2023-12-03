@@ -1,0 +1,81 @@
+[
+  {
+    "clientId": "test-client",
+    "name": "TheClient",
+    "description": "New client to extrapolate info",
+    "rootUrl": "http://localhost:8090",
+    "adminUrl": "",
+    "baseUrl": "",
+    "enabled": true,
+    "clientAuthenticatorType": "client-secret",
+    "redirectUris": [
+      "http://localhost:8090/*"
+    ],
+    "webOrigins": [
+      "http://localhost:8090"
+    ],
+    "standardFlowEnabled": true,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": true,
+    "publicClient": false,
+    "protocol": "openid-connect",
+    "attributes": {
+      "oidc.ciba.grant.enabled": "true",
+      "backchannel.logout.session.required": "true",
+      "oauth2.device.authorization.grant.enabled": "true",
+      "display.on.consent.screen": "false",
+      "backchannel.logout.revoke.offline.tokens": "false"
+    }
+  },
+  {
+    "id": "3d93af49-6b9f-4005-a897-51840901c51e",
+    "clientId": "asdasd",
+    "name": "",
+    "description": "",
+    "rootUrl": "",
+    "adminUrl": "",
+    "baseUrl": "",
+    "surrogateAuthRequired": false,
+    "enabled": true,
+    "alwaysDisplayInConsole": false,
+    "clientAuthenticatorType": "client-secret",
+    "redirectUris": [
+      "/*"
+    ],
+    "webOrigins": [
+      "/*"
+    ],
+    "notBefore": 0,
+    "bearerOnly": false,
+    "consentRequired": false,
+    "standardFlowEnabled": true,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": true,
+    "serviceAccountsEnabled": false,
+    "publicClient": true,
+    "frontchannelLogout": true,
+    "protocol": "openid-connect",
+    "attributes": {
+      "oidc.ciba.grant.enabled": "false",
+      "oauth2.device.authorization.grant.enabled": "false",
+      "backchannel.logout.session.required": "true",
+      "backchannel.logout.revoke.offline.tokens": "false"
+    },
+    "authenticationFlowBindingOverrides": {},
+    "fullScopeAllowed": true,
+    "nodeReRegistrationTimeout": -1,
+    "defaultClientScopes": [
+      "web-origins",
+      "acr",
+      "roles",
+      "profile",
+      "email"
+    ],
+    "optionalClientScopes": [
+      "address",
+      "phone",
+      "offline_access",
+      "microprofile-jwt"
+    ]
+  }
+]
