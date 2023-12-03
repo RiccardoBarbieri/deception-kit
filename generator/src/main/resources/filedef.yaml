@@ -1,0 +1,26 @@
+deception-component: idprovider
+definition:
+  groups:
+    total: 5
+    definition:
+      - name: group1
+        users: 5
+      - name: group2
+        users: 5
+  users:
+    total: 10
+    groups_per_user: 2
+    definition:
+      - name: user1
+        password: password
+  clients:
+    - id: client1
+      description: "Client 1"
+      rootUrl: "http://localhost:8080"
+      protocol: "openid-connect"
+      authenticatorType: "client-secret"
+      standardFlowEnabled: true,
+      implicitFlowEnabled: false,
+      directAccessGrantsEnabled: true,
+#  flows:
+
