@@ -14,6 +14,9 @@ definition:
       - name: user1
         password: password
   clients:
+    total: 2
+    roles_per_client: 2
+    definition:
     - id: client1
       description: "Client 1"
       rootUrl: "http://localhost:8080"
@@ -22,5 +25,18 @@ definition:
       standardFlowEnabled: true,
       implicitFlowEnabled: false,
       directAccessGrantsEnabled: true,
-#  flows:
+  roles:
+    total: 3
+    definition:
+      - name: role1
+        scope:
+          - client: client1
+      - name: role2
+        scope:
+          - realm: master
+      - name: role2
+        scope:
+          - realm: generated_client
+
+
 

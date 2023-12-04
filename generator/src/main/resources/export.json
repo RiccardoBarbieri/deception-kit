@@ -112,6 +112,15 @@
           "attributes": {}
         },
         {
+          "id": "5695e123-0bff-417f-96d1-c458cdf35712",
+          "name": "spring-api",
+          "description": "Role that can access spring api",
+          "composite": false,
+          "clientRole": false,
+          "containerId": "26ea8cc5-cda4-4f53-b19e-4d642db27c0b",
+          "attributes": {}
+        },
+        {
           "id": "9d9a102c-0c99-463e-bcd8-9de87f83d1c7",
           "name": "default-roles-master",
           "description": "${role_default-roles}",
@@ -144,18 +153,19 @@
       ],
       "client": {
         "security-admin-console": [],
-        "admin-cli": [],
-        "asdasd": [],
-        "test-client": [
+        "spring-app": [
           {
-            "id": "516c169e-2a5e-4a0d-ba0a-a2c470aff478",
-            "name": "uma_protection",
+            "id": "b14d54d3-02f0-43c5-8a38-20aaf202c18c",
+            "name": "DEFAULT",
+            "description": "Default role",
             "composite": false,
             "clientRole": true,
             "containerId": "b0287a2c-aba9-4ab0-8e34-eabbce6ab208",
             "attributes": {}
           }
         ],
+        "admin-cli": [],
+        "asdasd": [],
         "account-console": [],
         "broker": [
           {
@@ -443,7 +453,9 @@
         "name": "newgroup",
         "path": "/newgroup",
         "attributes": {},
-        "realmRoles": [],
+        "realmRoles": [
+          "spring-api"
+        ],
         "clientRoles": {},
         "subGroups": []
       }
@@ -468,8 +480,8 @@
     "otpPolicyCodeReusable": false,
     "otpSupportedApplications": [
       "totpAppGoogleName",
-      "totpAppMicrosoftAuthenticatorName",
-      "totpAppFreeOTPName"
+      "totpAppFreeOTPName",
+      "totpAppMicrosoftAuthenticatorName"
     ],
     "webAuthnPolicyRpEntityName": "keycloak",
     "webAuthnPolicySignatureAlgorithms": [
@@ -524,22 +536,17 @@
       {
         "id": "1c4ec684-abb6-4ed5-b30c-32a672dc0214",
         "createdTimestamp": 1701530307596,
-        "username": "service-account-test-client",
+        "username": "service-account-spring-app",
         "enabled": true,
         "totp": false,
         "emailVerified": false,
-        "serviceAccountClientId": "test-client",
+        "serviceAccountClientId": "spring-app",
         "credentials": [],
         "disableableCredentialTypes": [],
         "requiredActions": [],
         "realmRoles": [
           "default-roles-master"
         ],
-        "clientRoles": {
-          "test-client": [
-            "uma_protection"
-          ]
-        },
         "notBefore": 0,
         "groups": []
       },
@@ -568,6 +575,11 @@
         "realmRoles": [
           "default-roles-master"
         ],
+        "clientRoles": {
+          "spring-app": [
+            "DEFAULT"
+          ]
+        },
         "notBefore": 0,
         "groups": [
           "/newgroup"
@@ -923,8 +935,8 @@
       },
       {
         "id": "b0287a2c-aba9-4ab0-8e34-eabbce6ab208",
-        "clientId": "test-client",
-        "name": "TheClient",
+        "clientId": "spring-app",
+        "name": "Spring API",
         "description": "New client to extrapolate info",
         "rootUrl": "http://localhost:8090",
         "adminUrl": "",
@@ -2326,6 +2338,15 @@
             "userSetupAllowed": false
           }
         ]
+      },
+      {
+        "id": "86a16905-fcaa-45c3-b49e-371b2fa0c41b",
+        "alias": "testflow",
+        "description": "",
+        "providerId": "basic-flow",
+        "topLevel": true,
+        "builtIn": false,
+        "authenticationExecutions": []
       }
     ],
     "authenticatorConfig": [
