@@ -1,7 +1,7 @@
 package com.deceptionkit.registration;
 
 import com.deceptionkit.model.Group;
-import com.deceptionkit.response.model.SimpleResponse;
+import com.deceptionkit.spring.response.SimpleResponse;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.GroupRepresentation;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class GroupRegistration {
         return group;
     }
 
-    @PostMapping("/registerGroups")
+    @PostMapping(value = "/registerGroups", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public SimpleResponse registerUser(@RequestParam(defaultValue = "master") String realm, @RequestBody List<Group> groups) {
         List<Response> responses = new ArrayList<>();

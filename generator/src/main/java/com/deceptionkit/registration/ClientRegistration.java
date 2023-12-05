@@ -1,7 +1,7 @@
 package com.deceptionkit.registration;
 
 import com.deceptionkit.model.Client;
-import com.deceptionkit.response.model.SimpleResponse;
+import com.deceptionkit.spring.response.SimpleResponse;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class ClientRegistration {
         return client;
     }
 
-    @PostMapping("/registerClients")
+    @PostMapping(value = "/registerClients", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public SimpleResponse registerClient(@RequestParam(defaultValue = "master") String realm, @RequestBody List<Client> clients) {
         List<Response> responses = new ArrayList<>();

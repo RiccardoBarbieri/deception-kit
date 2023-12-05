@@ -1,4 +1,4 @@
-package com.deceptionkit.response.model;
+package com.deceptionkit.spring.response;
 
 public class SimpleResponse {
 
