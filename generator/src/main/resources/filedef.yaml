@@ -1,42 +1,53 @@
-deception-component: idprovider
-definition:
+component: "id-provider"
+specification:
   groups:
     total: 5
-    definition:
+    definitions:
       - name: group1
-        users: 5
+        users: 1
       - name: group2
-        users: 5
+        users: 1
   users:
     total: 10
     groups_per_user: 2
     credentials_per_user: 1
-    definition:
-      - name: user1
-        password: password
+    definitions:
+      - username: user1
+        firstname: User 1
+        lastname: Lastname 1
+        email: user1@localhost
+        enabled: true
+        groups:
+          - group1
+          - group2
+        credentials:
+          - type: password
+            value: password
   clients:
-    total: 2
     roles_per_client: 2
-    definition:
-    - id: client1
-      description: "Client 1"
-      rootUrl: "http://localhost:8080"
-      protocol: "openid-connect"
-      authenticatorType: "client-secret"
-      standardFlowEnabled: true,
-      implicitFlowEnabled: false,
-      directAccessGrantsEnabled: true,
+    definitions:
+      - id: client1
+        description: "Client 1"
+        rootUrl: "http://localhost:8080"
+        protocol: "openid-connect"
+        authenticatorType: "client-secret"
+        standardFlowEnabled: true,
+        implicitFlowEnabled: false,
+        directAccessGrantsEnabled: true,
+        roles:
+          - role1
+          - role2
   roles:
-    definition:
+    definitions:
       - name: role1
         scope:
-          - client: client1
+          client: client1
+          realm: master
       - name: role2
         scope:
-          - realm: master
+          realm: master
+          client: client1
       - name: role2
         scope:
-          - realm: generated_client
-
-
-
+          realm: generated_client
+          client: client1
