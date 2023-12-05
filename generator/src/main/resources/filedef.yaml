@@ -10,6 +10,7 @@ definition:
   users:
     total: 10
     groups_per_user: 2
+    credentials_per_user: 1
     definition:
       - name: user1
         password: password
@@ -26,7 +27,6 @@ definition:
       implicitFlowEnabled: false,
       directAccessGrantsEnabled: true,
   roles:
-    total: 3
     definition:
       - name: role1
         scope:
