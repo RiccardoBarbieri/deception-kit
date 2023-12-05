@@ -64,6 +64,9 @@ dependencies {
 
     implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
 
+    implementation("com.fasterxml.jackson.core:jackson-core:2.16.0")
+
+
 }
 
 
