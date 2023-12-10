@@ -1,12 +1,11 @@
 component: "id-provider"
 specification:
+  domain: "localhost.com"
   groups:
     total: 5
     definitions:
       - name: group1
-        users: 1
       - name: group2
-        users: 1
   users:
     total: 10
     groups_per_user: 2
@@ -15,7 +14,7 @@ specification:
       - username: user1
         firstname: User 1
         lastname: Lastname 1
-        email: user1@localhost
+        email: user1@localhost.com
         enabled: true
         groups:
           - group1
