@@ -75,9 +75,10 @@ public class UserRegistration {
 
     @ExceptionHandler(java.lang.Exception.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
     public SimpleResponse handleException(java.lang.Exception e) {
+        logger.error("Exception: ", e);
         return new SimpleResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
-//        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
 }

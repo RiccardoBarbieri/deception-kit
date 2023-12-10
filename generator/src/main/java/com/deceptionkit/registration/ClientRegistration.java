@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -54,6 +51,14 @@ public class ClientRegistration {
             }
         }
         return new SimpleResponse(HttpStatus.CREATED.value(), responses.size() + " clients registered");
+    }
+
+    @ExceptionHandler(java.lang.Exception.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public SimpleResponse handleException(java.lang.Exception e) {
+        logger.error("Exception: ", e);
+        return new SimpleResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
 }
