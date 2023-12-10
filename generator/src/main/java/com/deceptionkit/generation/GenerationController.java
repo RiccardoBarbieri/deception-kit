@@ -1,16 +1,17 @@
 package com.deceptionkit.generation;
 
 import com.deceptionkit.generation.model.MockResources;
-import com.deceptionkit.mockaroo.MockarooApi;
-import com.deceptionkit.mockaroo.model.GroupMock;
-import com.deceptionkit.mockaroo.model.UserMock;
+import com.deceptionkit.mockaroo.MockFactory;
+import com.deceptionkit.model.Client;
 import com.deceptionkit.model.Group;
+import com.deceptionkit.model.Role;
 import com.deceptionkit.model.User;
 import com.deceptionkit.spring.response.SimpleResponse;
-import com.deceptionkit.yamlspecs.idprovider.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.deceptionkit.yamlspecs.idprovider.IdProviderDefinition;
+import com.deceptionkit.yamlspecs.idprovider.client.ClientDefinition;
+import com.deceptionkit.yamlspecs.idprovider.group.GroupDefinition;
+import com.deceptionkit.yamlspecs.idprovider.role.RoleDefinition;
+import com.deceptionkit.yamlspecs.idprovider.user.UserDefinition;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,10 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.representer.Representer;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -52,36 +56,39 @@ public class GenerationController {
         List<GroupDefinition> groupDefinitions = idProviderDefinition.getSpecification().getGroups().getDefinitions();
         List<UserDefinition> userDefinitions = idProviderDefinition.getSpecification().getUsers().getDefinitions();
 
+        //consistency checks
         if (!clientRolesExist(clientDefinitions, roleDefintions)) {
             throw new RuntimeException("Client roles do not exist in role definitions");
         }
         if (!userGroupsExist(userDefinitions, groupDefinitions)) {
             throw new RuntimeException("User groups do not exist in group definitions");
         }
-
-        List<Group> mockGroups = (new GroupMock()).getMocks(new MockarooApi(), totalGroups - groupDefinitions.size());
-        List<Group> allGroups = new ArrayList<>();
-        allGroups.addAll(mockGroups);
-        allGroups.addAll(idProviderDefinition.getSpecification().getGroups().getGroups());
-
-        List<User> mockUsers = (new UserMock(credentialsPerUser, domain)).getMocks(new MockarooApi(), totalUsers - userDefinitions.size());
-        List<User> allUsers = new ArrayList<>();
-        for (User user : mockUsers) {
-            List<String> userGroups = new ArrayList<>();
-            for (int i = 0; i < groupsPerUser; i++) {
-                //do not reuse already assigned groups for the same user
-                userGroups.add(mockGroups.get(new Random().nextInt(mockGroups.size())).getName());
-            }
-            user.setGroups(userGroups);
+        if (!groupRolesExist(groupDefinitions, roleDefintions)) {
+            throw new RuntimeException("Group roles do not exist in role definitions");
         }
-        allUsers.addAll(mockUsers);
-        allUsers.addAll(idProviderDefinition.getSpecification().getUsers().getUsers());
+        if (!clientRolesAreClientScoped(clientDefinitions, roleDefintions)) {
+            throw new RuntimeException("Client roles are not client scoped");
+        }
+        if (groupsPerUser > totalGroups) {
+            throw new RuntimeException("Groups per user cannot be greater than total groups");
+        }
 
+        List<Group> mockGroups = MockFactory.getGroups(totalGroups - groupDefinitions.size());
+        List<Group> allGroups = MockMergeHelper.mergeGroups(idProviderDefinition.getSpecification().getGroups().convertGroups(), mockGroups);
 
+        List<User> mockUsers = MockFactory.getUsers(totalUsers - userDefinitions.size(), credentialsPerUser, domain);
+        List<User> groupedUsers = MockMergeHelper.assignGroups(mockUsers, allGroups, groupsPerUser);
+        List<User> allUsers = MockMergeHelper.mergeUsers(idProviderDefinition.getSpecification().getUsers().convertUsers(), groupedUsers);
+
+        List<Role> allRoles = idProviderDefinition.getSpecification().getRoles().convertRoles();
+
+        List<Client> allClients = idProviderDefinition.getSpecification().getClients().convertClients(allRoles);
 
         MockResources mockResources = new MockResources();
         mockResources.setGroups(allGroups);
         mockResources.setUsers(allUsers);
+        mockResources.setClients(allClients);
+        mockResources.setRoles(allRoles);
         return mockResources;
     }
 
@@ -106,6 +113,36 @@ public class GenerationController {
         Map<String, List<String>> referencedRoles = new HashMap<>();
         for (ClientDefinition clientDefinition : clientDefinitions) {
             referencedRoles.put(clientDefinition.getId(), clientDefinition.getRoles());
+        }
+        Set<String> definedRoles = roleDefinitions.stream().map(RoleDefinition::getName).collect(Collectors.toSet());
+        for (List<String> roles : referencedRoles.values()) {
+            if (!definedRoles.containsAll(roles)) {
+                rolesExist = false;
+                break;
+            }
+        }
+        return rolesExist;
+    }
+
+    private boolean clientRolesAreClientScoped(List<ClientDefinition> clientDefinitions, List<RoleDefinition> roleDefinitions) {
+        boolean rolesAreClientScoped = true;
+        for (ClientDefinition clientDefinition : clientDefinitions) {
+            for (String roleName : clientDefinition.getRoles()) {
+                RoleDefinition roleDefinition = roleDefinitions.stream().filter(r -> r.getName().equals(roleName)).findFirst().orElse(null);
+                if (roleDefinition != null && !roleDefinition.getScope().isClientScope()) {
+                    rolesAreClientScoped = false;
+                    break;
+                }
+            }
+        }
+        return rolesAreClientScoped;
+    }
+
+    private boolean groupRolesExist(List<GroupDefinition> groupDefinitions, List<RoleDefinition> roleDefinitions) {
+        boolean rolesExist = true;
+        Map<String, List<String>> referencedRoles = new HashMap<>();
+        for (GroupDefinition groupDefinition : groupDefinitions) {
+            referencedRoles.put(groupDefinition.getName(), groupDefinition.getRoles());
         }
         Set<String> definedRoles = roleDefinitions.stream().map(RoleDefinition::getName).collect(Collectors.toSet());
         for (List<String> roles : referencedRoles.values()) {

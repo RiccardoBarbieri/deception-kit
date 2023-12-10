@@ -17,7 +17,7 @@ public class UserMock extends BaseMock<User> {
             (new ObjectMapper()).createObjectNode()
                     .put("name", "username")
                     .put("type", "Formula")
-                    .put("value", "concat(lower(firstName[1]), lower(lastName))");
+                    .put("value", "concat(lower(firstName[0]), lower(lastName))");
     private final ObjectNode enabled =
             (new ObjectMapper()).createObjectNode()
                     .put("name", "enabled")

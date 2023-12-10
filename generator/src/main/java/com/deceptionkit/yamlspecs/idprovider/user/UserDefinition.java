@@ -1,8 +1,8 @@
-package com.deceptionkit.yamlspecs.idprovider;
+package com.deceptionkit.yamlspecs.idprovider.user;
 
-import com.deceptionkit.model.Client;
 import com.deceptionkit.model.Credential;
 import com.deceptionkit.model.User;
+import com.deceptionkit.yamlspecs.idprovider.CredentialSpecification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ public class UserDefinition {
         this.credentials = credentials;
     }
 
-    public User getUser() {
+    public User convertUser() {
         User user = new User();
         user.setUsername(username);
         user.setFirstName(firstname);

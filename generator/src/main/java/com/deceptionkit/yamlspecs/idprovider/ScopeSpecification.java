@@ -20,4 +20,12 @@ public class ScopeSpecification {
     public void setRealm(String realm) {
         this.realm = realm;
     }
+    
+    public Boolean isClientScope() {
+        return client != null;
+    }
+    
+    public Boolean isRealmScope() {
+        return realm != null;
+    }
 }

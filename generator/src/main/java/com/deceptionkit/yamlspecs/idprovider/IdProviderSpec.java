@@ -1,5 +1,10 @@
 package com.deceptionkit.yamlspecs.idprovider;
 
+import com.deceptionkit.yamlspecs.idprovider.client.ClientSpecification;
+import com.deceptionkit.yamlspecs.idprovider.group.GroupSpecification;
+import com.deceptionkit.yamlspecs.idprovider.role.RoleSpecification;
+import com.deceptionkit.yamlspecs.idprovider.user.UserSpecification;
+
 public class IdProviderSpec {
 
     private String domain;

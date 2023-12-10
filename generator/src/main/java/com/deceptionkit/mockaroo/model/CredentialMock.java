@@ -12,14 +12,13 @@ import java.util.List;
 
 public class CredentialMock extends BaseMock<Credential> {
 
-
     private final ObjectNode value =
             (new ObjectMapper()).createObjectNode()
                     .put("name", "value")
                     .put("type", "Password")
                     .put("min_upper", 1)
                     .put("min_lower", 5)
-                    .put("min_length", 8)
+                    .put("min_length", 10)
                     .put("min_symbols", 1)
                     .put("min_numbers", 1);
 

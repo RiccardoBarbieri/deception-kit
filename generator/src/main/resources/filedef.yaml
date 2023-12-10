@@ -5,7 +5,11 @@ specification:
     total: 5
     definitions:
       - name: group1
+        roles:
+          - role2
       - name: group2
+        roles:
+          - role1
   users:
     total: 10
     groups_per_user: 2
@@ -26,8 +30,13 @@ specification:
     roles_per_client: 2
     definitions:
       - id: client1
+        name: "Client 1"
         description: "Client 1"
         rootUrl: "http://localhost:8080"
+        adminUrl: "http://localhost:8080"
+        redirectUris:
+          - "http://localhost:8080"
+        baseUrl: "http://localhost:8080"
         protocol: "openid-connect"
         authenticatorType: "client-secret"
         standardFlowEnabled: true,
@@ -41,12 +50,9 @@ specification:
       - name: role1
         scope:
           client: client1
-          realm: master
       - name: role2
         scope:
           realm: master
-          client: client1
       - name: role2
         scope:
-          realm: generated_client
           client: client1

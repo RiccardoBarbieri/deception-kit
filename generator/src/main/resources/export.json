@@ -103,15 +103,6 @@
           "attributes": {}
         },
         {
-          "id": "21a0255f-f116-4dd3-88f0-6f615fb4d8a4",
-          "name": "temprole",
-          "description": "",
-          "composite": false,
-          "clientRole": false,
-          "containerId": "26ea8cc5-cda4-4f53-b19e-4d642db27c0b",
-          "attributes": {}
-        },
-        {
           "id": "5695e123-0bff-417f-96d1-c458cdf35712",
           "name": "spring-api",
           "description": "Role that can access spring api",
@@ -165,7 +156,16 @@
           }
         ],
         "admin-cli": [],
-        "asdasd": [],
+        "default_config_client": [
+          {
+            "id": "8928cf8d-6271-4b9f-8492-96dc95e1672f",
+            "name": "uma_protection",
+            "composite": false,
+            "clientRole": true,
+            "containerId": "90d810b4-35ab-4094-bb64-7c0caf8766c2",
+            "attributes": {}
+          }
+        ],
         "account-console": [],
         "broker": [
           {
@@ -534,6 +534,28 @@
         "groups": []
       },
       {
+        "id": "bc163214-b7b0-4116-b352-2839e0a51cb2",
+        "createdTimestamp": 1702244675348,
+        "username": "service-account-default_config_client",
+        "enabled": true,
+        "totp": false,
+        "emailVerified": false,
+        "serviceAccountClientId": "default_config_client",
+        "credentials": [],
+        "disableableCredentialTypes": [],
+        "requiredActions": [],
+        "realmRoles": [
+          "default-roles-master"
+        ],
+        "clientRoles": {
+          "default_config_client": [
+            "uma_protection"
+          ]
+        },
+        "notBefore": 0,
+        "groups": []
+      },
+      {
         "id": "1c4ec684-abb6-4ed5-b30c-32a672dc0214",
         "createdTimestamp": 1701530307596,
         "username": "service-account-spring-app",
@@ -744,57 +766,6 @@
         ]
       },
       {
-        "id": "3d93af49-6b9f-4005-a897-51840901c51e",
-        "clientId": "asdasd",
-        "name": "",
-        "description": "",
-        "rootUrl": "",
-        "adminUrl": "",
-        "baseUrl": "",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "redirectUris": [
-          "/*"
-        ],
-        "webOrigins": [
-          "/*"
-        ],
-        "notBefore": 0,
-        "bearerOnly": false,
-        "consentRequired": false,
-        "standardFlowEnabled": true,
-        "implicitFlowEnabled": false,
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": false,
-        "publicClient": true,
-        "frontchannelLogout": true,
-        "protocol": "openid-connect",
-        "attributes": {
-          "oidc.ciba.grant.enabled": "false",
-          "oauth2.device.authorization.grant.enabled": "false",
-          "backchannel.logout.session.required": "true",
-          "backchannel.logout.revoke.offline.tokens": "false"
-        },
-        "authenticationFlowBindingOverrides": {},
-        "fullScopeAllowed": true,
-        "nodeReRegistrationTimeout": -1,
-        "defaultClientScopes": [
-          "web-origins",
-          "acr",
-          "roles",
-          "profile",
-          "email"
-        ],
-        "optionalClientScopes": [
-          "address",
-          "phone",
-          "offline_access",
-          "microprofile-jwt"
-        ]
-      },
-      {
         "id": "53c31a16-0788-4733-80cc-c9aacc5281f3",
         "clientId": "broker",
         "name": "${client_broker}",
@@ -831,6 +802,147 @@
           "offline_access",
           "microprofile-jwt"
         ]
+      },
+      {
+        "id": "90d810b4-35ab-4094-bb64-7c0caf8766c2",
+        "clientId": "default_config_client",
+        "name": "NAME",
+        "description": "DESCRIPTION",
+        "rootUrl": "http://localhost:8080",
+        "adminUrl": "http://localhost:8080",
+        "baseUrl": "",
+        "surrogateAuthRequired": false,
+        "enabled": true,
+        "alwaysDisplayInConsole": true,
+        "clientAuthenticatorType": "client-secret",
+        "secret": "acbH6ugYowwNMQVXzbr06PsvqGw5rq4h",
+        "redirectUris": [
+          "http://localhost:8080/*"
+        ],
+        "webOrigins": [
+          "http://localhost:8080"
+        ],
+        "notBefore": 0,
+        "bearerOnly": false,
+        "consentRequired": false,
+        "standardFlowEnabled": true,
+        "implicitFlowEnabled": false,
+        "directAccessGrantsEnabled": true,
+        "serviceAccountsEnabled": true,
+        "authorizationServicesEnabled": true,
+        "publicClient": false,
+        "frontchannelLogout": true,
+        "protocol": "openid-connect",
+        "attributes": {
+          "oidc.ciba.grant.enabled": "false",
+          "oauth2.device.authorization.grant.enabled": "true",
+          "client.secret.creation.time": "1702244675",
+          "backchannel.logout.session.required": "true",
+          "backchannel.logout.revoke.offline.tokens": "false"
+        },
+        "authenticationFlowBindingOverrides": {},
+        "fullScopeAllowed": true,
+        "nodeReRegistrationTimeout": -1,
+        "protocolMappers": [
+          {
+            "id": "b4021bfb-be34-41f2-9132-342c65180382",
+            "name": "Client Host",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usersessionmodel-note-mapper",
+            "consentRequired": false,
+            "config": {
+              "user.session.note": "clientHost",
+              "id.token.claim": "true",
+              "access.token.claim": "true",
+              "claim.name": "clientHost",
+              "jsonType.label": "String"
+            }
+          },
+          {
+            "id": "689a0996-cf8c-4afc-83a0-f3bc885b2355",
+            "name": "Client IP Address",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usersessionmodel-note-mapper",
+            "consentRequired": false,
+            "config": {
+              "user.session.note": "clientAddress",
+              "id.token.claim": "true",
+              "access.token.claim": "true",
+              "claim.name": "clientAddress",
+              "jsonType.label": "String"
+            }
+          },
+          {
+            "id": "111b7097-ded9-48c9-a3d3-7abe78c47d7b",
+            "name": "Client ID",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usersessionmodel-note-mapper",
+            "consentRequired": false,
+            "config": {
+              "user.session.note": "client_id",
+              "id.token.claim": "true",
+              "access.token.claim": "true",
+              "claim.name": "client_id",
+              "jsonType.label": "String"
+            }
+          }
+        ],
+        "defaultClientScopes": [
+          "web-origins",
+          "acr",
+          "roles",
+          "profile",
+          "email"
+        ],
+        "optionalClientScopes": [
+          "address",
+          "phone",
+          "offline_access",
+          "microprofile-jwt"
+        ],
+        "authorizationSettings": {
+          "allowRemoteResourceManagement": true,
+          "policyEnforcementMode": "ENFORCING",
+          "resources": [
+            {
+              "name": "Default Resource",
+              "type": "urn:default_config_client:resources:default",
+              "ownerManagedAccess": false,
+              "attributes": {},
+              "_id": "7f5fde7c-8fae-4898-ade5-232beb47409c",
+              "uris": [
+                "/*"
+              ]
+            }
+          ],
+          "policies": [
+            {
+              "id": "f55a2f2e-917e-40e5-861f-a3c003bd2a6f",
+              "name": "Default Policy",
+              "description": "A policy that grants access only for users within this realm",
+              "type": "js",
+              "logic": "POSITIVE",
+              "decisionStrategy": "AFFIRMATIVE",
+              "config": {
+                "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
+              }
+            },
+            {
+              "id": "f3a88011-90a2-4449-920c-169622a4be35",
+              "name": "Default Permission",
+              "description": "A permission that applies to the default resource type",
+              "type": "resource",
+              "logic": "POSITIVE",
+              "decisionStrategy": "UNANIMOUS",
+              "config": {
+                "defaultResourceType": "urn:default_config_client:resources:default",
+                "applyPolicies": "[\"Default Policy\"]"
+              }
+            }
+          ],
+          "scopes": [],
+          "decisionStrategy": "UNANIMOUS"
+        }
       },
       {
         "id": "06566e55-9979-4f10-871f-958e18a00f10",

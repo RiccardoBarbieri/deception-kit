@@ -1,4 +1,7 @@
-package com.deceptionkit.yamlspecs.idprovider;
+package com.deceptionkit.yamlspecs.idprovider.client;
+
+import com.deceptionkit.model.Client;
+import com.deceptionkit.model.Role;
 
 import java.util.List;
 
@@ -22,5 +25,13 @@ public class ClientSpecification {
 
     public void setDefinitions(List<ClientDefinition> definitions) {
         this.definitions = definitions;
+    }
+
+    public List<Client> convertClients(List<Role> roles) {
+        List<Client> clients = new java.util.ArrayList<>();
+        for (ClientDefinition definition : definitions) {
+            clients.add(definition.convertClient(roles));
+        }
+        return clients;
     }
 }

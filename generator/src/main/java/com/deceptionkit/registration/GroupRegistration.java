@@ -28,10 +28,10 @@ public class GroupRegistration {
         this.logger = LoggerFactory.getLogger(GroupRegistration.class);
     }
 
-    private GroupRepresentation generateGroupRep(Group g) {
-        GroupRepresentation group = new GroupRepresentation();
-        group.setName(g.getName());
-        return group;
+    private GroupRepresentation generateGroupRep(Group group) {
+        GroupRepresentation groupRep = new GroupRepresentation();
+        groupRep.setName(group.getName());
+        return groupRep;
     }
 
     @PostMapping(value = "/registerGroups", consumes = "application/json", produces = "application/json")

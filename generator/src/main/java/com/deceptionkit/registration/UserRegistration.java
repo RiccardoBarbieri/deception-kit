@@ -29,26 +29,23 @@ public class UserRegistration {
         this.logger = org.slf4j.LoggerFactory.getLogger(UserRegistration.class);
     }
 
-    private UserRepresentation generateUserRep(User u) {
-        UserRepresentation user = new UserRepresentation();
-        user.setUsername(u.getUsername());
-        user.setFirstName(u.getFirstName());
-        user.setLastName(u.getLastName());
-        user.setEmail(u.getEmail());
-        user.setEnabled(u.getEnabled());
-        user.setGroups(u.getGroups());
+    private UserRepresentation generateUserRep(User user) {
+        UserRepresentation userRep = new UserRepresentation();
+        userRep.setUsername(user.getUsername());
+        userRep.setFirstName(user.getFirstName());
+        userRep.setLastName(user.getLastName());
+        userRep.setEmail(user.getEmail());
+        userRep.setEnabled(user.getEnabled());
+        userRep.setGroups(user.getGroups());
         List<CredentialRepresentation> tempCred = new ArrayList<>();
-        for (Credential c : u.getCredentials()) {
+        for (Credential c : user.getCredentials()) {
             CredentialRepresentation credential = new CredentialRepresentation();
-//            if (c.getType().equals("secret")) {
-//                credential.setType(CredentialRepresentation.SECRET);
-//            }
             credential.setType(c.getType());
             credential.setValue(c.getValue());
             tempCred.add(credential);
         }
-        user.setCredentials(tempCred);
-        return user;
+        userRep.setCredentials(tempCred);
+        return userRep;
     }
 
     @PostMapping(value = "/registerUsers", consumes = "application/json", produces = "application/json")

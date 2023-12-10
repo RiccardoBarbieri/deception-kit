@@ -1,4 +1,4 @@
-package com.deceptionkit.yamlspecs.idprovider;
+package com.deceptionkit.yamlspecs.idprovider.group;
 
 import com.deceptionkit.model.Group;
 
@@ -27,10 +27,10 @@ public class GroupSpecification {
     }
 
 
-    public List<Group> getGroups() {
+    public List<Group> convertGroups() {
         List<Group> groups = new ArrayList<>();
         for (GroupDefinition groupDefinition : definitions) {
-            groups.add(groupDefinition.getGroup());
+            groups.add(groupDefinition.convertGroup());
         }
         return groups;
     }

@@ -1,0 +1,28 @@
+{
+  "clientId": "test-client",
+  "name": "TheClient",
+  "description": "New client to extrapolate info",
+  "rootUrl": "http://localhost:8090",
+  "adminUrl": "",
+  "baseUrl": "",
+  "enabled": true,
+  "clientAuthenticatorType": "client-secret",
+  "redirectUris": [
+    "http://localhost:8090/*"
+  ],
+  "webOrigins": [
+    "http://localhost:8090"
+  ],
+  "standardFlowEnabled": true,
+  "implicitFlowEnabled": false,
+  "directAccessGrantsEnabled": true,
+  "publicClient": false,
+  "protocol": "openid-connect",
+  "attributes": {
+    "oidc.ciba.grant.enabled": "true",
+    "backchannel.logout.session.required": "true",
+    "oauth2.device.authorization.grant.enabled": "true",
+    "display.on.consent.screen": "false",
+    "backchannel.logout.revoke.offline.tokens": "false"
+  }
+}

@@ -11,16 +11,17 @@ public class Client {
     protected String rootUrl;
     protected String adminUrl;
     protected String baseUrl;
-    protected Boolean enabled;
+    protected Boolean enabled; //default true
     protected String clientAuthenticatorType;
     protected List<String> redirectUris;
-    protected List<String> webOrigins;
+    protected List<String> webOrigins; //default empty
     protected Boolean standardFlowEnabled;
     protected Boolean implicitFlowEnabled;
     protected Boolean directAccessGrantsEnabled;
-    protected Boolean publicClient;
+    protected Boolean publicClient; //default true
     protected String protocol;
-    protected Map<String, String> attributes;
+    protected Map<String, String> attributes; //default json
+    protected List<Role> roles;
 
     public String getClientId() {
         return clientId;
@@ -148,5 +149,13 @@ public class Client {
 
     public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }
