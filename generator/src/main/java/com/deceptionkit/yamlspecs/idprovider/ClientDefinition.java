@@ -1,4 +1,6 @@
-package com.deceptionkit.componentspec.idmodel;
+package com.deceptionkit.yamlspecs.idprovider;
+
+import com.deceptionkit.model.Client;
 
 import java.util.List;
 

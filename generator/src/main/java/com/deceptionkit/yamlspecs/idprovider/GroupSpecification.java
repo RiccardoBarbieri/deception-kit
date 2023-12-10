@@ -1,5 +1,8 @@
-package com.deceptionkit.componentspec.idmodel;
+package com.deceptionkit.yamlspecs.idprovider;
 
+import com.deceptionkit.model.Group;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupSpecification {
@@ -22,4 +25,14 @@ public class GroupSpecification {
     public void setDefinitions(List<GroupDefinition> definitions) {
         this.definitions = definitions;
     }
+
+
+    public List<Group> getGroups() {
+        List<Group> groups = new ArrayList<>();
+        for (GroupDefinition groupDefinition : definitions) {
+            groups.add(groupDefinition.getGroup());
+        }
+        return groups;
+    }
+
 }

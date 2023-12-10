@@ -1,4 +1,6 @@
-package com.deceptionkit.componentspec.idmodel;
+package com.deceptionkit.yamlspecs.idprovider;
+
+import com.deceptionkit.model.Credential;
 
 public class CredentialSpecification {
 
@@ -19,5 +21,12 @@ public class CredentialSpecification {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Credential getCredential() {
+        Credential credential = new Credential();
+        credential.setType(type);
+        credential.setValue(value);
+        return credential;
     }
 }

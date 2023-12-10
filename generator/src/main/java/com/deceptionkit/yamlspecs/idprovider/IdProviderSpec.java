@@ -1,16 +1,20 @@
-package com.deceptionkit.componentspec.idmodel;
-
-import com.deceptionkit.componentspec.idmodel.ClientSpecification;
-import com.deceptionkit.componentspec.idmodel.GroupSpecification;
-import com.deceptionkit.componentspec.idmodel.RoleSpecification;
-import com.deceptionkit.componentspec.idmodel.UserSpecification;
+package com.deceptionkit.yamlspecs.idprovider;
 
 public class IdProviderSpec {
 
+    private String domain;
     private GroupSpecification groups;
     private UserSpecification users;
     private ClientSpecification clients;
     private RoleSpecification roles;
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String component) {
+        this.domain = component;
+    }
 
     public GroupSpecification getGroups() {
         return groups;

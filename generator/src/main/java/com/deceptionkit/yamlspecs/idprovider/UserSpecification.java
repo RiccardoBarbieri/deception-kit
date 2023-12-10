@@ -1,5 +1,9 @@
-package com.deceptionkit.componentspec.idmodel;
+package com.deceptionkit.yamlspecs.idprovider;
 
+import com.deceptionkit.model.Client;
+import com.deceptionkit.model.User;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserSpecification {
@@ -39,5 +43,13 @@ public class UserSpecification {
 
     public void setDefinitions(List<UserDefinition> definitions) {
         this.definitions = definitions;
+    }
+
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+        for (UserDefinition userDefinition : definitions) {
+            users.add(userDefinition.getUser());
+        }
+        return users;
     }
 }

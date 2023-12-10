@@ -1,5 +1,10 @@
-package com.deceptionkit.componentspec.idmodel;
+package com.deceptionkit.yamlspecs.idprovider;
 
+import com.deceptionkit.model.Client;
+import com.deceptionkit.model.Credential;
+import com.deceptionkit.model.User;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDefinition {
@@ -66,5 +71,21 @@ public class UserDefinition {
 
     public void setCredentials(List<CredentialSpecification> credentials) {
         this.credentials = credentials;
+    }
+
+    public User getUser() {
+        User user = new User();
+        user.setUsername(username);
+        user.setFirstName(firstname);
+        user.setLastName(lastname);
+        user.setEmail(email);
+        user.setEnabled(enabled);
+        user.setGroups(groups);
+        List<Credential> credentials = new ArrayList<>();
+        for (CredentialSpecification credentialSpecification : this.credentials) {
+            credentials.add(credentialSpecification.getCredential());
+        }
+        user.setCredentials(credentials);
+        return user;
     }
 }

@@ -1,4 +1,4 @@
-package com.deceptionkit.componentspec.idmodel;
+package com.deceptionkit.yamlspecs.idprovider;
 
 public class RoleDefinition {
 
