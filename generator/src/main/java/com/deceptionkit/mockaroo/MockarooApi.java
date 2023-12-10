@@ -15,7 +15,8 @@ import java.net.http.HttpResponse;
 
 public class MockarooApi {
 
-    private static final String apiKey = System.getenv("MOCKAROO_API_KEY");
+//    private static final String apiKey = System.getenv("MOCKAROO_API_KEY");
+    private static final String apiKey = "a31b8200";
 
     private final String url = "https://api.mockaroo.com/api/";
 

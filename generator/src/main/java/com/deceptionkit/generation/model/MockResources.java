@@ -10,12 +10,10 @@ import java.util.List;
 
 public class MockResources {
 
-    public final List<User> users;
-    public final List<Group> groups;
-
-    public final List<Role> roles;
-
-    public final List<Client> clients;
+    public List<User> users;
+    public List<Group> groups;
+    public List<Role> roles;
+    public List<Client> clients;
 
     public MockResources(List<User> users, List<Group> groups, List<Role> roles, List<Client> clients) {
         this.users = users;
@@ -29,5 +27,37 @@ public class MockResources {
         this.groups = null;
         this.roles = null;
         this.clients = null;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
     }
 }
