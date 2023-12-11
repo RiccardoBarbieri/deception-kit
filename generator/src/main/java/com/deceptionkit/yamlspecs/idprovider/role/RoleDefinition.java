@@ -34,6 +34,8 @@ public class RoleDefinition {
         }
         role.setComposite(false);
         role.setDescription("Role for " + name);
+        role.setClientName(scope.getClient());
+        role.setRealmName(scope.getRealm());
         return role;
     }
 }
