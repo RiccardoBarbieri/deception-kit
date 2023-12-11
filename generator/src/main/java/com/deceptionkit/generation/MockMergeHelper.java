@@ -23,9 +23,7 @@ public class MockMergeHelper {
         for (User user : users) {
             List<Integer> ints = new Random().ints(1, groups.size()).distinct().limit(groupsPerUser).boxed().toList();
             List<String> tempGroups = new ArrayList<>();
-            System.out.println("_________________________");
             for (Integer i : ints) {
-                System.out.println(i);
                 tempGroups.add(groups.get(i).getName());
             }
             user.setGroups(tempGroups);

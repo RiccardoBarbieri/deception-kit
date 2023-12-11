@@ -12,6 +12,14 @@ public class User {
     protected List<String> groups;
     protected List<Credential> credentials;
 
+    public User() {
+    }
+
+    // Constructor for Spring mapping
+    public User(String email) {
+        this.email = email;
+    }
+
     public String getUsername() {
         return username;
     }
