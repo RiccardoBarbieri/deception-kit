@@ -7,6 +7,10 @@ public class Role {
     protected Boolean composite;
     protected Boolean clientRole;
 
+    protected String realmName;
+
+    protected String clientName;
+
     public String getName() {
         return name;
     }
@@ -37,5 +41,29 @@ public class Role {
 
     public void setClientRole(Boolean clientRole) {
         this.clientRole = clientRole;
+    }
+
+    public String getRealmName() {
+        return realmName;
+    }
+
+    public void setRealmName(String realmName) {
+        this.realmName = realmName;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public boolean isClientRole() {
+        return clientName != null && !clientName.isEmpty();
+    }
+
+    public boolean isRealmRole() {
+        return realmName != null && !realmName.isEmpty();
     }
 }
