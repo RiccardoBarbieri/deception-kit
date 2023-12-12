@@ -1,3 +1,6 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import java.util.*
 
 /*
@@ -12,6 +15,8 @@ plugins {
     id("java")
     id("org.springframework.boot") version "3.2.0"
     id("io.spring.dependency-management") version "1.1.4"
+	id("com.bmuschko.docker-spring-boot-application") version "9.3.2"
+    id("application")
 }
 
 java {
@@ -19,7 +24,7 @@ java {
 }
 
 group = "com.deceptionkit"
-version = "0.0.1"
+version = "1.0.0"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -60,7 +65,7 @@ dependencies {
 //    implementation("org.springframework.boot:spring-boot-starter-security")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+//    testImplementation("org.springframework.boot:spring-boot-starter-test")
 //    testImplementation("org.springframework.security:spring-security-test")
 
     implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
@@ -71,20 +76,70 @@ dependencies {
 }
 
 
-//val springProps = Properties()
-//
-//properties["activeProfile"]?.let {
-//    println("Loading properties from application-demo.properties")
-//    springProps.load(file("src/main/resources/application-demo.properties").inputStream())
-//}
-//
-//tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
-//    systemProperty("spring.profiles.active", properties["activeProfile"] ?: "dev")
-//}
+val springProps = Properties()
 
-// Apply a specific Java toolchain to ease working on different environments.
+properties["activeProfile"]?.let {
+    println("Loading properties from application-$it.properties")
+    springProps.load(file("src/main/resources/application-$it.properties").inputStream())
+}
 
-//application {
-//    // Define the main class for the application.
-//    mainClass.set("deceptionkit.App")
-//}
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+    systemProperty("spring.profiles.active", properties["activeProfile"] ?: "dev")
+}
+
+tasks.register<Copy>("propcopy") {
+    dependsOn("processResources")
+    group = "help"
+    description = "Copy properties file to resources"
+    val activeProfile = properties["activeProfile"] ?: "dev"
+    from("src/main/resources/application-$activeProfile.properties")
+    into("src/main/resources/")
+    rename("application-$activeProfile.properties", "application.properties")
+}
+
+
+tasks.register<Dockerfile>("createDockerfile") {
+    mustRunAfter("propcopy")
+    mustRunAfter("bootDistTar")
+    dependsOn("bootDistTar")
+    dependsOn("propcopy")
+    group = "unibobootdocker"
+    description = "Create Dockerfile"
+
+    doFirst {
+        val inputTarFile =
+            project.layout.projectDirectory.file("build/distributions/" + project.name + "-boot-" + project.version + ".tar")
+
+        from("openjdk:11")
+        exposePort(springProps["server.port"].toString().toInt())
+        volume("/data")
+        addFile("./build/distributions/${inputTarFile.asFile.name}", "/")
+        workingDir(inputTarFile.asFile.name.removeSuffix(".tar") + "/bin")
+        defaultCommand("bash", "./" + project.name)
+    }
+}
+
+tasks.register<DockerBuildImage>("buildImage") {
+    dependsOn("createDockerfile")
+    group = "unibobootdocker"
+    description = "Dockerize the spring boot application"
+    val dockerRepository = properties["dockerRepository"] ?: throw GradleException("dockerRepository property not set")
+    dockerFile.set(file(layout.projectDirectory.toString() + "/build/docker/Dockerfile"))
+    inputDir.set(file(layout.projectDirectory))
+    images.add("${dockerRepository}/" + project.name.split(".").last().lowercase() + ":latest")
+    images.add("${dockerRepository}/" + project.name.split(".").last().lowercase() + ":${project.version}")
+}
+
+tasks.register<DockerPushImage>("pushImage") {
+    dependsOn("buildImage")
+    group = "unibobootdocker"
+    description = "Push the docker image to the repository"
+    val dockerRepository = properties["dockerRepository"] ?: throw GradleException("dockerRepository property not set")
+    images.add("${dockerRepository}/" + project.name.split(".").last().lowercase() + ":latest")
+    images.add("${dockerRepository}/" + project.name.split(".").last().lowercase() + ":${project.version}")
+}
+
+application {
+    // Define the main class for the application.
+    mainClass.set("com.deceptionkit.DeceptionkitApplication")
+}
