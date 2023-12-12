@@ -4,6 +4,7 @@ import com.deceptionkit.mockaroo.model.UserMock;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -16,7 +17,7 @@ import java.net.http.HttpResponse;
 public class MockarooApi {
 
 //    private static final String apiKey = System.getenv("MOCKAROO_API_KEY");
-    private static final String apiKey = "a31b8200";
+    private static final String apiKey = System.getenv("MOCKAROO_API_KEY");
 
     private final String url = "https://api.mockaroo.com/api/";
 

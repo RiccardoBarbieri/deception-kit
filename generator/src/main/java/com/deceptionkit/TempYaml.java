@@ -9,6 +9,6 @@ public class TempYaml {
 
 
     public static void main(String[] args) {
-        System.out.println(DefaultsProvider.getClientDefault("attributes", Map.class));
+        System.out.println(System.getenv("MOCKAROO_API_KEY"));
     }
 }
