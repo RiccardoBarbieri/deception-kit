@@ -44,7 +44,7 @@ specification:
         directAccessGrantsEnabled: true,
         roles:
           - role1
-          - role2
+          - role3
   roles:
     definitions:
       - name: role1
@@ -53,6 +53,6 @@ specification:
       - name: role2
         scope:
           realm: master
-      - name: role2
+      - name: role3
         scope:
           client: client1
