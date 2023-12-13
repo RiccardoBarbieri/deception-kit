@@ -72,6 +72,7 @@ public class GenerationController {
         if (groupsPerUser > totalGroups) {
             throw new RuntimeException("Groups per user cannot be greater than total groups");
         }
+        //check uniqueness of client ids, role names, group names
 
         List<Group> mockGroups = MockFactory.getGroups(totalGroups - groupDefinitions.size());
         List<Group> allGroups = MockMergeHelper.mergeGroups(idProviderDefinition.getSpecification().getGroups().convertGroups(), mockGroups);
@@ -128,7 +129,7 @@ public class GenerationController {
         boolean rolesAreClientScoped = true;
         for (ClientDefinition clientDefinition : clientDefinitions) {
             for (String roleName : clientDefinition.getRoles()) {
-                RoleDefinition roleDefinition = roleDefinitions.stream().filter(r -> r.getName().equals(roleName)).findFirst().orElse(null);
+                RoleDefinition roleDefinition = roleDefinitions.stream().filter(r -> r.getName().equals(roleName)).toList().get(0);
                 if (roleDefinition != null && !roleDefinition.getScope().isClientScope()) {
                     rolesAreClientScoped = false;
                     break;
