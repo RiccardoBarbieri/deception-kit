@@ -1,0 +1,7 @@
+version: '3'
+services:
+  deception-core:
+    container_name: deception-core
+    image: riccardoob/deception-core
+    ports:
+      - 8015:8015
