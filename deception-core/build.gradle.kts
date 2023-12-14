@@ -110,9 +110,9 @@ tasks.register<Dockerfile>("createDockerfile") {
         val inputTarFile =
             project.layout.projectDirectory.file("build/distributions/" + project.name + "-boot-" + project.version + ".tar")
 
-        from("openjdk:11")
+        from("openjdk:17")
         exposePort(springProps["server.port"].toString().toInt())
-        volume("/data")
+//        volume("/data")
         addFile("./build/distributions/${inputTarFile.asFile.name}", "/")
         workingDir(inputTarFile.asFile.name.removeSuffix(".tar") + "/bin")
         defaultCommand("bash", "./" + project.name)

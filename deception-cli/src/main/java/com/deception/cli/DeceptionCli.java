@@ -4,29 +4,38 @@
 package com.deception.cli;
 
 
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.model.Container;
-import com.github.dockerjava.core.DockerClientBuilder;
+import com.deception.cli.docker.DockerConfig;
+import com.deception.cli.error.ExecutionExceptionHandler;
+import com.deception.cli.error.MockExecutionExceptionHandler;
+import com.deception.cli.subcommand.GenerateSubcommand;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 
-@Command(name = "deception-cli", abbreviateSynopsis = true, mixinStandardHelpOptions = true, version = "deception-cli 0.1",
-        description = "CLI for DeceptionKit")
+@Command(name = "deception-cli",
+        abbreviateSynopsis = true,
+        mixinStandardHelpOptions = true,
+        version = "deception-cli 0.1",
+        description = "CLI for DeceptionKit",
+        subcommands = {GenerateSubcommand.class})
 public class DeceptionCli implements Callable<Integer> {
 
     public Integer call() throws Exception {
-        try (DockerClient dockerClient = DockerClientBuilder.getInstance().build()) {
-            List<Container> containers = dockerClient.listContainersCmd().withShowSize(true).withShowAll(true).exec();
-            containers.forEach(container -> System.out.println(container.getNames()[0]));
-        }
+        DockerConfig.checkAndRestartDaemon();
+
+
 
         return 0;
     }
 
     public static void main(String[] args) {
-        int exitCode = new picocli.CommandLine(new DeceptionCli()).execute(args);
+        String[] argsMock = {"generate", "-c", "id-provider", "-d", "src/main/resources/definition.yaml"};
+        CommandLine cmd = new picocli
+                .CommandLine(new DeceptionCli())
+                .setExecutionExceptionHandler(new ExecutionExceptionHandler());
+        cmd.setExecutionStrategy(new CommandLine.RunAll());
+        int exitCode = cmd.execute(argsMock);
         System.exit(exitCode);
     }
 

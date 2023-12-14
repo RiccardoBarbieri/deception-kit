@@ -11,4 +11,4 @@ plugins {
 
 }
 
-rootProject.name = "deception-kit"
+rootProject.name = "deception-core"
