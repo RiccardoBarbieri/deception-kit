@@ -15,12 +15,17 @@ repositories {
     mavenCentral()
 }
 
+group = "com.deceptionkit"
+version = "1.0.0"
+
 dependencies {
     implementation("info.picocli:picocli:4.7.5")
 
     implementation("com.github.docker-java:docker-java:3.2.10")
 
     implementation("org.slf4j:slf4j-nop:2.0.9")
+
+    implementation("com.fasterxml.jackson.core:jackson-core:2.16.0")
 
 //    annotationProcessor("info.picocli:picocli-codegen:4.7.5")
 
@@ -40,10 +45,10 @@ java {
 
 //add compileArgs to compileJava
 tasks.withType<JavaCompile> {
-    options.compilerArgs.addAll(listOf("-Aproject=${project.group}/${project.name}"))
+//    options.compilerArgs.addAll(listOf("-Aproject=${project.group}/${project.name}"))
 }
 
 application {
     // Define the main class for the application.
-    mainClass.set("com.deception.cli.DeceptionCli")
+    mainClass.set("com.deceptionkit.cli.DeceptionCli")
 }

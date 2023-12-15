@@ -4,11 +4,14 @@ import com.deceptionkit.model.Client;
 import com.deceptionkit.model.Role;
 import com.deceptionkit.spring.response.SimpleResponse;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.ClientResource;
+import org.keycloak.admin.client.resource.ClientsResource;
 import org.keycloak.representations.idm.ClientRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,8 +63,7 @@ public class ClientRegistration {
     }
 
     @PostMapping(value = "/registerClients", consumes = "application/json", produces = "application/json")
-    @ResponseBody
-    public SimpleResponse registerClient(@RequestParam(defaultValue = "master") String realm, @RequestBody List<Client> clients) {
+    public ResponseEntity<SimpleResponse> registerClient(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody List<Client> clients) {
         List<Response> responses = new ArrayList<>();
         for (Client c : clients) {
             ClientRepresentation client = generateClientRep(c);
@@ -71,24 +73,39 @@ public class ClientRegistration {
 
             if (response.getStatus() != 201) {
                 logger.error("Error creating client: " + c.getClientId());
-                return new SimpleResponse(response.getStatus(), response.getStatusInfo().toString());
+                logger.error("Error: " + response.getStatusInfo().toString());
+                return new ResponseEntity<>(new SimpleResponse(response.getStatus(), response.getStatusInfo().toString()), HttpStatus.valueOf(response.getStatus()));
             } else {
                 response.close();
             }
 
-            for (Role role : c.getRoles()) {
-                keycloak.realm(realm).clients().get(client.getId()).roles().create(getRoleRep(role));
+//            for (Role role : c.getRoles()) {
+//                ClientResource clientRes = getClientResourceByName(keycloak.realm(realm).clients(), c.getClientId());
+//                if (clientRes == null) {
+//                    logger.error("Error getting client: " + c.getClientId());
+//                return new ResponseEntity<>(new SimpleResponse(HttpStatus.BAD_REQUEST.value(), "Error getting client: " + c.getClientId()), HttpStatus.BAD_REQUEST);
+//                }
+//                clientRes.roles().create(getRoleRep(role));
+//            }
+            logger.info(responses.size() + " clients registered");
+        }
+        return new ResponseEntity<>(new SimpleResponse(HttpStatus.CREATED.value(), responses.size() + " clients registered"), HttpStatus.CREATED);
+    }
+
+    private ClientResource getClientResourceByName(ClientsResource clientsResource, String name) {
+        List<ClientRepresentation> clients = clientsResource.findAll();
+        for (ClientRepresentation client : clients) {
+            if (client.getClientId().equals(name)) {
+                return clientsResource.get(client.getId());
             }
         }
-        return new SimpleResponse(HttpStatus.CREATED.value(), responses.size() + " clients registered");
+        return null;
     }
 
     @ExceptionHandler(java.lang.Exception.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public SimpleResponse handleException(java.lang.Exception e) {
+    public ResponseEntity<SimpleResponse> handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new SimpleResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return new ResponseEntity<>(new SimpleResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
-
 }

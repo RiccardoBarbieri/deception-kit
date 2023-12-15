@@ -19,7 +19,7 @@ public class KeycloakClientConfiguration {
                 .clientId("admin-cli")
                 .username("admin")
                 .password("admin")
-                .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(10).build())
+//                .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(10).build())
                 .build();
     }
 

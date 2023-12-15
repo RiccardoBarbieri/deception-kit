@@ -28,6 +28,7 @@ public class GroupMock extends BaseMock<Group> {
         for (int i = 0; i < count; i++) {
             Group group = new Group();
             group.setName(jsonGroups.get(i).get("name").asText());
+            group.setRoles(null);
             groups.add(group);
         }
         return groups;

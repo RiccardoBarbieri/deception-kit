@@ -1,6 +1,7 @@
 package com.deceptionkit.generation;
 
 import com.deceptionkit.generation.model.MockResources;
+import com.deceptionkit.generation.utils.MockMergeHelper;
 import com.deceptionkit.mockaroo.MockFactory;
 import com.deceptionkit.model.Client;
 import com.deceptionkit.model.Group;
@@ -84,6 +85,8 @@ public class GenerationController {
         List<Role> allRoles = idProviderDefinition.getSpecification().getRoles().convertRoles();
 
         List<Client> allClients = idProviderDefinition.getSpecification().getClients().convertClients(allRoles);
+
+        allGroups = MockMergeHelper.assignRoles(allGroups, allRoles);
 
         MockResources mockResources = new MockResources();
         mockResources.setGroups(allGroups);

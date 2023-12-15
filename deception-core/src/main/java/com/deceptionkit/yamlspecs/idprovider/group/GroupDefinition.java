@@ -28,6 +28,7 @@ public class GroupDefinition {
     public Group convertGroup() {
         Group group = new Group();
         group.setName(name);
+        group.setRoles(roles);
         return group;
     }
 }

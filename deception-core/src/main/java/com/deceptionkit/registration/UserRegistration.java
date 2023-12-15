@@ -9,6 +9,8 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,8 +51,7 @@ public class UserRegistration {
     }
 
     @PostMapping(value = "/registerUsers", consumes = "application/json", produces = "application/json")
-    @ResponseBody
-    public SimpleResponse registerUser(@RequestParam(defaultValue = "master") String realm, @RequestBody List<User> users) {
+    public ResponseEntity<SimpleResponse> registerUser(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody List<User> users) {
         List<Response> responses = new ArrayList<>();
         for (User u : users) {
             UserRepresentation user = generateUserRep(u);
@@ -60,22 +61,20 @@ public class UserRegistration {
 
             if (response.getStatus() != 201) {
                 logger.error("Failed to register user: " + u.getUsername());
-                return new SimpleResponse(response.getStatus(), "Failed to register user: " + u.getUsername());
+                return new ResponseEntity<>(new SimpleResponse(response.getStatus(), "Failed to register user: " + u.getUsername()), HttpStatusCode.valueOf(response.getStatus()));
             } else {
                 response.close();
             }
         }
         logger.info(responses.size() + " users registered");
 
-        return new SimpleResponse(HttpStatus.CREATED.value(), responses.size() + " users registered");
+        return new ResponseEntity<>(new SimpleResponse(HttpStatus.CREATED.value(), responses.size() + " users registered"), HttpStatus.CREATED);
     }
 
     @ExceptionHandler(java.lang.Exception.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public SimpleResponse handleException(java.lang.Exception e) {
+    public ResponseEntity<SimpleResponse> handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new SimpleResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return new ResponseEntity<>(new SimpleResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
-
 }

@@ -35,7 +35,7 @@ specification:
         rootUrl: "http://localhost:8080"
         adminUrl: "http://localhost:8080"
         redirectUris:
-          - "http://localhost:8080"
+          - "http://localhost:8080/*"
         baseUrl: "http://localhost:8080"
         protocol: "openid-connect"
         authenticatorType: "client-secret"

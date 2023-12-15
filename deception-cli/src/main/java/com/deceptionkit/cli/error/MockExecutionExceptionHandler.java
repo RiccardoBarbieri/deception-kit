@@ -1,4 +1,4 @@
-package com.deception.cli.error;
+package com.deceptionkit.cli.error;
 
 import picocli.CommandLine;
 

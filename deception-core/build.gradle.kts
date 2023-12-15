@@ -24,7 +24,7 @@ java {
 }
 
 group = "com.deceptionkit"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -72,6 +72,8 @@ dependencies {
 
     implementation("com.fasterxml.jackson.core:jackson-core:2.16.0")
 
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
+
 
 }
 
@@ -112,9 +114,10 @@ tasks.register<Dockerfile>("createDockerfile") {
 
         from("openjdk:17")
         exposePort(springProps["server.port"].toString().toInt())
-//        volume("/data")
         addFile("./build/distributions/${inputTarFile.asFile.name}", "/")
         workingDir(inputTarFile.asFile.name.removeSuffix(".tar") + "/bin")
+        instruction("RUN mkdir resources")
+        copyFile("./src/main/resources/*.json", "./resources/")
         defaultCommand("bash", "./" + project.name)
     }
 }

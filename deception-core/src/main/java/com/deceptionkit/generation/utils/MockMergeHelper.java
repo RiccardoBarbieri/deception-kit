@@ -1,12 +1,12 @@
-package com.deceptionkit.generation;
+package com.deceptionkit.generation.utils;
 
 import com.deceptionkit.model.Group;
+import com.deceptionkit.model.Role;
 import com.deceptionkit.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class MockMergeHelper {
 
@@ -29,6 +29,18 @@ public class MockMergeHelper {
             user.setGroups(tempGroups);
         }
         return users;
+    }
+
+    public static List<Group> assignRoles(List<Group> groups, List<Role> roles) {
+        for (Group group : groups) {
+            List<Integer> ints = new Random().ints(1, roles.size()).distinct().limit(1).boxed().toList();
+            List<String> tempRoles = new ArrayList<>();
+            for (Integer i : ints) {
+                tempRoles.add(roles.get(i).getName());
+            }
+            group.setRoles(tempRoles);
+        }
+        return groups;
     }
 
     public static List<User> mergeUsers(List<User> users, List<User> mockUsers) {
