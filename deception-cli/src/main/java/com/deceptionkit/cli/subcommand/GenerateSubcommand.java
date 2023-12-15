@@ -82,10 +82,6 @@ public class GenerateSubcommand implements Runnable {
             System.exit(1);
         }
 
-
-        //extract export keycloak
-        //dockerfile
-
         ObjectNode groupToRolesMap = new ObjectNode(new ObjectMapper().getNodeFactory());
 
         for (JsonNode group : groups) {
@@ -115,6 +111,8 @@ public class GenerateSubcommand implements Runnable {
         DockerUtils.exportKeycloakConfig("keycloak-config.json");
 
         DockerUtils.createKeycloakDockerfile("keycloak-config.json");
+
+        //TODO: create also compose file?
 
         DockerUtils.stopKeycloakDev();
     }
