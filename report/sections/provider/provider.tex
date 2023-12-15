@@ -1,0 +1,32 @@
+\section{Identity provider}
+
+Come primo passo nello sviluppo di questo sistema è stato necessario scegliere l'identity provider sul quale si baserà le generazione e studiarne il funzionamento.
+
+Si è deciso di utilizzare Keycloak, un identity provider open source che offre un varietà molto ampia di configurazioni, adattandosi a svariati casi di utilizzo. Offre tutte le feature che alternative closed source come Okta o Microsoft Azure Active Directory offrono a scapito di una barriera di più alta, ampiamente colmata da una documentazione molto dettagliata e una community altrettanto attiva.
+
+Tuttavia il vantaggio principale che ha guidato questa scelta è la possibilità di effettuare self-hosting del servizio, opzione non disponibile con soluzioni closed source, in particolare Keycloak è predisposto all'utilizzo tramite container Docker, offre anche uno strumento per generare una immagine ottimizzata in base alle configurazioni utilizzate.
+
+\subsection{Concetti chiave}
+
+Le feature che Keycloak offre sono svariate, si elencano di seguito quelle rilevanti ai fini del progetto:
+\begin{itemize}
+    \item supporto per OpenID Connect
+    \item supporto per OAuth2.0
+    \item Single Sign On/Out per applicazioni browser
+    \item Two/Multi Factor Authentication
+\end{itemize}
+
+Keycloak suddivide tutte le configurazioni relative a utenti, client, ruoli, gruppi e flow in realm, ogni realm è isolato dagli altri esistenti e può gestire e autenticare soltanto utenti che controlla per client che controlla.
+
+\subsubsection{Assegnamento ruoli}
+
+I ruoli possono essere assegnati a singoli utenti, client e gruppi.
+
+Ruoli assegnati a utenti possono essere sfruttati dai client per implementare strategie di Role Based Access Control, è possibile anche assegnare ruoli a un particolare gruppo per associare un set di ruoli a un utente.
+
+\subsubsection{Client}
+
+Un client è una entità che può richiedere a Keycloak di autenticare un utente o un altro servizio e ottenere le informazioni di autenticazione relative una volta autenticato.
+
+Keycloak supporta il concetto di \textit{direct grant} permettendo ai client di richiedere accesso ad altri servizi tramite Keycloak, entrano in gioco i ruoli assegnati a singoli client.
+

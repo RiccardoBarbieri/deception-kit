@@ -1,0 +1,29 @@
+\section{Client linea di comando}
+
+Come indicato in precedenza il metodo principale per interagire con l'API \texttt{deception-core} è una applicazione da linea di comando.
+
+Alla versione corrente l'interfaccia \texttt{deception-cli} supporta il comando \texttt{generate} che accetta i parametri:
+\begin{itemize}
+    \item \texttt{--component}: del componente da generare
+    \item \texttt{--definition}: nome del file che contiene la definizione
+\end{itemize}
+
+Un esempio:
+
+\begin{minted}[bgcolor=lightgray,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,escapeinside=||,mathescape=true]{bash}
+deception-cli generate --component "id-provider" ---definition definition.yaml
+\end{minted}
+
+Una volta lanciato il comando l'applicazione si occuperà di:
+\begin{itemize}
+    \item istanziare il demone \texttt{deception-core} se non ancora in esecuzione
+    \item creare l'istanza temporanea di Keycloak
+\end{itemize}
+
+Una volta avviato il server Keycloak vengono effettuate le necessarie richieste HTTP al demone.
+
+Una volta registrate tutte le risorse necessarie, il tool sfrutta l'applicativo \texttt{certbot} per generare i certificati TLS, questi verranno inclusi nella definizione dell'immagine.
+
+Completata la generazione delle risorse viene estratta la configurazione Keycloak dall'istanza temporanea e generato il Dockerfile finale con i parametri di interesse correttamente configurati.
+
+Una volta generato il file Dockerfile contenente la definizione dell'immagine viene stampato a video il comando che può essere utilizzato per istanziare un container a partire dalla definizione generata.

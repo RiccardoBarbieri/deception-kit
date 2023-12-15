@@ -1,0 +1,106 @@
+\section{Progettazione}
+
+\subsection{Architettura}
+
+Allo scopo di creare un sistema software estensibile e flessibile, si è deciso di incapsulare il core della business logic dietro a una HTTP API, questo approccio permetterà di:
+\begin{itemize}
+    \item creare metodologie di interazione diverse
+    \item distribuire i componenti del sistema
+    \item semplificare integrazioni con altri sistemi
+\end{itemize}
+
+La metodologia di invocazione principale per il servizio sarà realizzata tramite un tool da linea di comando.
+
+\subsection{Definizione componente}
+
+Alla base di \texttt{deception-kit} si trova la definizione del componente: per permettere all'utente di specificare le caratterische che il componente generato dovrà avere è stato predisposto \underline{deception-def}, un formato di file basato su yaml.
+
+Il formato di questa specifica si suddivide in due parti:
+\begin{itemize}
+    \item tipologia di componente da generare, chiave \texttt{component}
+    \item definizione delle parti che costituiscono il componente
+\end{itemize}
+
+Nel caso del componente "id-provider" la specifica accetta la definizione di \texttt{groups}, \texttt{users}, \texttt{clients} e \texttt{roles}; ognuna di queste si suddivide in due sezioni:
+\begin{itemize}
+    \item parametri generali della specifica
+    \item definizione di una lista di users, groups...
+\end{itemize}
+
+Questo formato di definizione è stato pensato per rendere possibile la specifica di un sottoinsieme rilevante di caratteristiche per ogni categoria di risorse necessarie alla generazione del componente, bilanciando la granularità della configurazione e semplicità di utilizzo; le opzioni che non è possibile definire tramite questo formato sono impostate tramite valori di default fornite da Keycloak.
+
+L'infrastruttura che opera la conversione di questa definizione testuale in entità è stata progettata per essere facilmente estensibile.
+
+\subsection{Business logic}
+
+L'API che implementa la business logic di generazione è stata realizzata tramite il framework Java Spring, questa decisione è stata presa per il fatto che questo framework semplifica la creazione della configurazione degli endpoint e la gestione delle dipendenze, permettendo di concentrarsi sulla business logic.
+
+Da un punto di vista di alto livello la generazione del componente id-provider avviene come segue:
+\begin{itemize}
+    \item creazione di una istanza temporanea di Keycloak
+    \item registrazione di client, utenti, gruppi e ruoli
+    \item associazione dei ruoli a gruppi, utenti e client
+    \item estrazione della configurazione risultante dall'istanza di Keycloak
+    \item generazione della definizione dell'immagine
+\end{itemize}
+
+Per registrare le varie entità sull'istanza di Keycloak si è deciso di creare una istanza temporanea del server Keycloak, in questo modo è possibile sfruttare il runtime del server per: 
+\begin{itemize}
+    \item configurare i parametri non specificati con valori di default;
+    \item assicurare la consistenza delle configurazioni.
+\end{itemize}
+
+Keycloak server offre strumenti a supporto della configurazione del server, come ad esempio la possibilità di esportare e importare configurazioni di singoli o multipli realm; vengono usati questi strumenti per esportare la configurazione creata sull'istanza temporanea in formato json.
+
+La definizione dell'immagine specifica comandi da eseguire alla creazione della stessa che importano la configurazione generata nella nuova istanza del server.
+
+\subsubsection{Registrazione entità}
+
+L'API espone i seguenti endpoint:
+\begin{itemize}
+    \item \texttt{registerClients}
+    \item \texttt{registerUsers}
+    \item \texttt{registerGroups}
+    \item \texttt{registerRoles}
+    \item \texttt{assignRoles}
+\end{itemize}
+questi endpoint accettano richieste HTTP POST che trasportano liste delle entità da registrare.
+
+Il server Keycloak espone una API per effettuare tutte le operazioni necessarie alla configurazione e gestione del servizio, per effettuare la registrazione delle entità il core del sistema sfrutta questa API stabilendo una connessione alla ricezione di una richiesta HTTP a uno degli endpoint dedicati.
+
+\subsection{Generazione dati}
+
+deception-kit permette anche di delegare la generazione di dati fittizi tramite il file di definizione yaml: la specifica delle entità \texttt{user} e \texttt{group} accetta un parametro \texttt{total} intero, questo numero definisce quanti utenti o gruppi generare in totale compresi quelli definiti nel file di defizinone.
+
+\subsubsection{Mockaroo}
+
+Per la generazione dei dati si è deciso di utilizzare Mockaroo, un servizio che permette di generare dati mock realistici basandosi su uno schema definito tramite json; questa decisione è guidata dal fatto che il servizio offre una vastissima gamma di tipi di dato, come ad esempio il tipo \texttt{Username} o \texttt{Department} che sono stati utilizzati per generare alcuni dei dati utilizzati da deception-kit.
+
+Mockaroo espone una API HTTP per generare i dati, nel progetto è stata utilizzata la versione non self-hosted, è tuttavia possibile effettuare un deployment self-hosted tramite l'acquisto di una licenza enterprise.
+
+Sono state create apposite classi per definire il modello di dati che Mockaroo deve generare che, usate in combinazione con l'astrazione \texttt{MockarooApi} e \texttt{MockFactory}, permettono di ottenere istanze delle entità del modello utilizzato per registrare le risorse sul server Keycloak.
+
+\subsubsection{Generation controller}
+
+Il \texttt{GenerationController} è il componente che coordina la generazione dei dati mock a partire dalla definizione del servizio e restituisce tutte le risorse generate.
+
+
+Questo componente riceve la definizione come corpo della richiesta post che lo invoca, un primo livello di accertamento avviene grazie al parser yaml che verifica la consistenza della definizione con il modello, seguono poi accertamenti sulla correttezza della semantica, ad esempio:
+\begin{itemize}
+    \item riferimenti a gruppi o ruoli esistenti
+    \item consistenza delle specifiche del numero di gruppi per utente
+\end{itemize}
+
+Si è deciso di non generare mock per i client in quanto devono essere definiti correttamente per poter proteggere vere "finte API" e sarebbe difficile ottenere configurazioni esistenti con una generazione casuale; è stato scelto di lasciare la definizion dei ruoli all'utente in quanto sono di semplice definizione e devono essere consistenti con i client e gli utenti generati.
+
+\subsection{Deployment}
+
+\texttt{deception-core} può essere avviato come normale applicazione java, tuttavia il deploymento consigliato è effettuato tramite docker: sono state predisposte apposite task Gradle che al rilascio di una nuova versione generano l'immagine docker, questa immagine viene poi pubblicata sul registry Docker di default; questo approccio permetterà a \texttt{deception-cli} di istanziare il demone dell'API se non ancora in esecuzione.
+
+
+
+
+
+
+
+

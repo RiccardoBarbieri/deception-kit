@@ -112,6 +112,21 @@ public class GenerateSubcommand implements Runnable {
 
         DockerUtils.createKeycloakDockerfile("keycloak-config.json");
 
+//        sudo certbot certonly --standalone
+//          volumes:
+//            - ./certs/fullchain.pem:/etc/x509/https/tls.crt"
+//            - ./certs/privkey.pem:/etc/x509/https/tls.key
+//
+//          environment:
+//            - KEYCLOAK_ADMIN=admin
+//            - KEYCLOAK_ADMIN_PASSWORD=password
+//            - KC_HOSTNAME=fqdn
+//            - KC_HTTPS_CERTIFICATE_FILE=/etc/x509/https/tls.crt
+//            - KC_HTTPS_CERTIFICATE_KEY_FILE=/etc/x509/https/tls.key
+
+        //copiare cert dentro a container con COPY
+
+
         //TODO: create also compose file?
 
         DockerUtils.stopKeycloakDev();

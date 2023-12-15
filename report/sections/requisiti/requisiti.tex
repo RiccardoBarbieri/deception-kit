@@ -1,0 +1,16 @@
+\section{Requisiti}
+
+Il generatore deve essere in grado di creare una immagine compatibile con OCI Image Format, standard open source industriale formulato dalla Open Container Initiative.
+
+Il formato immagine generato deve contenere tutte le informazioni fittizie necessarie al corretto funzionamento del componente, deve inoltre essere possibile istanziare un container partendo dalla definizione generata, che dovrà quindi comprendere tutte le configurazioni rilevanti. 
+
+Questa prima versione del progetto si concentrerà sulla generazione di un identity provider, un componente che permette ad altri servizi di delegare ad esso l'autenticazione e l'autorizzazione dell'accesso da parte di utenti o sistemi automatici.
+
+Nel particolare caso di un identity provider dovranno essere:
+\begin{itemize}
+    \item generati utenti fittizi;
+    \item configurati gruppi e ruoli di sicurezza;
+    \item abilitati e configurati flow di autenticazione oAuth per proteggere altri servizi.
+\end{itemize}
+
+Un ulteriore requisito che il progetto rispetterà consiste nell'usabilità dello strumento: si mira a bilanciare il livello di dettaglio delle possibili configurazioni e la rapidità di deployment del componente.
