@@ -1,13 +1,15 @@
 package com.deceptionkit.cli.logic;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -16,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class IdProviderLogic {
 
@@ -33,8 +36,19 @@ public class IdProviderLogic {
 
     private final String roleAssignmentUrl = baseUrl + "/assignRoles";
 
+    private final String dockerfileGenerationUrl = baseUrl + "/generateDockerfile";
+
     public IdProviderLogic() {
 
+    }
+
+    public static ObjectNode getRoleNodeByName(ArrayNode roles, String roleName) {
+        for (JsonNode role : roles) {
+            if (role.get("name").asText().equals(roleName)) {
+                return (ObjectNode) role;
+            }
+        }
+        return null;
     }
 
     public JsonNode generateIdProviderResources(File definitionFile) {
@@ -141,12 +155,28 @@ public class IdProviderLogic {
         }
     }
 
-    public static ObjectNode getRoleNodeByName(ArrayNode roles, String roleName) {
-        for (JsonNode role : roles) {
-            if (role.get("name").asText().equals(roleName)) {
-                return (ObjectNode) role;
-            }
+    public String generateDockerfile(Boolean enableHttp,
+                                      Boolean enableMetrics,
+                                      Boolean enableHealth,
+                                      Boolean defaultCredentials,
+                                      String hostname,
+                                      String configFile) {
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            URIBuilder uriBuilder = new URIBuilder(dockerfileGenerationUrl);
+            uriBuilder.addParameter("enableHttp", enableHttp.toString());
+            uriBuilder.addParameter("enableMetrics", enableMetrics.toString());
+            uriBuilder.addParameter("enableHealth", enableHealth.toString());
+            uriBuilder.addParameter("defaultCredentials", defaultCredentials.toString());
+            uriBuilder.addParameter("hostname", hostname);
+            uriBuilder.addParameter("configFile", configFile);
+
+            HttpGet httpGet = new HttpGet(uriBuilder.build());
+
+            HttpResponse response = httpClient.execute(httpGet);
+
+            return EntityUtils.toString(response.getEntity());
+        } catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 }

@@ -1,5 +1,7 @@
 package com.deceptionkit.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
 
 public class User {
@@ -66,5 +68,10 @@ public class User {
 
     public void setCredentials(List<Credential> credentials) {
         this.credentials = credentials;
+    }
+
+    @Override
+    public String toString() {
+        return (new ObjectMapper()).valueToTree(this).toString();
     }
 }

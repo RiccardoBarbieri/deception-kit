@@ -81,7 +81,6 @@ public class DockerUtils {
                     .withEnv("KEYCLOAK_ADMIN=admin", "KEYCLOAK_ADMIN_PASSWORD=admin")
                     .withCmd("start-dev")
                     .withHostConfig(hostConfig)
-//                    .withHealthcheck(healthCheck)
                     .exec();
 
             dockerClient.startContainerCmd(containerResponse.getId()).exec();
@@ -95,7 +94,7 @@ public class DockerUtils {
         return true;
     }
 
-    public static boolean stopKeycloakDev() {
+    public static boolean removeKeycloakDev() {
         DefaultDockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
                 .build();
         try (DockerClient dockerClient = DockerClientBuilder.getInstance(config).build()) {
@@ -123,6 +122,7 @@ public class DockerUtils {
 
     private static void deleteContainerIfExists(String name, List<Container> containers, DockerClient dockerClient) {
         if (containers.stream().anyMatch(c -> Arrays.asList(c.getNames()).contains("/" + name))) {
+            System.out.println("DELETING CONTAINER: " + name);
             dockerClient.removeContainerCmd(name).exec();
         }
     }
@@ -189,29 +189,28 @@ public class DockerUtils {
         tis.close();
     }
 
-    public static void createKeycloakDockerfile(String config) {
-        File dockerfile = new File("Dockerfile");
-        String baseImage = "quay.io/keycloak/keycloak:22.0.5";
-        try (FileOutputStream fos = new FileOutputStream(dockerfile)) {
-            fos.write(("FROM " + baseImage + " as builder\n" +
-                    "ENV KC_HEALTH_ENABLED=true\n" +
-                    "ENV KC_METRICS_ENABLED=true\n" +
-                    "ENV KC_HTTP_ENABLED=false\n" +
-                    "WORKDIR /opt/keycloak\n" +
-                    "RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysize 2048 -dname \"CN=server\" -alias server -ext \"SAN:c=DNS:localhost,IP:127.0.0.1\" -keystore conf/server.keystore\n" +
-                    "RUN /opt/keycloak/bin/kc.sh build\n" +
-
-                    "FROM quay.io/keycloak/keycloak:latest\n" +
-                    "COPY --from=builder /opt/keycloak/ /opt/keycloak/\n" +
-                    "COPY " + config + " /opt/keycloak/export.json\n" +
-                    "RUN [\"/opt/keycloak/bin/kc.sh\", \"import\", \"--file\", \"/opt/keycloak/export.json\"]\n" +
-//                    "EXPOSE 8443\n" +
-                    "ENV KEYCLOAK_ADMIN=admin\n" +
-                    "ENV KEYCLOAK_ADMIN_PASSWORD=admin\n" +
-                    "ENV KC_HOSTNAME=localhost\n" +
-                    "ENTRYPOINT [\"/opt/keycloak/bin/kc.sh\", \"start\", \"--optimized\"]\n").getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public static void createKeycloakDockerfile(String config) {
+//        File dockerfile = new File("Dockerfile");
+//        String baseImage = "quay.io/keycloak/keycloak:22.0.5";
+//        try (FileOutputStream fos = new FileOutputStream(dockerfile)) {
+//            fos.write(("FROM " + baseImage + " as builder\n" +
+//                    "ENV KC_HEALTH_ENABLED=true\n" +
+//                    "ENV KC_METRICS_ENABLED=true\n" +
+//                    "ENV KC_HTTP_ENABLED=false\n" +
+//                    "WORKDIR /opt/keycloak\n" +
+//                    "RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysize 2048 -dname \"CN=server\" -alias server -ext \"SAN:c=DNS:localhost,IP:127.0.0.1\" -keystore conf/server.keystore\n" +
+//                    "RUN /opt/keycloak/bin/kc.sh build\n" +
+//
+//                    "FROM quay.io/keycloak/keycloak:latest\n" +
+//                    "COPY --from=builder /opt/keycloak/ /opt/keycloak/\n" +
+//                    "COPY " + config + " /opt/keycloak/export.json\n" +
+//                    "RUN [\"/opt/keycloak/bin/kc.sh\", \"import\", \"--file\", \"/opt/keycloak/export.json\"]\n" +
+//                    "ENV KEYCLOAK_ADMIN=admin\n" +
+//                    "ENV KEYCLOAK_ADMIN_PASSWORD=admin\n" +
+//                    "ENV KC_HOSTNAME=localhost\n" +
+//                    "ENTRYPOINT [\"/opt/keycloak/bin/kc.sh\", \"start\", \"--optimized\"]\n").getBytes());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

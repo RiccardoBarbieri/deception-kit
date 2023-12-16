@@ -10,6 +10,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
 import java.io.File;
+import java.io.FileOutputStream;
 
 @Command(name = "generate",
         description = "Generate a new deception component",
@@ -31,7 +32,12 @@ public class GenerateSubcommand implements Runnable {
     @Override
     public void run() {
 //        DockerConfig.checkAndRestartDaemon(false);
-//        DockerUtils.createNewKeycloakDev();
+        System.out.println("Starting temporary keycloak dev instance...");
+        DockerUtils.createNewKeycloakDev();
+
+        System.out.println("Finished starting temporary keycloak dev instance...");
+
+        System.out.println("Generating " + component + "\nfrom " + definitionFile.getAbsolutePath());
 
         IdProviderLogic idProviderLogic = new IdProviderLogic();
 
@@ -110,25 +116,35 @@ public class GenerateSubcommand implements Runnable {
 
         DockerUtils.exportKeycloakConfig("keycloak-config.json");
 
-        DockerUtils.createKeycloakDockerfile("keycloak-config.json");
+        Boolean defaultCredentials = true;
+        String Dockerfile = idProviderLogic.generateDockerfile(
+                false,
+                true,
+                true,
+                defaultCredentials,
+                "localhost",
+                "keycloak-config.json"
+        );
 
-//        sudo certbot certonly --standalone
-//          volumes:
-//            - ./certs/fullchain.pem:/etc/x509/https/tls.crt"
-//            - ./certs/privkey.pem:/etc/x509/https/tls.key
-//
-//          environment:
-//            - KEYCLOAK_ADMIN=admin
-//            - KEYCLOAK_ADMIN_PASSWORD=password
-//            - KC_HOSTNAME=fqdn
-//            - KC_HTTPS_CERTIFICATE_FILE=/etc/x509/https/tls.crt
-//            - KC_HTTPS_CERTIFICATE_KEY_FILE=/etc/x509/https/tls.key
+        File dockerfile = new File("Dockerfile");
+        try (FileOutputStream fos = new FileOutputStream(dockerfile)) {
+            fos.write(Dockerfile.getBytes());
+        } catch (Exception e) {
+            System.out.println("Failed to write Dockerfile");
+            System.exit(1);
+        }
 
-        //copiare cert dentro a container con COPY
+        System.out.println("Run the following command to build the image:");
+        System.out.println("docker build -t [repository/]" + component + " .");
+        System.out.println("Run the following command to create and run a container:");
+        if (defaultCredentials) {
+            System.out.println("docker run -d -p 8443:8443 --name " + component + " [repository/]" + component);
+        } else {
+            System.out.println("docker run -d -p 8443:8443 -e KEYCLOAK_USER=<username> -e KEYCLOAK_PASSWORD=<password> --name " + component + " [repository/]" + component);
+        }
 
+        DockerUtils.removeKeycloakDev();
 
-        //TODO: create also compose file?
-
-        DockerUtils.stopKeycloakDev();
+        System.exit(0);
     }
 }

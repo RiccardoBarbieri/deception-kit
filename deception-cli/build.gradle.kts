@@ -16,7 +16,7 @@ repositories {
 }
 
 group = "com.deceptionkit"
-version = "1.0.0"
+version = "1.0.1"
 
 dependencies {
     implementation("info.picocli:picocli:4.7.5")
@@ -46,6 +46,13 @@ java {
 //add compileArgs to compileJava
 tasks.withType<JavaCompile> {
 //    options.compilerArgs.addAll(listOf("-Aproject=${project.group}/${project.name}"))
+}
+
+tasks.register<Copy>("extractTar") {
+    dependsOn(tasks.named("distTar"))
+    group = "distribution"
+    from(tarTree(tasks.named("distTar").get().outputs.files.singleFile))
+    into("build/install")
 }
 
 application {

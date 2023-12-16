@@ -73,7 +73,8 @@ public class ClientRegistration {
 
             if (response.getStatus() != 201) {
                 logger.error("Error creating client: " + c.getClientId());
-                logger.error("Error: " + response.getStatusInfo().toString());
+                logger.error("Client" + c.toString());
+                logger.error("Response: " + response.readEntity(String.class));
                 return new ResponseEntity<>(new SimpleResponse(response.getStatus(), response.getStatusInfo().toString()), HttpStatus.valueOf(response.getStatus()));
             } else {
                 response.close();

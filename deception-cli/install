@@ -1,0 +1,109 @@
+#!/bin/bash
+
+usage() {
+    echo "Usage: $0 [-d|--destination <value>]" >&2
+    exit 1
+}
+
+rootcheck () {
+    if [ $(id -u) != "0" ]
+    then
+        echo "Script must be run as sudo"
+        exit 1
+    fi
+}
+
+rootcheck
+
+destination=""
+
+# Parse command-line options
+while getopts ":d:-:" opt; do
+    case "$opt" in
+        d)
+            destination="$OPTARG"
+            ;;
+        -)
+            # Handle long option --destination
+            case "${OPTARG}" in
+                destination=*)
+                    destination="${OPTARG#*=}"
+                    ;;
+                destination)
+                    # Check if --destination has a separate argument
+                    if [ "$((OPTIND-1))" -ge "$#" ] || [[ "${!OPTIND}" == -* ]]; then
+                        echo "Option --destination requires an argument." >&2
+                        exit 1
+                    else
+                        destination="${!OPTIND}"
+                        OPTIND=$((OPTIND + 1))
+                    fi
+                    ;;
+                *)
+                    echo "Invalid option: --$OPTARG" >&2
+                    usage
+                    ;;
+            esac
+            ;;
+        *)
+            # Handle invalid options
+            echo "Invalid option: -$opt" >&2
+            usage
+            ;;
+    esac
+done
+
+
+
+if ! [[ -d $destination ]] ; then
+    echo "$destination is not a directory"
+    usage
+fi
+
+destination=$(echo "$destination" | sed 's:/*$::')
+
+echo "Removing old installation..."
+
+rm -rf ./build/install/* >/dev/null 2>&1
+if [[ $? -eq 0 ]] ; then
+    echo "Successfully removed old distribution"
+else
+    echo "Failed to remove old distribution"
+    exit 1
+fi
+
+rm -rf $destination/deception-cli > /dev/null 2>&1
+if [[ $? -eq 0 ]] ; then
+    echo "Successfully removed old installation"
+else
+    echo "Failed to remove old installation"
+    exit 1
+fi
+
+echo "Building project..."
+
+./gradlew extractTar >/dev/null 2>&1
+if [[ $? -eq 0 ]] ; then
+    echo "Successfully generated new ditribution"
+else
+    echo "Failed to generate new distribution"
+    exit 1
+fi
+
+echo "Built project."
+
+echo "Copying to destination..."
+cp -r ./build/install/* $destination/deception-cli
+if [[ $? -eq 0 ]] ; then
+    echo "Successfully installed in $destination"
+else
+    echo "Failed to install in $destination"
+    exit 1
+fi
+
+#cp ../keycloak/keycloak-compose.yaml /usr/bin
+sed "s|<destination>|$destination|" "./deception-cli-template" > /usr/bin/deception-cli
+chmod ugo+x /usr/bin/deception-cli
+
+echo "deception-cli executable at $destination/deception-cli"
+

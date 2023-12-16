@@ -15,6 +15,7 @@ import com.deceptionkit.yamlspecs.idprovider.role.RoleDefinition;
 import com.deceptionkit.yamlspecs.idprovider.user.UserDefinition;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.yaml.snakeyaml.DumperOptions;
@@ -164,6 +165,39 @@ public class GenerationController {
         options.setIndent(2);
         Constructor baseConstructor = new Constructor(IdProviderDefinition.class, new LoaderOptions());
         return new Yaml(baseConstructor, new Representer(options), options);
+    }
+
+    @GetMapping(value = "/generateDockerfile")
+    public ResponseEntity<String> generateDockerfile(
+            @RequestParam(name = "enableHttp", required = false, defaultValue = "false") Boolean enableHttp,
+            @RequestParam(name = "enableMetrics", required = false, defaultValue = "true") Boolean enableMetrics,
+            @RequestParam(name = "enableHealth", required = false, defaultValue = "true") Boolean enableHealth,
+            @RequestParam(name = "defaultCredentials") Boolean defaultCredentials,
+            @RequestParam(name = "hostname", defaultValue = "localhost") String hostname,
+            @RequestParam(name = "configFile") String configFile
+    ) {
+        String baseImage = "quay.io/keycloak/keycloak:22.0.5";
+        String Dockerfile;
+        Dockerfile = "FROM " + baseImage + " as builder\n" +
+                "ENV KC_HEALTH_ENABLED=" + enableHealth.toString() + "\n" +
+                "ENV KC_METRICS_ENABLED=" + enableMetrics.toString() + "\n" +
+                "ENV KC_HTTP_ENABLED=" + enableHttp.toString() + "\n" +
+                "WORKDIR /opt/keycloak\n" +
+                "RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysize 2048 -dname \"CN=server\" -alias server -ext \"SAN:c=DNS:localhost,IP:127.0.0.1\" -keystore conf/server.keystore\n" +
+                "RUN /opt/keycloak/bin/kc.sh build\n" +
+
+                "FROM quay.io/keycloak/keycloak:latest\n" +
+                "COPY --from=builder /opt/keycloak/ /opt/keycloak/\n" +
+                "COPY " + configFile + " /opt/keycloak/export.json\n" +
+                "RUN [\"/opt/keycloak/bin/kc.sh\", \"import\", \"--file\", \"/opt/keycloak/export.json\"]\n";
+        if (defaultCredentials) {
+            Dockerfile += "ENV KEYCLOAK_ADMIN=admin\n" +
+                    "ENV KEYCLOAK_ADMIN_PASSWORD=admin\n";
+        }
+        Dockerfile += "ENV KC_HOSTNAME=" + hostname + "\n" +
+                "ENTRYPOINT [\"/opt/keycloak/bin/kc.sh\", \"start\", \"--optimized\"]\n";
+
+        return new ResponseEntity<>(Dockerfile, HttpStatus.OK);
     }
 
     @ExceptionHandler(java.lang.Exception.class)

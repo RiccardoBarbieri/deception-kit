@@ -4,6 +4,7 @@
 package com.deceptionkit.cli;
 
 
+import com.deceptionkit.cli.docker.DockerUtils;
 import com.deceptionkit.cli.error.ExecutionExceptionHandler;
 import com.deceptionkit.cli.subcommand.GenerateSubcommand;
 import picocli.CommandLine;
@@ -19,19 +20,16 @@ import java.util.concurrent.Callable;
         subcommands = {GenerateSubcommand.class})
 public class DeceptionCli implements Callable<Integer> {
 
+    @CommandLine.Spec
+    CommandLine.Model.CommandSpec spec;
     @CommandLine.Option(names = {"-f", "--force-restart"},
             description = "Force restart of the deception-core container",
             defaultValue = "false")
     private boolean forceRestart;
 
-    public Integer call() throws Exception {
-//        DockerConfig.checkAndRestartDaemon(forceRestart);
-
-        return 0;
-    }
-
     public static void main(String[] args) {
         System.out.println("DECEPTION-KIT");
+//        Runtime.getRuntime().addShutdownHook(new Thread(DockerUtils::removeKeycloakDev));
 //        args = new String[]{"generate", "-c", "id-provider", "-d", "src/main/resources/definition.yaml"};
         CommandLine cmd = new picocli
                 .CommandLine(new DeceptionCli())
@@ -41,6 +39,11 @@ public class DeceptionCli implements Callable<Integer> {
         int exitCode = cmd.execute(args);
 
         System.exit(exitCode);
+    }
+
+    public Integer call() throws Exception {
+        spec.commandLine().usage(System.err);
+        return 0;
     }
 
 

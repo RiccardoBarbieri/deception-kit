@@ -1,5 +1,7 @@
 package com.deceptionkit.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
 
 public class Group {
@@ -22,5 +24,10 @@ public class Group {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return (new ObjectMapper()).valueToTree(this).toString();
     }
 }

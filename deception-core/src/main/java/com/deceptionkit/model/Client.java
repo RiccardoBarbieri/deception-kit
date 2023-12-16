@@ -1,5 +1,7 @@
 package com.deceptionkit.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
 import java.util.Map;
 
@@ -157,5 +159,10 @@ public class Client {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return (new ObjectMapper()).valueToTree(this).toString();
     }
 }

@@ -61,6 +61,8 @@ public class UserRegistration {
 
             if (response.getStatus() != 201) {
                 logger.error("Failed to register user: " + u.getUsername());
+                logger.error("User: " + u.toString());
+                logger.error("Response: " + response.readEntity(String.class));
                 return new ResponseEntity<>(new SimpleResponse(response.getStatus(), "Failed to register user: " + u.getUsername()), HttpStatusCode.valueOf(response.getStatus()));
             } else {
                 response.close();
