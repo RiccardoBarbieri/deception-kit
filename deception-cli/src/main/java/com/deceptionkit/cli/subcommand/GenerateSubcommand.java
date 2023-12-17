@@ -134,13 +134,13 @@ public class GenerateSubcommand implements Runnable {
             System.exit(1);
         }
 
-        System.out.println("Run the following command to build the image:");
-        System.out.println("docker build -t [repository/]" + component + " .");
-        System.out.println("Run the following command to create and run a container:");
+        System.out.println("Run the following command to build the image:\n");
+        System.out.println("docker build -t [repository/]" + component + " .\n");
+        System.out.println("Run the following command to create and run a container:\n");
         if (defaultCredentials) {
-            System.out.println("docker run -d -p 8443:8443 --name " + component + " [repository/]" + component);
+            System.out.println("docker run -d -p 8443:8443 --name " + component + " [repository/]" + component + "\n");
         } else {
-            System.out.println("docker run -d -p 8443:8443 -e KEYCLOAK_USER=<username> -e KEYCLOAK_PASSWORD=<password> --name " + component + " [repository/]" + component);
+            System.out.println("docker run -d -p 8443:8443 -e KEYCLOAK_USER=<username> -e KEYCLOAK_PASSWORD=<password> --name " + component + " [repository/]" + component + "\n");
         }
 
         DockerUtils.removeKeycloakDev();

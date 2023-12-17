@@ -122,7 +122,6 @@ public class DockerUtils {
 
     private static void deleteContainerIfExists(String name, List<Container> containers, DockerClient dockerClient) {
         if (containers.stream().anyMatch(c -> Arrays.asList(c.getNames()).contains("/" + name))) {
-            System.out.println("DELETING CONTAINER: " + name);
             dockerClient.removeContainerCmd(name).exec();
         }
     }
