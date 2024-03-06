@@ -7,6 +7,7 @@ import com.deceptionkit.model.Client;
 import com.deceptionkit.model.Group;
 import com.deceptionkit.model.Role;
 import com.deceptionkit.model.User;
+import com.deceptionkit.spring.apiversion.ApiVersion;
 import com.deceptionkit.spring.response.SimpleResponse;
 import com.deceptionkit.yamlspecs.idprovider.IdProviderDefinition;
 import com.deceptionkit.yamlspecs.idprovider.client.ClientDefinition;
@@ -38,6 +39,13 @@ public class GenerationController {
 
     public GenerationController() {
         this.logger = org.slf4j.LoggerFactory.getLogger(GenerationController.class);
+    }
+
+    @GetMapping(value = "/test", produces = "application/json")
+    @ApiVersion({"1.1", "1.2"})
+    @ResponseBody
+    public String testEndpoint() {
+        return "Test endpoint";
     }
 
     @PostMapping(value = "/generateIdProviderResources", consumes = {"application/yaml", "application/yml"}, produces = "application/json")

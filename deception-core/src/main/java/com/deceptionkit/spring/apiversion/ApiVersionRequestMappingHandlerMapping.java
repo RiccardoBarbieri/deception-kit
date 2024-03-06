@@ -1,9 +1,10 @@
 package com.deceptionkit.spring.apiversion;
 
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.web.servlet.mvc.condition.*;
+import org.springframework.web.servlet.mvc.condition.RequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.util.pattern.PathPatternParser;
 
 import java.lang.reflect.Method;
 
@@ -21,18 +22,19 @@ public class ApiVersionRequestMappingHandlerMapping extends RequestMappingHandle
         if (info == null) return null;
 
         ApiVersion methodAnnotation = AnnotationUtils.findAnnotation(method, ApiVersion.class);
+        RequestMappingInfo newInfo = null;
         if (methodAnnotation != null) {
             RequestCondition<?> methodCondition = super.getCustomMethodCondition(method);
-            info = createApiVersionInfo(methodAnnotation, methodCondition).combine(info);
+            newInfo = createApiVersionInfo(methodAnnotation, methodCondition).combine(info);
         } else {
             ApiVersion typeAnnotation = AnnotationUtils.findAnnotation(handlerType, ApiVersion.class);
             if (typeAnnotation != null) {
                 RequestCondition<?> typeCondition = super.getCustomTypeCondition(handlerType);
-                info = createApiVersionInfo(typeAnnotation, typeCondition).combine(info);
+                newInfo = createApiVersionInfo(typeAnnotation, typeCondition).combine(info);
             }
         }
 
-        return info;
+        return newInfo;
     }
 
     private RequestMappingInfo createApiVersionInfo(ApiVersion annotation, RequestCondition<?> customCondition) {
@@ -42,21 +44,13 @@ public class ApiVersionRequestMappingHandlerMapping extends RequestMappingHandle
             patterns[i] = prefix + values[i];
         }
 
-        RequestMappingInfo.Builder builder = RequestMappingInfo.paths(patterns);
-        return builder.customCondition(customCondition).build();
 
-//        return new RequestMappingInfo(
-//                "apiVersion",
-//                new PathPatternsRequestCondition(getPatternParser(), patterns),
-//                null,
-//                new RequestMethodsRequestCondition(),
-//                new ParamsRequestCondition(),
-//                new HeadersRequestCondition(),
-//                new ConsumesRequestCondition(),
-//                new ProducesRequestCondition(),
-//                new RequestConditionHolder(customCondition),
-//                customCondition
-//        );
+        RequestMappingInfo.Builder builder = RequestMappingInfo.paths(patterns);
+//        RequestMappingInfo.BuilderConfiguration config = new RequestMappingInfo.BuilderConfiguration();
+//        config.setPatternParser(new PathPatternParser());
+//        builder.options(config);
+
+        return builder.customCondition(customCondition).build();
 
     }
 }
