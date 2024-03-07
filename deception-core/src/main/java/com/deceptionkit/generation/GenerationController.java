@@ -42,7 +42,6 @@ public class GenerationController {
     }
 
     @GetMapping(value = "/test", produces = "application/json")
-    @ApiVersion({"1.1", "1.2"})
     @ResponseBody
     public String testEndpoint() {
         return "Test endpoint";
