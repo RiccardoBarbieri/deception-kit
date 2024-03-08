@@ -1,7 +1,7 @@
 package com.deceptionkit.registration;
 
 import com.deceptionkit.model.Role;
-import com.deceptionkit.spring.response.SimpleResponse;
+import com.deceptionkit.spring.response.ErrorResponse;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.ClientResource;
 import org.keycloak.admin.client.resource.ClientsResource;
@@ -39,25 +39,25 @@ public class RoleRegistration {
     }
 
     @PostMapping(value = "/registerRoles", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<SimpleResponse> registerRole(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody List<Role> roles) {
+    public ResponseEntity<ErrorResponse> registerRole(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody List<Role> roles) {
         for (Role role : roles) {
             RoleRepresentation roleRep = generateRoleRep(role);
             if (role.isClientRole()) {
                 ClientResource clientRep = getClientResourceByName(keycloak.realm(realm).clients(), role.getClientName());
                 if (clientRep == null) {
                     logger.error("Client not found: " + role.getClientName());
-                    return new ResponseEntity<>(new SimpleResponse(HttpStatus.NOT_FOUND.value(), "Client not found: " + role.getClientName()), HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Client not found: " + role.getClientName()), HttpStatus.NOT_FOUND);
                 }
                 clientRep.roles().create(roleRep);
             } else if (role.isRealmRole()) {
                 keycloak.realm(realm).roles().create(roleRep);
             } else {
                 logger.error("Role type not specified: " + role.getName());
-                return new ResponseEntity<>(new SimpleResponse(HttpStatus.BAD_REQUEST.value(), "Role type not specified: " + role.getName()), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Role type not specified: " + role.getName()), HttpStatus.BAD_REQUEST);
             }
         }
         logger.info("All roles registered");
-        return new ResponseEntity<>(new SimpleResponse(HttpStatus.CREATED.value(), roles.size() + "roles registered"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.CREATED.value(), roles.size() + "roles registered"), HttpStatus.CREATED);
     }
 
     private ClientResource getClientResourceByName(ClientsResource clientsResource, String name) {
@@ -72,8 +72,8 @@ public class RoleRegistration {
 
     @ExceptionHandler(java.lang.Exception.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<SimpleResponse> handleException(java.lang.Exception e) {
+    public ResponseEntity<ErrorResponse> handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new ResponseEntity<>(new SimpleResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

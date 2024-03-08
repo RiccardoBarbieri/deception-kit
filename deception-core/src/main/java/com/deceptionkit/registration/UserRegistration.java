@@ -2,7 +2,7 @@ package com.deceptionkit.registration;
 
 import com.deceptionkit.model.Credential;
 import com.deceptionkit.model.User;
-import com.deceptionkit.spring.response.SimpleResponse;
+import com.deceptionkit.spring.response.ErrorResponse;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -51,7 +51,7 @@ public class UserRegistration {
     }
 
     @PostMapping(value = "/registerUsers", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<SimpleResponse> registerUser(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody List<User> users) {
+    public ResponseEntity<ErrorResponse> registerUser(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody List<User> users) {
         List<Response> responses = new ArrayList<>();
         for (User u : users) {
             UserRepresentation user = generateUserRep(u);
@@ -63,20 +63,20 @@ public class UserRegistration {
                 logger.error("Failed to register user: " + u.getUsername());
                 logger.error("User: " + u.toString());
                 logger.error("Response: " + response.readEntity(String.class));
-                return new ResponseEntity<>(new SimpleResponse(response.getStatus(), "Failed to register user: " + u.getUsername()), HttpStatusCode.valueOf(response.getStatus()));
+                return new ResponseEntity<>(new ErrorResponse(response.getStatus(), "Failed to register user: " + u.getUsername()), HttpStatusCode.valueOf(response.getStatus()));
             } else {
                 response.close();
             }
         }
         logger.info(responses.size() + " users registered");
 
-        return new ResponseEntity<>(new SimpleResponse(HttpStatus.CREATED.value(), responses.size() + " users registered"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.CREATED.value(), responses.size() + " users registered"), HttpStatus.CREATED);
     }
 
     @ExceptionHandler(java.lang.Exception.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<SimpleResponse> handleException(java.lang.Exception e) {
+    public ResponseEntity<ErrorResponse> handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new ResponseEntity<>(new SimpleResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

@@ -2,7 +2,7 @@ package com.deceptionkit.registration;
 
 import com.deceptionkit.model.Client;
 import com.deceptionkit.model.Role;
-import com.deceptionkit.spring.response.SimpleResponse;
+import com.deceptionkit.spring.response.ErrorResponse;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.ClientResource;
 import org.keycloak.admin.client.resource.ClientsResource;
@@ -63,7 +63,7 @@ public class ClientRegistration {
     }
 
     @PostMapping(value = "/registerClients", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<SimpleResponse> registerClient(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody List<Client> clients) {
+    public ResponseEntity<ErrorResponse> registerClient(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody List<Client> clients) {
         List<Response> responses = new ArrayList<>();
         for (Client c : clients) {
             ClientRepresentation client = generateClientRep(c);
@@ -75,7 +75,7 @@ public class ClientRegistration {
                 logger.error("Error creating client: " + c.getClientId());
                 logger.error("Client" + c.toString());
                 logger.error("Response: " + response.readEntity(String.class));
-                return new ResponseEntity<>(new SimpleResponse(response.getStatus(), response.getStatusInfo().toString()), HttpStatus.valueOf(response.getStatus()));
+                return new ResponseEntity<>(new ErrorResponse(response.getStatus(), response.getStatusInfo().toString()), HttpStatus.valueOf(response.getStatus()));
             } else {
                 response.close();
             }
@@ -90,7 +90,7 @@ public class ClientRegistration {
 //            }
             logger.info(responses.size() + " clients registered");
         }
-        return new ResponseEntity<>(new SimpleResponse(HttpStatus.CREATED.value(), responses.size() + " clients registered"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.CREATED.value(), responses.size() + " clients registered"), HttpStatus.CREATED);
     }
 
     private ClientResource getClientResourceByName(ClientsResource clientsResource, String name) {
@@ -105,8 +105,8 @@ public class ClientRegistration {
 
     @ExceptionHandler(java.lang.Exception.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public ResponseEntity<SimpleResponse> handleException(java.lang.Exception e) {
+    public ResponseEntity<ErrorResponse> handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new ResponseEntity<>(new SimpleResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
