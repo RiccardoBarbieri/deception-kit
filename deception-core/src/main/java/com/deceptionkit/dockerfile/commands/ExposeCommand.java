@@ -1,6 +1,6 @@
 package com.deceptionkit.dockerfile.commands;
 
-import com.deceptionkit.dockerfile.options.PortProtocols;
+import com.deceptionkit.dockerfile.utils.PortProtocols;
 
 public class ExposeCommand extends Command {
 

@@ -1,4 +1,4 @@
-package com.deceptionkit.dockerfile.options;
+package com.deceptionkit.dockerfile.utils;
 
 public enum PortProtocols {
 
