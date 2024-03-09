@@ -10,5 +10,7 @@ public abstract class CommandOptions {
         this.options = new java.util.ArrayList<>();
     }
 
-    public abstract String build();
+    public String build() {
+        return String.join(" ", options);
+    }
 }
