@@ -59,9 +59,4 @@ public class AddCommandOptions extends CommandOptions {
         this.options.add(AddCommandOptions.EXCLUDE + "=" + pattern);
         return this;
     }
-
-    @Override
-    public String build() {
-        return String.join(" ", options);
-    }
 }

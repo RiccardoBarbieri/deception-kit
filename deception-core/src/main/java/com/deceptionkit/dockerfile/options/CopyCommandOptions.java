@@ -28,6 +28,11 @@ public class CopyCommandOptions extends CommandOptions {
         return this;
     }
 
+    public CopyCommandOptions chmod(String mode) {
+        this.options.add(AddCommandOptions.CHMOD + "=" + mode);
+        return this;
+    }
+
     public CopyCommandOptions link() {
         this.options.add(CopyCommandOptions.LINK);
         return this;
@@ -41,10 +46,5 @@ public class CopyCommandOptions extends CommandOptions {
     public CopyCommandOptions exclude(String pattern) {
         this.options.add(CopyCommandOptions.EXCLUDE + "=" + pattern);
         return this;
-    }
-
-    @Override
-    public String build() {
-        return String.join(" ", options);
     }
 }
