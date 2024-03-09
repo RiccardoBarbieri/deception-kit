@@ -27,6 +27,9 @@ public class CopyCommand extends CommandWithOptions {
 
     @Override
     public String build() {
+        if (src == null || dest == null) {
+            throw new IllegalArgumentException("Source and destination must be set");
+        }
         return CommandUtils.coupleShellOrSpaced(COMMAND, src, dest, options);
     }
 }

@@ -27,6 +27,9 @@ public class ArgCommand extends Command {
 
     @Override
     public String build() {
+        if (name == null) {
+            throw new IllegalArgumentException("ARG command requires a name");
+        }
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(COMMAND).append(" ");
 

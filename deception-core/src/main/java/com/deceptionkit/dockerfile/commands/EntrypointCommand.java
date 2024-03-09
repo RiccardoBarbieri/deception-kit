@@ -10,7 +10,7 @@ public class EntrypointCommand extends Command {
 
     private String executable;
     private List<String> args;
-    private Boolean spaced;
+    private Boolean spaced = false;
 
     public EntrypointCommand entrypoint(String executable, List<String> args) {
         this.executable = executable;
@@ -48,6 +48,10 @@ public class EntrypointCommand extends Command {
 
     @Override
     public String build() {
+        if (executable == null || executable.isEmpty()) {
+            throw new IllegalArgumentException("ENTRYPOINT command requires an executable");
+        }
+
         return CommandUtils.argsShellOrSpaced(COMMAND, executable, args, spaced);
     }
 }

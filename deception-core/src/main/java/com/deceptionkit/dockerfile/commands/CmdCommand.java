@@ -10,7 +10,7 @@ public class CmdCommand extends Command {
 
     private String executable;
     private List<String> args;
-    private Boolean spaced;
+    private Boolean spaced = false;
 
     public CmdCommand cmd(String executable, List<String> args) {
         this.executable = executable;
@@ -56,6 +56,9 @@ public class CmdCommand extends Command {
 
     @Override
     public String build() {
+        if (executable == null) {
+            throw new IllegalStateException("Executable is required for CMD command");
+        }
         return CommandUtils.argsShellOrSpaced(COMMAND, executable, args, spaced);
     }
 }

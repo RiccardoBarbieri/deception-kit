@@ -14,7 +14,17 @@ public class CopyCommandOptions extends CommandOptions {
     }
 
     public CopyCommandOptions chown(String user) {
-        this.options.add(CopyCommandOptions.CHOWN + "=" + user);
+        this.options.add(AddCommandOptions.CHOWN + "=" + user);
+        return this;
+    }
+
+    public CopyCommandOptions chown(Integer user, Integer group) {
+        this.options.add(AddCommandOptions.CHOWN + "=" + user.toString() + ":" + group.toString());
+        return this;
+    }
+
+    public CopyCommandOptions chown(Integer user) {
+        this.options.add(AddCommandOptions.CHOWN + "=" + user.toString());
         return this;
     }
 
