@@ -4,7 +4,7 @@ import com.deceptionkit.dockerfile.utils.PortProtocols;
 
 public class ExposeCommand extends Command {
 
-    private static final String COMMAND = "EXPOSE";
+    public static final String COMMAND = "EXPOSE";
 
     private Integer port;
     private PortProtocols protocol;

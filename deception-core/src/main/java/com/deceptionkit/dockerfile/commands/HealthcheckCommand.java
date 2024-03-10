@@ -4,19 +4,20 @@ import com.deceptionkit.dockerfile.utils.CommandUtils;
 
 import java.util.List;
 
-public class CmdCommand extends Command {
+public class HealthcheckCommand extends CommandWithOptions {
 
-    public static final String COMMAND = "CMD";
+    public static final String COMMAND = "HEALTHCHECK";
 
     private String executable;
     private List<String> args;
     private Boolean spaced = false;
+    private Boolean none = false;
 
-    protected CmdCommand() {
+    protected HealthcheckCommand() {
         args = new java.util.ArrayList<>();
     }
 
-    public CmdCommand cmd(String executable, List<String> args) {
+    public HealthcheckCommand healthcheck(String executable, List<String> args) {
         this.executable = executable;
         if (executable.contains(" ")) {
             spaced = true;
@@ -31,7 +32,7 @@ public class CmdCommand extends Command {
         return this;
     }
 
-    public CmdCommand executable(String executable) {
+    public HealthcheckCommand executable(String executable) {
         this.executable = executable;
         if (executable.contains(" ")) {
             spaced = true;
@@ -39,7 +40,7 @@ public class CmdCommand extends Command {
         return this;
     }
 
-    public CmdCommand args(List<String> args) {
+    public HealthcheckCommand args(List<String> args) {
         this.args = args;
         for (String arg : args) {
             if (arg.contains(" ")) {
@@ -50,7 +51,7 @@ public class CmdCommand extends Command {
         return this;
     }
 
-    public CmdCommand arg(String arg) {
+    public HealthcheckCommand arg(String arg) {
         this.args.add(arg);
         if (arg.contains(" ")) {
             spaced = true;
@@ -58,11 +59,20 @@ public class CmdCommand extends Command {
         return this;
     }
 
+    public HealthcheckCommand none() {
+        none = true;
+        return this;
+    }
+
     @Override
     public String build() {
         if (executable == null) {
-            throw new IllegalStateException("Executable is required for CMD command");
+            throw new IllegalStateException("Executable is required for HEALTHCHECK command");
         }
-        return CommandUtils.argsShellOrSpaced(COMMAND, executable, args, spaced, null);
+        if (none) {
+            return COMMAND + " NONE";
+        }
+        return CommandUtils.argsShellOrSpacedInter(COMMAND, "CMD", executable, args, spaced, options);
+
     }
 }

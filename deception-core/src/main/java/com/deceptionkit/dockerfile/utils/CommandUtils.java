@@ -6,10 +6,13 @@ import java.util.List;
 
 public class CommandUtils {
 
-    public static String argsShellOrSpaced(String command, String executable, List<String> args, Boolean spaced) {
-
+    public static String argsShellOrSpaced(String command, String executable, List<String> args, Boolean spaced, CommandOptions options) {
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(command).append(" ");
+
+        if (options != null) {
+            lineBuilder.append(options.build()).append(" ");
+        }
 
         if (!executable.isEmpty()) {
             if (spaced) {
@@ -38,6 +41,47 @@ public class CommandUtils {
 
         return lineBuilder.toString();
     }
+
+    public static String argsShellOrSpacedInter(String command, String inter, String executable, List<String> args, Boolean spaced, CommandOptions options) {
+        StringBuilder lineBuilder = new StringBuilder();
+        lineBuilder.append(command).append(" ");
+
+        if (options != null) {
+            lineBuilder.append(options.build()).append(" ");
+        }
+
+        if (!inter.isEmpty()) {
+            lineBuilder.append(inter).append(" ");
+        }
+
+        if (!executable.isEmpty()) {
+            if (spaced) {
+                lineBuilder.append("[\"").append(executable).append("\",");
+            } else {
+                lineBuilder.append(executable).append(" ");
+            }
+        } else {
+            if (spaced) {
+                lineBuilder.append("[");
+            }
+        }
+
+        for (String arg : args) {
+            if (spaced) {
+                lineBuilder.append("\"").append(arg).append("\",");
+            } else {
+                lineBuilder.append(arg).append(" ");
+            }
+        }
+
+        if (spaced) {
+            lineBuilder.deleteCharAt(lineBuilder.length() - 1);
+            lineBuilder.append("]");
+        }
+
+        return lineBuilder.toString();
+    }
+
 
     public static String coupleShellOrSpaced(String command, String src, String dest, CommandOptions options) {
         StringBuilder lineBuilder = new StringBuilder();

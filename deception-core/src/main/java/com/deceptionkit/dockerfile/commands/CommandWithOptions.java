@@ -9,4 +9,6 @@ public abstract class CommandWithOptions extends Command {
     public void options(CommandOptions options) {
         this.options = options;
     }
+
+    
 }

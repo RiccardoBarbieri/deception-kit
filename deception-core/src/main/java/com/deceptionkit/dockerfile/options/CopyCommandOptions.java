@@ -14,22 +14,22 @@ public class CopyCommandOptions extends CommandOptions {
     }
 
     public CopyCommandOptions chown(String user) {
-        this.options.add(AddCommandOptions.CHOWN + "=" + user);
+        this.options.add(CopyCommandOptions.CHOWN + "=" + user);
         return this;
     }
 
     public CopyCommandOptions chown(Integer user, Integer group) {
-        this.options.add(AddCommandOptions.CHOWN + "=" + user.toString() + ":" + group.toString());
+        this.options.add(CopyCommandOptions.CHOWN + "=" + user.toString() + ":" + group.toString());
         return this;
     }
 
     public CopyCommandOptions chown(Integer user) {
-        this.options.add(AddCommandOptions.CHOWN + "=" + user.toString());
+        this.options.add(CopyCommandOptions.CHOWN + "=" + user.toString());
         return this;
     }
 
     public CopyCommandOptions chmod(String mode) {
-        this.options.add(AddCommandOptions.CHMOD + "=" + mode);
+        this.options.add(CopyCommandOptions.CHMOD + "=" + mode);
         return this;
     }
 
