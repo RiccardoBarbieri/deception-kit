@@ -32,7 +32,7 @@ public class FromCommand extends CommandWithOptions {
     @Override
     public String build() {
         if (image == null) {
-            throw new IllegalArgumentException("Image must be set");
+            throw new IllegalArgumentException("FROM command requires an image");
         }
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(COMMAND).append(" ");

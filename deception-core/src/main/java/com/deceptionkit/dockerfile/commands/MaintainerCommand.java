@@ -14,6 +14,9 @@ public class MaintainerCommand extends Command {
 
     @Override
     public String build() {
+        if (maintainer == null) {
+            throw new IllegalArgumentException("MAINTAINER command requires a maintainer");
+        }
         return COMMAND + " " + maintainer;
     }
 }

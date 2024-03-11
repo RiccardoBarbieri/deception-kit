@@ -61,7 +61,7 @@ public class CmdCommand extends Command {
     @Override
     public String build() {
         if (executable == null) {
-            throw new IllegalStateException("Executable is required for CMD command");
+            throw new IllegalStateException("CMD command requires an executable");
         }
         return CommandUtils.argsShellOrSpaced(COMMAND, executable, args, spaced, null);
     }

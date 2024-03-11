@@ -67,7 +67,7 @@ public class HealthcheckCommand extends CommandWithOptions {
     @Override
     public String build() {
         if (executable == null) {
-            throw new IllegalStateException("Executable is required for HEALTHCHECK command");
+            throw new IllegalStateException("HEALTHCHECK command requires an executable");
         }
         if (none) {
             return COMMAND + " NONE";

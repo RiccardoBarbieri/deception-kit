@@ -27,6 +27,9 @@ public class LabelCommand extends Command {
 
     @Override
     public String build() {
+        if (keys.isEmpty() || values.isEmpty()) {
+            throw new IllegalArgumentException("LABEL command must have at least one label");
+        }
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(COMMAND).append(" ");
 
