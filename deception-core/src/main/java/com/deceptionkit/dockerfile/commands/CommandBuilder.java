@@ -1,17 +1,32 @@
 package com.deceptionkit.dockerfile.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CommandBuilder {
 
     public static AddCommand add() {
         return new AddCommand();
     }
 
+    public static AddCommand add(String source, String destination) {
+        return new AddCommand().add(source, destination);
+    }
+
     public static ArgCommand arg() {
         return new ArgCommand();
     }
 
+    public static ArgCommand arg(String name, String defaultValue) {
+        return new ArgCommand().arg(name, defaultValue);
+    }
+
     public static CmdCommand cmd() {
         return new CmdCommand();
+    }
+
+    public static CmdCommand cmd(String executable, String... args) {
+        return new CmdCommand().cmd(executable, new ArrayList<>(List.of(args)));
     }
 
     public static CopyCommand copy() {

@@ -23,9 +23,6 @@ public class OnbuildCommand extends Command {
             throw new IllegalArgumentException("ONBUILD command cannot contain ONBUILD, FROM, or MAINTAINER commands");
         }
 
-        StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(COMMAND).append(" ");
-        lineBuilder.append(commandString);
-        return lineBuilder.toString();
+        return COMMAND + " " + commandString;
     }
 }
