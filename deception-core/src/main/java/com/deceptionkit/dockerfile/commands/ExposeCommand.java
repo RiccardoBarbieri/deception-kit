@@ -9,7 +9,7 @@ public class ExposeCommand extends Command {
     private Integer port;
     private PortProtocols protocol;
 
-    public ExposeCommand expose(int port) {
+    public ExposeCommand expose(Integer port) {
         this.port = port;
         return this;
     }
