@@ -10,6 +10,9 @@ public class DockerfileBuilder {
 
     List<String> lines;
 
+    public DockerfileBuilder() {
+    }
+
     public DockerfileBuilder(List<String> lines) {
         this.lines = lines;
     }
@@ -40,6 +43,17 @@ public class DockerfileBuilder {
         return this;
     }
 
+    public List<String> lines() {
+        return lines;
+    }
 
+    public String build() {
+        StringBuilder builder = new StringBuilder();
+        for (String line : lines) {
+            builder.append(line).append("\n");
+        }
+        return builder.toString();
+    }
 
+    //TODO: add method to build with writers
 }
