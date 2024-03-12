@@ -33,7 +33,11 @@ repositories {
 
 dependencies {
     // Use JUnit test framework.
-    testImplementation("junit:junit:4.13.2")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+    testImplementation("org.junit.platform:junit-platform-runner:1.10.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
@@ -41,11 +45,11 @@ dependencies {
     // Keycloak
     implementation("org.keycloak:keycloak-admin-client:15.0.2")
 
-	implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.session:spring-session-core")
-    implementation("org.springframework:spring-messaging")
+	implementation("org.springframework.boot:spring-boot-starter-web:3.2.3")
+    implementation("org.springframework.boot:spring-boot-starter:3.2.3")
+    implementation("org.springframework.boot:spring-boot-starter-validation:3.2.3")
+    implementation("org.springframework.session:spring-session-core:3.2.1")
+    implementation("org.springframework:spring-messaging:6.1.4")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
@@ -146,3 +150,18 @@ application {
     // Define the main class for the application.
     mainClass.set("com.deceptionkit.DeceptionkitApplication")
 }
+
+tasks {
+    test {
+        testLogging.showExceptions = true
+        useJUnitPlatform()
+    }
+}
+
+//sourceSets {
+//    test {
+//        java {
+//            srcDir("src/test/java")
+//        }
+//    }
+//}
