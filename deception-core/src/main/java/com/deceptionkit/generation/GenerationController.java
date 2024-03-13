@@ -33,6 +33,13 @@ import java.util.stream.Collectors;
 @ApiVersion({"1", "1.1"})
 public class GenerationController {
 
+    @PostMapping(value = "/idprovider/test", consumes = {"application/yaml", "application/yml"}, produces = "application/json")
+    @ResponseBody
+    public String test(@RequestBody IdProviderDefinition componentDefinition) {
+        return "done";
+    }
+
+
     private final Logger logger;
 
 
