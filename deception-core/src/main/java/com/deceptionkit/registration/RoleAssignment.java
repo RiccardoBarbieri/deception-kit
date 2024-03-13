@@ -2,6 +2,7 @@ package com.deceptionkit.registration;
 
 import com.deceptionkit.model.Role;
 import com.deceptionkit.model.RoleMap;
+import com.deceptionkit.spring.apiversion.ApiVersion;
 import com.deceptionkit.spring.response.ErrorResponse;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.*;
@@ -20,6 +21,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Controller
+@RequestMapping("/registration")
+@ApiVersion({"1", "1.1"})
 public class RoleAssignment {
 
     private final Keycloak keycloak;
@@ -32,7 +35,7 @@ public class RoleAssignment {
         this.logger = org.slf4j.LoggerFactory.getLogger(UserRegistration.class);
     }
 
-    @PostMapping(value = "/assignRoles", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/assign/roles", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ErrorResponse> assignRoles(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody RoleMap roleMappings) {
         GroupsResource groupsResource = keycloak.realm(realm).groups();
         for (String groupName : roleMappings.keySet()) {

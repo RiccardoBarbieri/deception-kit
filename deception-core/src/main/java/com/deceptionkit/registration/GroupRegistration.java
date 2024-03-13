@@ -1,6 +1,7 @@
 package com.deceptionkit.registration;
 
 import com.deceptionkit.model.Group;
+import com.deceptionkit.spring.apiversion.ApiVersion;
 import com.deceptionkit.spring.response.ErrorResponse;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.GroupResource;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/registration")
+@ApiVersion({"1", "1.1"})
 public class GroupRegistration {
 
     private final Logger logger;
@@ -59,7 +62,7 @@ public class GroupRegistration {
         return null;
     }
 
-    @PostMapping(value = "/registerGroups", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/groups", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ErrorResponse> registerUser(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody List<Group> groups) {
         List<Response> responses = new ArrayList<>();
         for (Group g : groups) {

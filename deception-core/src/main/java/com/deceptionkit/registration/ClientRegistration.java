@@ -2,6 +2,7 @@ package com.deceptionkit.registration;
 
 import com.deceptionkit.model.Client;
 import com.deceptionkit.model.Role;
+import com.deceptionkit.spring.apiversion.ApiVersion;
 import com.deceptionkit.spring.response.ErrorResponse;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.ClientResource;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/registration")
+@ApiVersion({"1", "1.1"})
 public class ClientRegistration {
 
     private final Logger logger;
@@ -62,7 +65,7 @@ public class ClientRegistration {
         return roleRep;
     }
 
-    @PostMapping(value = "/registerClients", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/clients", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ErrorResponse> registerClient(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody List<Client> clients) {
         List<Response> responses = new ArrayList<>();
         for (Client c : clients) {

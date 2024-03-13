@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/generation")
-@ApiVersion({"1"})
+@ApiVersion({"1", "1.1"})
 public class GenerationController {
 
     private final Logger logger;

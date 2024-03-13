@@ -2,6 +2,7 @@ package com.deceptionkit.registration;
 
 import com.deceptionkit.model.Credential;
 import com.deceptionkit.model.User;
+import com.deceptionkit.spring.apiversion.ApiVersion;
 import com.deceptionkit.spring.response.ErrorResponse;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.CredentialRepresentation;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/registration")
+@ApiVersion({"1", "1.1"})
 public class UserRegistration {
 
     private final Keycloak keycloak;
@@ -50,7 +53,7 @@ public class UserRegistration {
         return userRep;
     }
 
-    @PostMapping(value = "/registerUsers", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/users", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ErrorResponse> registerUser(@RequestParam(name = "realm", defaultValue = "master") String realm, @RequestBody List<User> users) {
         List<Response> responses = new ArrayList<>();
         for (User u : users) {
