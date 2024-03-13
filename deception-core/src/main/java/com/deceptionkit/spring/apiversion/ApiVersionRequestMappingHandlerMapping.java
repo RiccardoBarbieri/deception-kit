@@ -46,9 +46,9 @@ public class ApiVersionRequestMappingHandlerMapping extends RequestMappingHandle
 
 
         RequestMappingInfo.Builder builder = RequestMappingInfo.paths(patterns);
-//        RequestMappingInfo.BuilderConfiguration config = new RequestMappingInfo.BuilderConfiguration();
-//        config.setPatternParser(new PathPatternParser());
-//        builder.options(config);
+        RequestMappingInfo.BuilderConfiguration config = new RequestMappingInfo.BuilderConfiguration();
+        config.setPatternParser(new PathPatternParser());
+        builder.options(config);
 
         return builder.customCondition(customCondition).build();
 
