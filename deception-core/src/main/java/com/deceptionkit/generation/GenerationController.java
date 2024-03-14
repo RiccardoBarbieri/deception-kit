@@ -42,10 +42,7 @@ public class GenerationController {
 
     @PostMapping(value = "/idprovider/resources", consumes = {"application/yaml", "application/yml", "text/yaml", "text/yml"}, produces = "application/json")
     @ResponseBody
-    public MockResources generateIdProviderResources(@RequestBody String componentDefinition) {
-        Yaml yaml = getYamlParser();
-
-        IdProviderDefinition idProviderDefinition = yaml.load(componentDefinition);
+    public MockResources generateIdProviderResources(@RequestBody IdProviderDefinition idProviderDefinition) {
 
         Integer totalGroups = idProviderDefinition.getSpecification().getGroups().getTotal();
         Integer totalUsers = idProviderDefinition.getSpecification().getUsers().getTotal();
