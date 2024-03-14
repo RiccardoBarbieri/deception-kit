@@ -12,7 +12,7 @@ import com.deceptionkit.model.Group;
 import com.deceptionkit.model.Role;
 import com.deceptionkit.model.User;
 import com.deceptionkit.spring.apiversion.ApiVersion;
-import com.deceptionkit.spring.response.SimpleResponse;
+import com.deceptionkit.spring.response.IllegalArgumentResponse;
 import com.deceptionkit.yamlspecs.idprovider.IdProviderDefinition;
 import com.deceptionkit.yamlspecs.idprovider.client.ClientDefinition;
 import com.deceptionkit.yamlspecs.idprovider.group.GroupDefinition;
@@ -20,22 +20,21 @@ import com.deceptionkit.yamlspecs.idprovider.role.RoleDefinition;
 import com.deceptionkit.yamlspecs.idprovider.user.UserDefinition;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.representer.Representer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@RequestMapping("/generation")
+@ApiVersion({"1", "1.1"})
 public class GenerationController {
 
     private final Logger logger;
@@ -45,18 +44,9 @@ public class GenerationController {
         this.logger = org.slf4j.LoggerFactory.getLogger(GenerationController.class);
     }
 
-    @GetMapping(value = "/test", produces = "application/json")
+    @PostMapping(value = "/idprovider/resources", consumes = {"application/yaml", "application/yml", "text/yaml", "text/yml"}, produces = "application/json")
     @ResponseBody
-    public String testEndpoint() {
-        return "Test endpoint";
-    }
-
-    @PostMapping(value = "/generateIdProviderResources", consumes = {"application/yaml", "application/yml"}, produces = "application/json")
-    @ResponseBody
-    public MockResources generateResources(@RequestBody String componentDefinition) {
-        Yaml yaml = getYamlParser();
-
-        IdProviderDefinition idProviderDefinition = yaml.load(componentDefinition);
+    public MockResources generateIdProviderResources(@RequestBody IdProviderDefinition idProviderDefinition) {
 
         Integer totalGroups = idProviderDefinition.getSpecification().getGroups().getTotal();
         Integer totalUsers = idProviderDefinition.getSpecification().getUsers().getTotal();
@@ -178,8 +168,10 @@ public class GenerationController {
         return new Yaml(baseConstructor, new Representer(options), options);
     }
 
-    @GetMapping(value = "/generateDockerfile")
-    public ResponseEntity<String> generateDockerfile(
+    @GetMapping(value = "/idprovider/dockerfile", produces = "text/plain")
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public String generateDockerfile(
             @RequestParam(name = "enableHttp", required = false, defaultValue = "false") Boolean enableHttp,
             @RequestParam(name = "enableMetrics", required = false, defaultValue = "true") Boolean enableMetrics,
             @RequestParam(name = "enableHealth", required = false, defaultValue = "true") Boolean enableHealth,
@@ -211,7 +203,7 @@ public class GenerationController {
         builder.addCommand(CommandBuilder.env("KC_HOSTNAME", hostname));
         builder.addCommand(CommandBuilder.entrypoint("/opt/keycloak/bin/kc.sh", "start", "--optimized"));
 
-        return new ResponseEntity<>(builder.build(), HttpStatus.OK);
+        return builder.build();
 
 //        String Dockerfile;
 //        Dockerfile = "FROM " + baseImage + " as builder\n" +
@@ -236,11 +228,24 @@ public class GenerationController {
 //        return new ResponseEntity<>(Dockerfile, HttpStatus.OK);
     }
 
-    @ExceptionHandler(java.lang.Exception.class)
+    @ExceptionHandler({java.lang.Exception.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public SimpleResponse handleException(java.lang.Exception e) {
+    public String handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new SimpleResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return e.getMessage();
+    }
+
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public IllegalArgumentResponse handleException(MethodArgumentTypeMismatchException e) {
+        logger.error("Exception: ", e);
+        return new IllegalArgumentResponse(
+                e.getName(),
+                e.getMessage(),
+                Objects.requireNonNull(e.getRequiredType()).getSimpleName(),
+                Objects.requireNonNull(e.getValue()).toString()
+        );
     }
 }
