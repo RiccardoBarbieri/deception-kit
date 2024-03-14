@@ -7,6 +7,7 @@ public class CopyCommandOptions extends CommandOptions {
     protected static final String LINK = "--link";
     protected static final String PARENTS = "--parents";
     protected static final String EXCLUDE = "--exclude";
+    protected static final String FROM = "--from";
 
     public CopyCommandOptions chown(String user, String group) {
         this.options.add(CopyCommandOptions.CHOWN + "=" + user + ":" + group);
@@ -45,6 +46,11 @@ public class CopyCommandOptions extends CommandOptions {
 
     public CopyCommandOptions exclude(String pattern) {
         this.options.add(CopyCommandOptions.EXCLUDE + "=" + pattern);
+        return this;
+    }
+
+    public CopyCommandOptions from(String stage) {
+        this.options.add(CopyCommandOptions.FROM + "=" + stage);
         return this;
     }
 }
