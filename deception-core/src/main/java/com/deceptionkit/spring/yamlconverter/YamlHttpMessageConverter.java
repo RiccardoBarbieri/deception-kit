@@ -19,7 +19,9 @@ public class YamlHttpMessageConverter<T> extends AbstractHttpMessageConverter<T>
     public YamlHttpMessageConverter() {
         super(
                 new MediaType("text", "yaml"),
-                new MediaType("application", "yaml")
+                new MediaType("text", "yml"),
+                new MediaType("application", "yaml"),
+                new MediaType("application", "yml")
         );
     }
 
