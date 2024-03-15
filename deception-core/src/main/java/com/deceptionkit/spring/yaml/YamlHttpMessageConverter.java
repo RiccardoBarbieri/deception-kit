@@ -6,9 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Component;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.nodes.Tag;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -39,9 +41,18 @@ public class YamlHttpMessageConverter<T> extends AbstractHttpMessageConverter<T>
 
     @Override
     protected void writeInternal(T t, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotReadableException {
-        Yaml parser = new Yaml();
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        options.setDefaultScalarStyle(DumperOptions.ScalarStyle.PLAIN);
+        options.setWidth(120);
+        options.setIndent(2);
+        Yaml parser = new Yaml(options);
+
         OutputStreamWriter writer = new OutputStreamWriter(outputMessage.getBody());
-        parser.dump(t, writer);
+
+        String str = parser.dumpAs(t, Tag.MAP, null);
+        writer.write(str);
+
         writer.close();
     }
 }
