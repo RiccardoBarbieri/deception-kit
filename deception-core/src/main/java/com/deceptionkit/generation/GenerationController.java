@@ -1,10 +1,8 @@
 package com.deceptionkit.generation;
 
-import com.deceptionkit.TempYaml;
 import com.deceptionkit.dockerfile.DockerfileBuilder;
 import com.deceptionkit.dockerfile.commands.CommandBuilder;
 import com.deceptionkit.dockerfile.options.CommandOptionsBuilder;
-import com.deceptionkit.dockerfile.options.CopyCommandOptions;
 import com.deceptionkit.generation.model.MockResources;
 import com.deceptionkit.generation.utils.MockMergeHelper;
 import com.deceptionkit.mockaroo.MockFactory;
@@ -35,37 +33,13 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/generation")
-@ApiVersion({"1", "1.1"})
+@ApiVersion(value = {"1", "1.1"})
 public class GenerationController {
 
     private final Logger logger;
 
     public GenerationController() {
         this.logger = org.slf4j.LoggerFactory.getLogger(GenerationController.class);
-    }
-
-    @GetMapping(value = "/idprovider/jsontest", produces = "application/json")
-    @ResponseBody
-    public TempYaml getJsonTest() {
-        TempYaml tempYaml = new TempYaml();
-        tempYaml.setTemp2("json");
-        return tempYaml;
-    }
-
-    @GetMapping(value = "/idprovider/yamltest", produces = "application/yaml")
-    @ResponseBody
-    public TempYaml getYamlTeest() {
-        TempYaml tempYaml = new TempYaml();
-        tempYaml.setTemp("yaml");
-        return tempYaml;
-    }
-
-    @PostMapping(value = "/idprovider/consyamltest", consumes = {"application/yaml", "text/yaml"}, produces = {"application/yaml", "text/yaml"})
-    @ResponseBody
-    public TempYaml getProdYamlTest(@RequestBody TempYaml tempYaml) {
-        TempYaml temp = new TempYaml();
-        temp.setTemp("cons yaml");
-        return temp;
     }
 
     @PostMapping(value = "/idprovider/resources", consumes = {"application/yaml", "application/yml", "text/yaml", "text/yml"}, produces = "application/json")
