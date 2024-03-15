@@ -9,17 +9,22 @@ import java.util.Map;
 
 public class TempYaml {
 
+    private String temp;
+    private String temp2;
 
+    public String getTemp() {
+        return temp;
+    }
 
-    public static void main(String[] args) throws JsonProcessingException {
-        String temp = "{\"group1\":[{\"name\":\"role2\",\"description\":\"Role for role2\",\"composite\":false,\"clientRole\":false,\"realmName\":\"master\",\"clientName\":null}],\"group2\":[{\"name\":\"role2\",\"description\":\"Role for role2\",\"composite\":false,\"clientRole\":false,\"realmName\":\"master\",\"clientName\":null}],\"Sales\":[{\"name\":\"role2\",\"description\":\"Role for role2\",\"composite\":false,\"clientRole\":false,\"realmName\":\"master\",\"clientName\":null}],\"Marketing\":[{\"name\":\"role3\",\"description\":\"Role for role3\",\"composite\":false,\"clientRole\":true,\"realmName\":null,\"clientName\":\"client1\"}],\"Research and Development\":[{\"name\":\"role3\",\"description\":\"Role for role3\",\"composite\":false,\"clientRole\":true,\"realmName\":null,\"clientName\":\"client1\"}]}\n";
+    public void setTemp(String temp) {
+        this.temp = temp;
+    }
 
-        //how to convert temp json string to Role class
-        Map<String, List<Role>> map = new ObjectMapper().readValue(temp, Map.class);
+    public String getTemp2() {
+        return temp2;
+    }
 
-        System.out.println(map.get("group1").get(0).getName());
-        //System.out.println(role.getName());
-
-
+    public void setTemp2(String temp2) {
+        this.temp2 = temp2;
     }
 }
