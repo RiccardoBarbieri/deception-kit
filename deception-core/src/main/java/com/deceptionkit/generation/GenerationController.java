@@ -3,7 +3,6 @@ package com.deceptionkit.generation;
 import com.deceptionkit.dockerfile.DockerfileBuilder;
 import com.deceptionkit.dockerfile.commands.CommandBuilder;
 import com.deceptionkit.dockerfile.options.CommandOptionsBuilder;
-import com.deceptionkit.dockerfile.options.CopyCommandOptions;
 import com.deceptionkit.generation.model.MockResources;
 import com.deceptionkit.generation.utils.MockMergeHelper;
 import com.deceptionkit.mockaroo.MockFactory;
@@ -34,11 +33,10 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/generation")
-@ApiVersion({"1", "1.1"})
+@ApiVersion(value = {"1", "1.1"})
 public class GenerationController {
 
     private final Logger logger;
-
 
     public GenerationController() {
         this.logger = org.slf4j.LoggerFactory.getLogger(GenerationController.class);
@@ -54,22 +52,22 @@ public class GenerationController {
         Integer groupsPerUser = idProviderDefinition.getSpecification().getUsers().getGroups_per_user();
         String domain = idProviderDefinition.getSpecification().getDomain();
 
-        List<RoleDefinition> roleDefintions = idProviderDefinition.getSpecification().getRoles().getDefinitions();
+        List<RoleDefinition> roleDefinitions = idProviderDefinition.getSpecification().getRoles().getDefinitions();
         List<ClientDefinition> clientDefinitions = idProviderDefinition.getSpecification().getClients().getDefinitions();
         List<GroupDefinition> groupDefinitions = idProviderDefinition.getSpecification().getGroups().getDefinitions();
         List<UserDefinition> userDefinitions = idProviderDefinition.getSpecification().getUsers().getDefinitions();
 
         //consistency checks
-        if (!clientRolesExist(clientDefinitions, roleDefintions)) {
+        if (!clientRolesExist(clientDefinitions, roleDefinitions)) {
             throw new RuntimeException("Client roles do not exist in role definitions");
         }
         if (!userGroupsExist(userDefinitions, groupDefinitions)) {
             throw new RuntimeException("User groups do not exist in group definitions");
         }
-        if (!groupRolesExist(groupDefinitions, roleDefintions)) {
+        if (!groupRolesExist(groupDefinitions, roleDefinitions)) {
             throw new RuntimeException("Group roles do not exist in role definitions");
         }
-        if (!clientRolesAreClientScoped(clientDefinitions, roleDefintions)) {
+        if (!clientRolesAreClientScoped(clientDefinitions, roleDefinitions)) {
             throw new RuntimeException("Client roles are not client scoped");
         }
         if (groupsPerUser > totalGroups) {
