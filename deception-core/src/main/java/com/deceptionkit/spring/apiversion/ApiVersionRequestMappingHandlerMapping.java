@@ -29,29 +29,8 @@ public class ApiVersionRequestMappingHandlerMapping extends RequestMappingHandle
         ApiVersion methodApiVersion = AnnotationUtils.findAnnotation(method, ApiVersion.class);
         ApiVersion typeApiVersion = AnnotationUtils.findAnnotation(handlerType, ApiVersion.class);
 
-//        if (typeApiVersion != null && typeApiVersion.override()) {
-//            logger.debug("Type ApiVersion annotation is trying to override");
-//            return info;
-//        }
-
-//        RequestCondition<?> methodCondition = super.getCustomMethodCondition(method);
-//        RequestCondition<?> typeCondition = super.getCustomTypeCondition(handlerType);
-
         RequestMappingInfo newInfo = null;
         newInfo = createApiVersionInfo(methodApiVersion, typeApiVersion).combine(info);
-
-//        ApiVersion methodAnnotation = AnnotationUtils.findAnnotation(method, ApiVersion.class);
-//        RequestMappingInfo newInfo = null;
-//        if (methodAnnotation != null) {
-//            RequestCondition<?> methodCondition = super.getCustomMethodCondition(method);
-//            newInfo = createApiVersionInfo(methodAnnotation, methodCondition).combine(info);
-//        } else {
-//            ApiVersion typeAnnotation = AnnotationUtils.findAnnotation(handlerType, ApiVersion.class);
-//            if (typeAnnotation != null) {
-//                RequestCondition<?> typeCondition = super.getCustomTypeCondition(handlerType);
-//                newInfo = createApiVersionInfo(typeAnnotation, typeCondition).combine(info);
-//            }
-//        }
 
         return newInfo;
     }
@@ -87,20 +66,4 @@ public class ApiVersionRequestMappingHandlerMapping extends RequestMappingHandle
         return builder.build();
 
     }
-
-//    private RequestMappingInfo createApiVersionInfo(ApiVersion annotation, RequestCondition<?> customCondition) {
-//        String[] values = annotation.value();
-//        String[] patterns = new String[values.length];
-//        for (int i = 0; i < values.length; i++) {
-//            patterns[i] = prefix + values[i];
-//        }
-//
-//        RequestMappingInfo.Builder builder = RequestMappingInfo.paths(patterns);
-//        RequestMappingInfo.BuilderConfiguration config = new RequestMappingInfo.BuilderConfiguration();
-//        config.setPatternParser(new PathPatternParser());
-//        builder.options(config);
-//
-//        return builder.customCondition(customCondition).build();
-//
-//    }
 }
