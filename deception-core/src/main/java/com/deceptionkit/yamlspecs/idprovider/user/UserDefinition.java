@@ -3,7 +3,10 @@ package com.deceptionkit.yamlspecs.idprovider.user;
 import com.deceptionkit.model.Credential;
 import com.deceptionkit.model.User;
 import com.deceptionkit.yamlspecs.idprovider.CredentialSpecification;
+import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,8 @@ public class UserDefinition {
     }
 
     public void setUsername(String username) {
+        if (!ValidationUtils.validateUsername(username))
+            throw new IllegalArgumentException("Invalid username: " + username);
         this.username = username;
     }
 
@@ -30,6 +35,8 @@ public class UserDefinition {
     }
 
     public void setFirstname(String firstname) {
+        if (!ValidationUtils.validateGenericStringSpaces(firstname))
+            throw new IllegalArgumentException("Invalid firstname: " + firstname);
         this.firstname = firstname;
     }
 
@@ -38,6 +45,8 @@ public class UserDefinition {
     }
 
     public void setLastname(String lastname) {
+        if (!ValidationUtils.validateGenericStringSpaces(lastname))
+            throw new IllegalArgumentException("Invalid lastname: " + lastname);
         this.lastname = lastname;
     }
 
@@ -45,7 +54,9 @@ public class UserDefinition {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email) throws AddressException {
+        if (!ValidationUtils.validateEmail(email))
+            throw new IllegalArgumentException("Invalid email: " + email);
         this.email = email;
     }
 
@@ -62,6 +73,8 @@ public class UserDefinition {
     }
 
     public void setGroups(List<String> groups) {
+        if (!ValidationUtils.validateGenericStrings(groups))
+            throw new IllegalArgumentException("Invalid groups: " + groups);
         this.groups = groups;
     }
 

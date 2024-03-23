@@ -1,6 +1,7 @@
 package com.deceptionkit.yamlspecs.idprovider.user;
 
 import com.deceptionkit.model.User;
+import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,9 @@ public class UserSpecification {
     }
 
     public void setTotal(Integer total) {
+        if (!ValidationUtils.validatePositiveInteger(total)) {
+            throw new IllegalArgumentException("Invalid total: " + total);
+        }
         this.total = total;
     }
 
@@ -25,6 +29,9 @@ public class UserSpecification {
     }
 
     public void setGroups_per_user(Integer groups_per_user) {
+        if (!ValidationUtils.validatePositiveInteger(groups_per_user)) {
+            throw new IllegalArgumentException("Invalid groups_per_user: " + groups_per_user);
+        }
         this.groups_per_user = groups_per_user;
     }
 
@@ -33,6 +40,9 @@ public class UserSpecification {
     }
 
     public void setCredentials_per_user(Integer credentials_per_user) {
+        if (!ValidationUtils.validatePositiveInteger(credentials_per_user)) {
+            throw new IllegalArgumentException("Invalid credentials_per_user: " + credentials_per_user);
+        }
         this.credentials_per_user = credentials_per_user;
     }
 

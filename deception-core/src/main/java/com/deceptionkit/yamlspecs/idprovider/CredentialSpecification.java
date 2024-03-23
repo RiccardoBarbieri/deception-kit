@@ -1,6 +1,7 @@
 package com.deceptionkit.yamlspecs.idprovider;
 
 import com.deceptionkit.model.Credential;
+import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
 
 public class CredentialSpecification {
 
@@ -11,12 +12,12 @@ public class CredentialSpecification {
         return type;
     }
 
-    public String getValue() {
-        return value;
-    }
-
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getValue() {
+        return value;
     }
 
     public void setValue(String value) {

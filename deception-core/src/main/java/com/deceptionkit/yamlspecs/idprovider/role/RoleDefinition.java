@@ -2,6 +2,7 @@ package com.deceptionkit.yamlspecs.idprovider.role;
 
 import com.deceptionkit.model.Role;
 import com.deceptionkit.yamlspecs.idprovider.ScopeSpecification;
+import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
 
 public class RoleDefinition {
 
@@ -13,6 +14,9 @@ public class RoleDefinition {
     }
 
     public void setName(String name) {
+        if (!ValidationUtils.validateGenericString(name)) {
+            throw new IllegalArgumentException("Invalid role name: " + name);
+        }
         this.name = name;
     }
 

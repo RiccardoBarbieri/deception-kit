@@ -1,6 +1,7 @@
 package com.deceptionkit.yamlspecs.idprovider.group;
 
 import com.deceptionkit.model.Group;
+import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,9 @@ public class GroupSpecification {
     }
 
     public void setDefinitions(List<GroupDefinition> definitions) {
+        if (!ValidationUtils.validatePositiveInteger(total)) {
+            throw new IllegalArgumentException("Invalid total: " + total);
+        }
         this.definitions = definitions;
     }
 

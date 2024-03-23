@@ -1,5 +1,7 @@
 package com.deceptionkit.yamlspecs.idprovider;
 
+import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
+
 public class ScopeSpecification {
 
     private String client;
@@ -10,6 +12,9 @@ public class ScopeSpecification {
     }
 
     public void setClient(String client) {
+        if (!ValidationUtils.validateGenericString(client)) {
+            throw new IllegalArgumentException("Invalid client name: " + client);
+        }
         this.client = client;
     }
 
@@ -18,6 +23,9 @@ public class ScopeSpecification {
     }
 
     public void setRealm(String realm) {
+        if (!ValidationUtils.validateGenericString(realm)) {
+            throw new IllegalArgumentException("Invalid realm name: " + realm);
+        }
         this.realm = realm;
     }
     

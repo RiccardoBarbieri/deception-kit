@@ -4,6 +4,7 @@ import com.deceptionkit.yamlspecs.idprovider.client.ClientSpecification;
 import com.deceptionkit.yamlspecs.idprovider.group.GroupSpecification;
 import com.deceptionkit.yamlspecs.idprovider.role.RoleSpecification;
 import com.deceptionkit.yamlspecs.idprovider.user.UserSpecification;
+import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
 
 public class IdProviderSpec {
 
@@ -17,8 +18,11 @@ public class IdProviderSpec {
         return domain;
     }
 
-    public void setDomain(String component) {
-        this.domain = component;
+    public void setDomain(String domain) {
+        if (!ValidationUtils.validateDomain(domain)) {
+            throw new IllegalArgumentException("Invalid domain: " + domain);
+        }
+        this.domain = domain;
     }
 
     public GroupSpecification getGroups() {
