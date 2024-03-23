@@ -11,7 +11,10 @@ import com.deceptionkit.model.Group;
 import com.deceptionkit.model.Role;
 import com.deceptionkit.model.User;
 import com.deceptionkit.spring.apiversion.ApiVersion;
+import com.deceptionkit.spring.exception.YamlFormatException;
+import com.deceptionkit.spring.response.ErrorResponse;
 import com.deceptionkit.spring.response.IllegalArgumentResponse;
+import com.deceptionkit.spring.yaml.YamlErrorMessageUtils;
 import com.deceptionkit.yamlspecs.idprovider.IdProviderDefinition;
 import com.deceptionkit.yamlspecs.idprovider.client.ClientDefinition;
 import com.deceptionkit.yamlspecs.idprovider.group.GroupDefinition;
@@ -26,6 +29,7 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.constructor.ConstructorException;
 import org.yaml.snakeyaml.representer.Representer;
 
 import java.util.*;
@@ -40,6 +44,12 @@ public class GenerationController {
 
     public GenerationController() {
         this.logger = org.slf4j.LoggerFactory.getLogger(GenerationController.class);
+    }
+
+    @PostMapping(value = "/idprovider/test", consumes = {"application/yaml", "application/yml", "text/yaml", "text/yml"}, produces = "application/json")
+    @ResponseBody
+    public Boolean testValidation(@RequestBody IdProviderDefinition idProviderDefinition) {
+        return true;
     }
 
     @PostMapping(value = "/idprovider/resources", consumes = {"application/yaml", "application/yml", "text/yaml", "text/yml"}, produces = "application/json")
@@ -229,9 +239,9 @@ public class GenerationController {
     @ExceptionHandler({java.lang.Exception.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public String handleException(java.lang.Exception e) {
+    public ErrorResponse handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return e.getMessage();
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
@@ -244,6 +254,18 @@ public class GenerationController {
                 e.getMessage(),
                 Objects.requireNonNull(e.getRequiredType()).getSimpleName(),
                 Objects.requireNonNull(e.getValue()).toString()
+        );
+    }
+
+    @ExceptionHandler({ConstructorException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorResponse handleException(ConstructorException e) {
+        logger.error("Exception: ", e);
+        String message = (new YamlErrorMessageUtils(e.getMessage()).getMessage());
+        return new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                message
         );
     }
 }
