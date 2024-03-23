@@ -15,7 +15,7 @@ plugins {
     id("java")
     id("org.springframework.boot") version "3.2.0"
     id("io.spring.dependency-management") version "1.1.4"
-	id("com.bmuschko.docker-spring-boot-application") version "9.3.2"
+    id("com.bmuschko.docker-spring-boot-application") version "9.3.2"
     id("application")
 }
 
@@ -45,7 +45,7 @@ dependencies {
     // Keycloak
     implementation("org.keycloak:keycloak-admin-client:15.0.2")
 
-	implementation("org.springframework.boot:spring-boot-starter-web:3.2.3")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.2.3")
     implementation("org.springframework.boot:spring-boot-starter:3.2.3")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.2.3")
     implementation("org.springframework.session:spring-session-core:3.2.1")
@@ -78,7 +78,9 @@ dependencies {
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
 
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.2.3")
 
+    implementation("commons-validator:commons-validator:1.8.0")
 }
 
 
