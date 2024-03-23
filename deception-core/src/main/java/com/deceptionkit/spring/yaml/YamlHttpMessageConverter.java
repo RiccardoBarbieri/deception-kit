@@ -1,5 +1,8 @@
 package com.deceptionkit.spring.yaml;
 
+import com.deceptionkit.spring.exception.YamlFormatException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -17,6 +20,9 @@ import java.io.OutputStreamWriter;
 
 @Component
 public class YamlHttpMessageConverter<T> extends AbstractHttpMessageConverter<T> {
+
+
+    private final Logger logger = LoggerFactory.getLogger(YamlHttpMessageConverter.class);
 
     public YamlHttpMessageConverter() {
         super(
@@ -36,7 +42,14 @@ public class YamlHttpMessageConverter<T> extends AbstractHttpMessageConverter<T>
     protected T readInternal(Class<? extends T> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
         Constructor baseConstructor = new Constructor(clazz, new LoaderOptions());
         Yaml parser = new Yaml(baseConstructor);
-        return parser.loadAs(inputMessage.getBody(), clazz);
+        T t = null;
+//        try {
+//            t = parser.loadAs(inputMessage.getBody(), clazz);
+//        } catch (Exception e) {
+//            throw new YamlFormatException(e.getMessage(), e);
+//        }
+        t = parser.loadAs(inputMessage.getBody(), clazz);
+        return t;
     }
 
     @Override
