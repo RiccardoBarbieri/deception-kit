@@ -11,7 +11,6 @@ import com.deceptionkit.model.Group;
 import com.deceptionkit.model.Role;
 import com.deceptionkit.model.User;
 import com.deceptionkit.spring.apiversion.ApiVersion;
-import com.deceptionkit.spring.exception.YamlFormatException;
 import com.deceptionkit.spring.response.ErrorResponse;
 import com.deceptionkit.spring.response.IllegalArgumentResponse;
 import com.deceptionkit.spring.yaml.YamlErrorMessageUtils;
@@ -241,7 +240,7 @@ public class GenerationController {
     @ResponseBody
     public ErrorResponse handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
@@ -249,12 +248,7 @@ public class GenerationController {
     @ResponseBody
     public IllegalArgumentResponse handleException(MethodArgumentTypeMismatchException e) {
         logger.error("Exception: ", e);
-        return new IllegalArgumentResponse(
-                e.getName(),
-                e.getMessage(),
-                Objects.requireNonNull(e.getRequiredType()).getSimpleName(),
-                Objects.requireNonNull(e.getValue()).toString()
-        );
+        return new IllegalArgumentResponse(e.getName(), e.getMessage(), Objects.requireNonNull(e.getRequiredType()).getSimpleName(), Objects.requireNonNull(e.getValue()).toString());
     }
 
     @ExceptionHandler({ConstructorException.class})
@@ -263,9 +257,6 @@ public class GenerationController {
     public ErrorResponse handleException(ConstructorException e) {
         logger.error("Exception: ", e);
         String message = (new YamlErrorMessageUtils(e.getMessage()).getMessage());
-        return new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                message
-        );
+        return new ErrorResponse(message);
     }
 }

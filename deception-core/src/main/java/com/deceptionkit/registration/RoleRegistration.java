@@ -49,18 +49,18 @@ public class RoleRegistration {
                 ClientResource clientRep = getClientResourceByName(keycloak.realm(realm).clients(), role.getClientName());
                 if (clientRep == null) {
                     logger.error("Client not found: " + role.getClientName());
-                    return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Client not found: " + role.getClientName()), HttpStatus.NOT_FOUND);
+                    return new ResponseEntity<>(new ErrorResponse("Client not found: " + role.getClientName()), HttpStatus.NOT_FOUND);
                 }
                 clientRep.roles().create(roleRep);
             } else if (role.isRealmRole()) {
                 keycloak.realm(realm).roles().create(roleRep);
             } else {
                 logger.error("Role type not specified: " + role.getName());
-                return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Role type not specified: " + role.getName()), HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(new ErrorResponse("Role type not specified: " + role.getName()), HttpStatus.BAD_REQUEST);
             }
         }
         logger.info("All roles registered");
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.CREATED.value(), roles.size() + "roles registered"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ErrorResponse(roles.size() + "roles registered"), HttpStatus.CREATED);
     }
 
     private ClientResource getClientResourceByName(ClientsResource clientsResource, String name) {
@@ -77,6 +77,6 @@ public class RoleRegistration {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

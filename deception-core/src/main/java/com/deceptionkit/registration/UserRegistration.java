@@ -66,20 +66,20 @@ public class UserRegistration {
                 logger.error("Failed to register user: " + u.getUsername());
                 logger.error("User: " + u.toString());
                 logger.error("Response: " + response.readEntity(String.class));
-                return new ResponseEntity<>(new ErrorResponse(response.getStatus(), "Failed to register user: " + u.getUsername()), HttpStatusCode.valueOf(response.getStatus()));
+                return new ResponseEntity<>(new ErrorResponse("Failed to register user: " + u.getUsername()), HttpStatusCode.valueOf(response.getStatus()));
             } else {
                 response.close();
             }
         }
         logger.info(responses.size() + " users registered");
 
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.CREATED.value(), responses.size() + " users registered"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ErrorResponse(responses.size() + " users registered"), HttpStatus.CREATED);
     }
 
     @ExceptionHandler(java.lang.Exception.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

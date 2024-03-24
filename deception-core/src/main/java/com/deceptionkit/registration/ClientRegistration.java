@@ -78,7 +78,7 @@ public class ClientRegistration {
                 logger.error("Error creating client: " + c.getClientId());
                 logger.error("Client" + c.toString());
                 logger.error("Response: " + response.readEntity(String.class));
-                return new ResponseEntity<>(new ErrorResponse(response.getStatus(), response.getStatusInfo().toString()), HttpStatus.valueOf(response.getStatus()));
+                return new ResponseEntity<>(new ErrorResponse(response.getStatusInfo().toString()), HttpStatus.valueOf(response.getStatus()));
             } else {
                 response.close();
             }
@@ -93,7 +93,7 @@ public class ClientRegistration {
 //            }
             logger.info(responses.size() + " clients registered");
         }
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.CREATED.value(), responses.size() + " clients registered"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ErrorResponse(responses.size() + " clients registered"), HttpStatus.CREATED);
     }
 
     private ClientResource getClientResourceByName(ClientsResource clientsResource, String name) {
@@ -110,6 +110,6 @@ public class ClientRegistration {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

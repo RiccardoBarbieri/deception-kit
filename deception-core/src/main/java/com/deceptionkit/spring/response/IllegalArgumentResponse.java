@@ -1,13 +1,14 @@
 package com.deceptionkit.spring.response;
 
-public class IllegalArgumentResponse {
+public class IllegalArgumentResponse extends ErrorResponse {
 
     String parameter;
     String message;
     String requiredType;
     String providedValue;
 
-    public IllegalArgumentResponse(String parameter, String message, String requiredType, String providedValue) {
+    public IllegalArgumentResponse(String message, String parameter, String requiredType, String providedValue) {
+        super(message);
         this.parameter = parameter;
         this.message = message;
         this.requiredType = requiredType;

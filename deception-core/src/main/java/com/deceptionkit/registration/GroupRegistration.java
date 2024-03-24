@@ -76,14 +76,14 @@ public class GroupRegistration {
                 logger.error("Error creating group: " + g.getName());
                 logger.error("Group: " + g.toString());
                 logger.error("Response: " + response.readEntity(String.class));
-                return new ResponseEntity<>(new ErrorResponse(response.getStatus(), response.getStatusInfo().toString()), HttpStatus.valueOf(response.getStatus()));
+                return new ResponseEntity<>(new ErrorResponse(response.getStatusInfo().toString()), HttpStatus.valueOf(response.getStatus()));
             } else {
                 response.close();
             }
         }
         logger.info(responses.size() + " groups registered");
 
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.CREATED.value(), responses.size() + " groups registered"), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ErrorResponse(responses.size() + " groups registered"), HttpStatus.CREATED);
 
     }
 
@@ -91,6 +91,6 @@ public class GroupRegistration {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
