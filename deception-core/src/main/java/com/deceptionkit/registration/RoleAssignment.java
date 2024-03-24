@@ -43,7 +43,7 @@ public class RoleAssignment {
             GroupResource groupRes = getGroupResourceByName(groupsResource, groupName);
             if (groupRes == null) {
                 logger.error("Group not found: " + groupName);
-                return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Group not found: " + groupName), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(new ErrorResponse("Group not found: " + groupName), HttpStatus.NOT_FOUND);
             }
             for (Role role : roles) {
                 if (role.isRealmRole()) {
@@ -53,7 +53,7 @@ public class RoleAssignment {
                     ClientResource clientRes = getClientResourceByName(keycloak.realm(realm).clients(), role.getClientName());
                     if (clientRes == null) {
                         logger.error("Client not found: " + role.getClientName());
-                        return new ResponseEntity<>(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Client not found: " + role.getClientName()), HttpStatus.NOT_FOUND);
+                        return new ResponseEntity<>(new ErrorResponse("Client not found: " + role.getClientName()), HttpStatus.NOT_FOUND);
                     }
                     ClientRepresentation clientRep = clientRes.toRepresentation();
                     RoleRepresentation roleRep = keycloak.realm(realm).clients().get(clientRep.getId()).roles().get(role.getName()).toRepresentation();
@@ -63,7 +63,7 @@ public class RoleAssignment {
         }
         logger.info("All roles assigned");
 
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.OK.value(), "Roles assigned"), HttpStatus.OK);
+        return new ResponseEntity<>(new ErrorResponse("Roles assigned"), HttpStatus.OK);
     }
 
     private UserResource getUserResourceByEmail(UsersResource usersResource, String email) {
@@ -100,6 +100,6 @@ public class RoleAssignment {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleException(java.lang.Exception e) {
         logger.error("Exception: ", e);
-        return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }
