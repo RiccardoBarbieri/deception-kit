@@ -1,6 +1,7 @@
-package com.deceptionkit.mockaroo.model;
+package com.deceptionkit.mockaroo.model.idprovider;
 
 import com.deceptionkit.mockaroo.MockarooApi;
+import com.deceptionkit.mockaroo.model.BaseMock;
 import com.deceptionkit.model.Credential;
 import com.deceptionkit.model.User;
 import com.fasterxml.jackson.databind.JsonNode;

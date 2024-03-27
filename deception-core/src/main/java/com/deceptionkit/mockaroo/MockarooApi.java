@@ -1,10 +1,9 @@
 package com.deceptionkit.mockaroo;
 
-import com.deceptionkit.mockaroo.model.UserMock;
+import com.deceptionkit.mockaroo.model.idprovider.UserMock;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
