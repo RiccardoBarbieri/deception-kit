@@ -72,13 +72,16 @@ dependencies {
 //    testImplementation("org.springframework.boot:spring-boot-starter-test")
 //    testImplementation("org.springframework.security:spring-security-test")
 
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.2.3")
+
+    implementation("org.springframework.boot:spring-boot-starter-webflux:3.2.3")
+
     implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
 
     implementation("com.fasterxml.jackson.core:jackson-core:2.16.0")
-
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.17.0")
 
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb:3.2.3")
 
     implementation("commons-validator:commons-validator:1.8.0")
 }
