@@ -1,7 +1,7 @@
 package com.deceptionkit.mockaroo;
 
-import com.deceptionkit.mockaroo.model.GroupMock;
-import com.deceptionkit.mockaroo.model.UserMock;
+import com.deceptionkit.mockaroo.model.idprovider.GroupMock;
+import com.deceptionkit.mockaroo.model.idprovider.UserMock;
 import com.deceptionkit.model.Group;
 import com.deceptionkit.model.User;
 

@@ -1,6 +1,5 @@
-package com.deceptionkit.spring.yaml;
+package com.deceptionkit.spring.converters;
 
-import com.deceptionkit.spring.exception.YamlFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpInputMessage;
