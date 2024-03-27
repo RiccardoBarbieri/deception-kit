@@ -43,11 +43,6 @@ public class YamlHttpMessageConverter<T> extends AbstractHttpMessageConverter<T>
         Constructor baseConstructor = new Constructor(clazz, new LoaderOptions());
         Yaml parser = new Yaml(baseConstructor);
         T t = null;
-//        try {
-//            t = parser.loadAs(inputMessage.getBody(), clazz);
-//        } catch (Exception e) {
-//            throw new YamlFormatException(e.getMessage(), e);
-//        }
         t = parser.loadAs(inputMessage.getBody(), clazz);
         return t;
     }
