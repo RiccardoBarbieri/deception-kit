@@ -7,6 +7,8 @@ import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
+import java.util.List;
+
 @HttpExchange(url = "/api")
 public interface MockarooService {
 
@@ -15,6 +17,6 @@ public interface MockarooService {
     String getTypes();
 
     @PostExchange(value = "/datasets/{name}", accept = {"text/csv", "text/plain"})
-    String createDataset(@PathVariable("name") String name, @RequestParam(value = "filename", required = false) String filename, @RequestBody String test);
+    String createDataset(@PathVariable("name") String name, @RequestParam(value = "filename", required = false) String filename, @RequestBody List<Object> test);
 
 }

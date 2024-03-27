@@ -14,6 +14,7 @@ import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractGenericHttpMessageConverter;
 
+import javax.activation.MimeType;
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -83,7 +84,7 @@ public final class DelimiterSeparatedValueHttpMessageConverter extends AbstractG
      * TSV files.
      */
     public static DelimiterSeparatedValueHttpMessageConverter csv(final CsvMapper csvMapper) {
-        return new DelimiterSeparatedValueHttpMessageConverter(ImmutableSet.of(new MediaType("text/csv")), ',', true, csvMapper);
+        return new DelimiterSeparatedValueHttpMessageConverter(ImmutableSet.of(new MediaType("text", "csv"), MediaType.TEXT_PLAIN), ',', true, csvMapper);
     }
 
     /**
