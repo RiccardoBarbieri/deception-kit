@@ -19,6 +19,7 @@ import com.deceptionkit.yamlspecs.idprovider.client.ClientDefinition;
 import com.deceptionkit.yamlspecs.idprovider.group.GroupDefinition;
 import com.deceptionkit.yamlspecs.idprovider.role.RoleDefinition;
 import com.deceptionkit.yamlspecs.idprovider.user.UserDefinition;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -29,8 +30,10 @@ import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.constructor.ConstructorException;
+import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
+import java.io.OutputStreamWriter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,12 +46,6 @@ public class GenerationController {
 
     public GenerationController() {
         this.logger = org.slf4j.LoggerFactory.getLogger(GenerationController.class);
-    }
-
-    @PostMapping(value = "/idprovider/test", consumes = {"application/yaml", "application/yml", "text/yaml", "text/yml"}, produces = "application/json")
-    @ResponseBody
-    public Boolean testValidation(@RequestBody IdProviderDefinition idProviderDefinition) {
-        return true;
     }
 
     @PostMapping(value = "/idprovider/resources", consumes = {"application/yaml", "application/yml", "text/yaml", "text/yml"}, produces = "application/json")

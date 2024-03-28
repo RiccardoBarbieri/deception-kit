@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @Component
@@ -48,6 +49,12 @@ public class TldUpdateSchedule {
 
         List<Tld> recentTlds = getRecentTlds();
         logger.debug("Recent TLDs: " + recentTlds.size());
+        tldRepository.findAll().forEach(tld -> {
+            if (!recentTlds.contains(tld)) {
+                logger.debug("Detected missing TLD: " + tld.getTld() + ", removing");
+                tldRepository.delete(tld);
+            }
+        });
         recentTlds.forEach(tld -> {
             if (!tldRepository.existsByTld(tld.getTld())) {
                 logger.debug("Adding TLD: " + tld.getTld());
