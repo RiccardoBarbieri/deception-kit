@@ -15,6 +15,7 @@ import java.util.Arrays;
 public class DefaultsProvider {
 
 //    private static final String DEFAULTS_FILE = "./resources/client_default.json";
+    @Value("${client.default.file}")
     private static final String DEFAULTS_FILE = "./src/main/resources/client_default.json";
 
 
