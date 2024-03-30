@@ -110,10 +110,10 @@ tasks.register<Copy>("propcopy") {
 
 
 tasks.register<Dockerfile>("createDockerfile") {
-    mustRunAfter("propcopy")
+//    mustRunAfter("propcopy")
     mustRunAfter("bootDistTar")
     dependsOn("bootDistTar")
-    dependsOn("propcopy")
+//    dependsOn("propcopy")
     group = "unibobootdocker"
     description = "Create Dockerfile"
 
@@ -127,6 +127,8 @@ tasks.register<Dockerfile>("createDockerfile") {
         workingDir(inputTarFile.asFile.name.removeSuffix(".tar") + "/bin")
         instruction("RUN mkdir resources")
         copyFile("./src/main/resources/*.json", "./resources/")
+        val DECEPTION_CORE_OPTS = "-Dspring.profiles.active=${properties["activeProfile"]}"
+        environmentVariable("DECEPTION_CORE_OPTS", DECEPTION_CORE_OPTS)
         defaultCommand("bash", "./" + project.name)
     }
 }
