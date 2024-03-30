@@ -11,6 +11,7 @@ public class DockerfileBuilder {
     List<String> lines;
 
     public DockerfileBuilder() {
+        this.lines = new java.util.ArrayList<>();
     }
 
     public DockerfileBuilder(List<String> lines) {
