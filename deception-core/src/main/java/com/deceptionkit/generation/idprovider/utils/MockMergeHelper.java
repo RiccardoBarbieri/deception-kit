@@ -1,4 +1,4 @@
-package com.deceptionkit.generation.utils;
+package com.deceptionkit.generation.idprovider.utils;
 
 import com.deceptionkit.model.idprovider.Group;
 import com.deceptionkit.model.idprovider.Role;

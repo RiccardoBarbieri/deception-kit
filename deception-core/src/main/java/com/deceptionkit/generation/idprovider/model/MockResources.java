@@ -1,4 +1,4 @@
-package com.deceptionkit.generation.model;
+package com.deceptionkit.generation.idprovider.model;
 
 
 import com.deceptionkit.model.idprovider.Client;

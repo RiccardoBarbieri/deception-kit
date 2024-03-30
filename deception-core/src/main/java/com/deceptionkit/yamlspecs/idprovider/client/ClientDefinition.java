@@ -1,6 +1,6 @@
 package com.deceptionkit.yamlspecs.idprovider.client;
 
-import com.deceptionkit.generation.utils.DefaultsProvider;
+import com.deceptionkit.generation.idprovider.utils.DefaultsProvider;
 import com.deceptionkit.model.idprovider.Client;
 import com.deceptionkit.model.idprovider.Role;
 import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;

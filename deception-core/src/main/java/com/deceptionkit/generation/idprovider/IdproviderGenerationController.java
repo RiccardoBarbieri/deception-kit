@@ -1,10 +1,10 @@
-package com.deceptionkit.generation;
+package com.deceptionkit.generation.idprovider;
 
 import com.deceptionkit.dockerfile.DockerfileBuilder;
 import com.deceptionkit.dockerfile.commands.CommandBuilder;
 import com.deceptionkit.dockerfile.options.CommandOptionsBuilder;
-import com.deceptionkit.generation.model.MockResources;
-import com.deceptionkit.generation.utils.MockMergeHelper;
+import com.deceptionkit.generation.idprovider.model.MockResources;
+import com.deceptionkit.generation.idprovider.utils.MockMergeHelper;
 import com.deceptionkit.mockaroo.MockFactory;
 import com.deceptionkit.model.idprovider.Client;
 import com.deceptionkit.model.idprovider.Group;
@@ -37,12 +37,12 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/generation")
 @ApiVersion(value = {"1", "1.1"})
-public class GenerationController {
+public class IdproviderGenerationController {
 
     private final Logger logger;
 
-    public GenerationController() {
-        this.logger = org.slf4j.LoggerFactory.getLogger(GenerationController.class);
+    public IdproviderGenerationController() {
+        this.logger = org.slf4j.LoggerFactory.getLogger(IdproviderGenerationController.class);
     }
 
     @PostMapping(value = "/idprovider/resources", consumes = {"application/yaml", "application/yml", "text/yaml", "text/yml"}, produces = "application/json")

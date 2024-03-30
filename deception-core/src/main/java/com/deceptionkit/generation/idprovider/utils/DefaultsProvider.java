@@ -1,15 +1,13 @@
-package com.deceptionkit.generation.utils;
+package com.deceptionkit.generation.idprovider.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 @Component
 public class DefaultsProvider {
