@@ -1,6 +1,6 @@
 package com.deceptionkit.yamlspecs.idprovider.role;
 
-import com.deceptionkit.model.Role;
+import com.deceptionkit.model.idprovider.Role;
 
 import java.util.ArrayList;
 import java.util.List;

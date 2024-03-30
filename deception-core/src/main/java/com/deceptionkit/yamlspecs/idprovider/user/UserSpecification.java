@@ -1,6 +1,6 @@
 package com.deceptionkit.yamlspecs.idprovider.user;
 
-import com.deceptionkit.model.User;
+import com.deceptionkit.model.idprovider.User;
 import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
 
 import java.util.ArrayList;

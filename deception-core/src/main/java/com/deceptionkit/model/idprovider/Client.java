@@ -1,4 +1,4 @@
-package com.deceptionkit.model;
+package com.deceptionkit.model.idprovider;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -1,7 +1,6 @@
 package com.deceptionkit.yamlspecs.idprovider;
 
-import com.deceptionkit.model.Credential;
-import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
+import com.deceptionkit.model.idprovider.Credential;
 
 public class CredentialSpecification {
 

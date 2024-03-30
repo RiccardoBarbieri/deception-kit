@@ -1,7 +1,7 @@
 package com.deceptionkit.yamlspecs.idprovider.client;
 
-import com.deceptionkit.model.Client;
-import com.deceptionkit.model.Role;
+import com.deceptionkit.model.idprovider.Client;
+import com.deceptionkit.model.idprovider.Role;
 import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package com.deceptionkit.mockaroo.model.idprovider;
 
 import com.deceptionkit.mockaroo.MockarooApi;
 import com.deceptionkit.mockaroo.model.BaseMock;
-import com.deceptionkit.model.Group;
+import com.deceptionkit.model.idprovider.Group;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;

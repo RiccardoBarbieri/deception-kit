@@ -1,6 +1,6 @@
 package com.deceptionkit.registration;
 
-import com.deceptionkit.model.Role;
+import com.deceptionkit.model.idprovider.Role;
 import com.deceptionkit.spring.apiversion.ApiVersion;
 import com.deceptionkit.spring.response.ErrorResponse;
 import org.keycloak.admin.client.Keycloak;

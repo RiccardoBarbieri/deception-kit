@@ -1,6 +1,6 @@
 package com.deceptionkit.yamlspecs.idprovider.role;
 
-import com.deceptionkit.model.Role;
+import com.deceptionkit.model.idprovider.Role;
 import com.deceptionkit.yamlspecs.idprovider.ScopeSpecification;
 import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
 

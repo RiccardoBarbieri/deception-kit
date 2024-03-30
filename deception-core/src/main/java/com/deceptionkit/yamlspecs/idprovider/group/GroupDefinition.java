@@ -1,6 +1,6 @@
 package com.deceptionkit.yamlspecs.idprovider.group;
 
-import com.deceptionkit.model.Group;
+import com.deceptionkit.model.idprovider.Group;
 import com.deceptionkit.yamlspecs.utils.validation.ValidationUtils;
 
 import java.util.List;

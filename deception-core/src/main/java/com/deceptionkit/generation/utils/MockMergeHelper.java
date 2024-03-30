@@ -1,8 +1,8 @@
 package com.deceptionkit.generation.utils;
 
-import com.deceptionkit.model.Group;
-import com.deceptionkit.model.Role;
-import com.deceptionkit.model.User;
+import com.deceptionkit.model.idprovider.Group;
+import com.deceptionkit.model.idprovider.Role;
+import com.deceptionkit.model.idprovider.User;
 
 import java.util.ArrayList;
 import java.util.List;

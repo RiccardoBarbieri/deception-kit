@@ -1,7 +1,10 @@
 package com.deceptionkit.generation.model;
 
 
-import com.deceptionkit.model.*;
+import com.deceptionkit.model.idprovider.Client;
+import com.deceptionkit.model.idprovider.Group;
+import com.deceptionkit.model.idprovider.Role;
+import com.deceptionkit.model.idprovider.User;
 
 import java.util.List;
 
