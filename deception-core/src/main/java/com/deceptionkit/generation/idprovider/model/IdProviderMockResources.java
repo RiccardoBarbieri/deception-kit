@@ -8,21 +8,21 @@ import com.deceptionkit.model.idprovider.User;
 
 import java.util.List;
 
-public class MockResources {
+public class IdProviderMockResources {
 
     public List<User> users;
     public List<Group> groups;
     public List<Role> roles;
     public List<Client> clients;
 
-    public MockResources(List<User> users, List<Group> groups, List<Role> roles, List<Client> clients) {
+    public IdProviderMockResources(List<User> users, List<Group> groups, List<Role> roles, List<Client> clients) {
         this.users = users;
         this.groups = groups;
         this.roles = roles;
         this.clients = clients;
     }
 
-    public MockResources() {
+    public IdProviderMockResources() {
         this.users = null;
         this.groups = null;
         this.roles = null;

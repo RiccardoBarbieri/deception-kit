@@ -1,4 +1,4 @@
-package com.deceptionkit.registration;
+package com.deceptionkit.registration.idprovider;
 
 import com.deceptionkit.model.idprovider.Group;
 import com.deceptionkit.spring.apiversion.ApiVersion;

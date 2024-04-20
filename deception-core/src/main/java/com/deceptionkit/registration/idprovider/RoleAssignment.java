@@ -1,4 +1,4 @@
-package com.deceptionkit.registration;
+package com.deceptionkit.registration.idprovider;
 
 import com.deceptionkit.model.idprovider.Role;
 import com.deceptionkit.model.idprovider.RoleMap;

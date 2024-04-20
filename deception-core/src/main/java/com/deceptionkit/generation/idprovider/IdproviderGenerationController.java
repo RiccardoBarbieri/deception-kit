@@ -3,7 +3,7 @@ package com.deceptionkit.generation.idprovider;
 import com.deceptionkit.dockerfile.DockerfileBuilder;
 import com.deceptionkit.dockerfile.commands.CommandBuilder;
 import com.deceptionkit.dockerfile.options.CommandOptionsBuilder;
-import com.deceptionkit.generation.idprovider.model.MockResources;
+import com.deceptionkit.generation.idprovider.model.IdProviderMockResources;
 import com.deceptionkit.generation.idprovider.utils.MockMergeHelper;
 import com.deceptionkit.mockaroo.MockFactory;
 import com.deceptionkit.model.idprovider.Client;
@@ -35,7 +35,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/generation")
+@RequestMapping("/generation/idprovider")
 @ApiVersion(value = {"1", "1.1"})
 public class IdproviderGenerationController {
 
@@ -45,9 +45,9 @@ public class IdproviderGenerationController {
         this.logger = org.slf4j.LoggerFactory.getLogger(IdproviderGenerationController.class);
     }
 
-    @PostMapping(value = "/idprovider/resources", consumes = {"application/yaml", "application/yml", "text/yaml", "text/yml"}, produces = "application/json")
+    @PostMapping(value = "/resources", consumes = {"application/yaml", "application/yml", "text/yaml", "text/yml"}, produces = "application/json")
     @ResponseBody
-    public MockResources generateIdProviderResources(@RequestBody IdProviderDefinition idProviderDefinition) {
+    public IdProviderMockResources generateIdProviderResources(@RequestBody IdProviderDefinition idProviderDefinition) {
 
         Integer totalGroups = idProviderDefinition.getSpecification().getGroups().getTotal();
         Integer totalUsers = idProviderDefinition.getSpecification().getUsers().getTotal();
@@ -91,7 +91,7 @@ public class IdproviderGenerationController {
 
         allGroups = MockMergeHelper.assignRoles(allGroups, allRoles);
 
-        MockResources mockResources = new MockResources();
+        IdProviderMockResources mockResources = new IdProviderMockResources();
         mockResources.setGroups(allGroups);
         mockResources.setUsers(allUsers);
         mockResources.setClients(allClients);
@@ -169,7 +169,7 @@ public class IdproviderGenerationController {
         return new Yaml(baseConstructor, new Representer(options), options);
     }
 
-    @GetMapping(value = "/idprovider/dockerfile", produces = "text/plain")
+    @GetMapping(value = "/dockerfile", produces = "text/plain")
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public String generateDockerfile(

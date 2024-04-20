@@ -1,4 +1,4 @@
-package com.deceptionkit.registration;
+package com.deceptionkit.registration.idprovider;
 
 import com.deceptionkit.model.idprovider.Credential;
 import com.deceptionkit.model.idprovider.User;
