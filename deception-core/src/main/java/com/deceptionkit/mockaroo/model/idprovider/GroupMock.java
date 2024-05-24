@@ -25,7 +25,7 @@ public class GroupMock extends BaseMock<Group> {
     @Override
     public List<Group> getMocks(MockarooApi api, int count) {
         List<Group> groups = new ArrayList<>();
-        ArrayNode jsonGroups = api.genMock(this.getSchema(), count);
+        ArrayNode jsonGroups = api.genMockJson(this.getSchema(), count);
         for (int i = 0; i < count; i++) {
             Group group = new Group();
             group.setName(jsonGroups.get(i).get("name").asText());

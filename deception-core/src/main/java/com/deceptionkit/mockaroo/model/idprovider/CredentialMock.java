@@ -31,7 +31,7 @@ public class CredentialMock extends BaseMock<Credential> {
     @Override
     public List<Credential> getMocks(MockarooApi api, int count) {
         List<Credential> credentials = new ArrayList<Credential>();
-        ArrayNode jsonCredentials = api.genMock(this.getSchema(), count);
+        ArrayNode jsonCredentials = api.genMockJson(this.getSchema(), count);
         for (JsonNode obj : jsonCredentials) {
             Credential credential = new Credential();
             credential.setType(Credential.PASSWORD);
