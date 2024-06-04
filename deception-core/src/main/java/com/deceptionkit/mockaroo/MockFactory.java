@@ -1,5 +1,6 @@
 package com.deceptionkit.mockaroo;
 
+import com.deceptionkit.mockaroo.model.database.GenericMockSql;
 import com.deceptionkit.mockaroo.model.idprovider.GroupMock;
 import com.deceptionkit.mockaroo.model.idprovider.UserMock;
 import com.deceptionkit.mockaroo.utils.TableRequestBuilder;
@@ -26,6 +27,11 @@ public class MockFactory {
     public static List<User> getUsers(int count, int credentialsCount, String domain) {
         UserMock userMock = new UserMock(credentialsCount, domain);
         return userMock.getMocks(api, count);
+    }
+
+    public static List<String> getMockSql(ArrayNode schema, int count, String tableName) {
+        GenericMockSql genericMockSql = new GenericMockSql(schema, tableName);
+        return genericMockSql.getMocks(api, count);
     }
 
     public static ArrayNode getTableTypes(String prompt, int fieldsCount) {
