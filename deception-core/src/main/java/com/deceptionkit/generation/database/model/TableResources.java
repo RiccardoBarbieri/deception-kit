@@ -6,7 +6,7 @@ public class TableResources {
 
     private String databaseName;
     private String tableName;
-    private String tableDefinition;
+    private String tableCreateStm;
     private List<String> inserts;
 
     public String getDatabaseName() {
@@ -25,12 +25,12 @@ public class TableResources {
         this.tableName = tableName;
     }
 
-    public String getTableDefinition() {
-        return tableDefinition;
+    public String getTableCreateStm() {
+        return tableCreateStm;
     }
 
-    public void setTableDefinition(String tableDefinition) {
-        this.tableDefinition = tableDefinition;
+    public void setTableCreateStm(String tableCreateStm) {
+        this.tableCreateStm = tableCreateStm;
     }
 
     public List<String> getInserts() {
