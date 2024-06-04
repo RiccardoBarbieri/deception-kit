@@ -28,16 +28,13 @@ specification:
     main_user:
       username: main_user
       password: password
-#      databases:
-#        - name: flight_db
-#          permissions:
-#            - read
-#            - write
     definitions:
       - username: user1
         password: password1
         databases:
           - name: flight_db
             permissions:
-              - read
-              - write
+              - select
+              - insert
+              - delete
+              - update
