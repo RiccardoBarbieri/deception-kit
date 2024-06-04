@@ -17,7 +17,13 @@ public class DomainValidationUtils {
 
     public Boolean idDomainValid(String domain) {
         String tld = domain.substring(domain.lastIndexOf(".") + 1).toLowerCase();
-        Boolean tldValid = tldRepository.existsByTld(tld);
+        Boolean tldValid = null;
+        try {
+            tldValid = tldRepository.existsByTld(tld);
+        } catch (Exception e) {
+            logger.debug("TldRepository not available, skipping validation for: {}", tld);
+            return true;
+        }
         Boolean domainValid = domainValid(domain.toLowerCase());
         logger.debug("Validating domain: {} | TLD: {}, Domain: {}", domain, tldValid, domainValid);
         return tldValid && domainValid;
