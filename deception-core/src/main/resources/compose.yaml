@@ -4,6 +4,6 @@ services:
     container_name: deception-core
     image: riccardoob/deception-core
     ports:
-      - 8015:8015
+      - "8015:8015"
     environment:
       - MOCKAROO_API_KEY=${MOCKAROO_API_KEY}
