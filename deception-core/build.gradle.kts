@@ -84,6 +84,8 @@ dependencies {
 
 
     implementation("commons-validator:commons-validator:1.8.0")
+
+    implementation("com.github.jsqlparser:jsqlparser:4.9")
 }
 
 

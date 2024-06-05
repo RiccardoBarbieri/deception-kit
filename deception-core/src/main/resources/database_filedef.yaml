@@ -1,0 +1,40 @@
+component: "database"
+specification:
+  connection:
+    host: localhost
+    port: 8500
+    username: main_user
+    password: password
+  databases:
+    definitions:
+      - name: flight_db
+      - name: customer_db
+  tables:
+    min_columns_per_table: 5
+    max_columns_per_table: 10
+    min_rows_per_table: 5
+    max_rows_per_table: 10
+    definitions:
+      - name: "flight_schedule"
+        prompt: "Flight Schedule"
+        database: "flight_db"
+      - name: "flight_booking"
+        prompt: "Flight Booking"
+        database: "flight_db"
+      - name: "passengers"
+        prompt: "Flight Passengers"
+        database: "customer_db"
+  users:
+    main_user:
+      username: main_user
+      password: password
+    definitions:
+      - username: user1
+        password: password1
+        databases:
+          - name: flight_db
+            permissions:
+              - select
+              - insert
+              - delete
+              - update

@@ -1,0 +1,99 @@
+components:
+  - !idprovider
+    component: "idprovider"
+    specification:
+      domain: "localhost.com"
+      groups:
+        total: 5
+        definitions:
+          - name: group1
+            roles:
+              - role2
+          - name: group2
+            roles:
+              - role1
+      users:
+        total: 10
+        groups_per_user: 2
+        credentials_per_user: 1
+        definitions:
+          - username: user1
+            firstname: User 1
+            lastname: Lastname 1
+            email: user1@localhost.com
+            enabled: true
+            groups:
+              - group1
+              - group2
+            credentials:
+              - type: password
+                value: password
+      clients:
+        roles_per_client: 2
+        definitions:
+          - id: client1
+            name: "Client 1"
+            description: "Client 1"
+            rootUrl: "http://localhost:8080"
+            adminUrl: "http://localhost:8080"
+            redirectUris:
+              - "http://localhost:8080"
+            baseUrl: "http://localhost:8080"
+            protocol: "openid-connect"
+            authenticatorType: "client-secret"
+            standardFlowEnabled: true,
+            implicitFlowEnabled: false,
+            directAccessGrantsEnabled: true,
+            roles:
+              - role1
+              - role3
+      roles:
+        definitions:
+          - name: role1
+            scope:
+              client: client1
+          - name: role2
+            scope:
+              realm: master
+          - name: role3
+            scope:
+              client: client1
+  - !database
+    component: "database"
+    specification:
+      connection:
+        host: localhost
+        port: 8500
+        username: main_user
+        password: password
+      databases:
+        definitions:
+          - name: flight_db
+          - name: customer_db
+      tables:
+        min_columns_per_table: 5
+        max_columns_per_table: 15
+        min_rows_per_table: 10
+        max_rows_per_table: 50
+        definitions:
+          - name: "flight_schedule"
+            prompt: "Flight Schedule"
+            database: "flight_db"
+          - name: "flight_booking"
+            prompt: "Flight Booking"
+            database: "flight_db"
+          - name: "passengers"
+            prompt: "Flight Passengers"
+            database: "customer_db"
+      users:
+        main_user:
+          - username: main_user
+            password: password
+        definitions:
+          - username: user1
+            password: password1
+            databases:
+              - name: flight_db
+                permissions:
+                  - read
+                  - write

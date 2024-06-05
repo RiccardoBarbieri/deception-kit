@@ -58,8 +58,8 @@ public class UserMock extends BaseMock<User> {
     @Override
     public List<User> getMocks(MockarooApi api, int count) {
         List<User> users = new ArrayList<>();
-        ArrayNode jsonUsers = api.genMock(this.schema, count);
-        ArrayNode jsonCredentials = api.genMock(new CredentialMock().getSchema(), count * credentialsPerUser);
+        ArrayNode jsonUsers = api.genMockJson(this.schema, count);
+        ArrayNode jsonCredentials = api.genMockJson(new CredentialMock().getSchema(), count * credentialsPerUser);
         for (JsonNode obj : jsonUsers) {
             User user = new User();
             user.setFirstName(obj.get("firstName").asText());
