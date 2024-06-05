@@ -16,6 +16,9 @@ import com.deceptionkit.yamlspecs.database.databases.DatabasesDefinition;
 import com.deceptionkit.yamlspecs.database.table.TableDefinition;
 import com.deceptionkit.yamlspecs.database.user.AccessibleDatabases;
 import com.deceptionkit.yamlspecs.database.user.UserDefinition;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +90,7 @@ public class DatabaseGenerationController {
             int numRow = RandomUtils.generateRandomNumber(minRows, maxRows);
 
             ArrayNode columnSchema = MockFactory.getTableTypes(tableDefinition.getPrompt(), numCols);
+
             String tableCreateStm = MockFactory.getTableDefinition(columnSchema, tableDefinition.getName());
 
             List<String> inserts = MockFactory.getMockSql(columnSchema, numRow, tableDefinition.getName());
@@ -121,6 +125,7 @@ public class DatabaseGenerationController {
             for (AccessibleDatabases accDb : userDefinition.getDatabases()) {
                 List<String> permissions = accDb.getPermissions();
                 String grantPrivileges = SqlStatementUtils.getGrantPrivilegesStatement(username, accDb.getName(), permissions);
+                grantPrivilegesStm.add(grantPrivileges);
             }
 
             UserResources userResource = new UserResources();
@@ -156,23 +161,6 @@ public class DatabaseGenerationController {
 
 
         return builder.build();
-    }
-
-    @ExceptionHandler({java.lang.Exception.class})
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public ErrorResponse handleException(java.lang.Exception e) {
-        logger.error("Exception: ", e);
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler({ConstructorException.class})
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public ErrorResponse handleException(ConstructorException e) {
-        logger.error("Exception: ", e);
-        String message = (new YamlErrorMessageUtils(e.getMessage()).getMessage());
-        return new ErrorResponse(message);
     }
 
 }
