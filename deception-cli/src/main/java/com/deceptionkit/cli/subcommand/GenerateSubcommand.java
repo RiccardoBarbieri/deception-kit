@@ -1,6 +1,7 @@
 package com.deceptionkit.cli.subcommand;
 
 import com.deceptionkit.cli.docker.DockerUtils;
+import com.deceptionkit.cli.logic.DatabaseLogic;
 import com.deceptionkit.cli.logic.IdProviderLogic;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +12,8 @@ import picocli.CommandLine.Command;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 @Command(name = "generate",
         description = "Generate a new deception component",
@@ -19,18 +22,116 @@ import java.io.FileOutputStream;
         mixinStandardHelpOptions = true)
 public class GenerateSubcommand implements Runnable {
 
-    @CommandLine.Option(names = {"-c", "--component"},
-            description = "The component to generate",
-            required = true)
-    private String component;
+    @CommandLine.ArgGroup(exclusive = false, multiplicity = "1..*")
+    List<ComponentSpec> componentSpec;
 
-    @CommandLine.Option(names = {"-d", "--definition"},
-            description = "The definition of the component",
-            required = true)
-    private File definitionFile;
+    private void databaseGeneration(String component, File definitionFile) {
+        System.out.println("Generating " + component + "\nfrom " + definitionFile.getAbsolutePath());
 
-    @Override
-    public void run() {
+        DatabaseLogic databaseLogic = new DatabaseLogic();
+
+
+        ArrayNode databases = (ArrayNode) databaseLogic.generateDatabases(definitionFile);
+
+        ArrayNode tables = (ArrayNode) databaseLogic.generateTables(definitionFile);
+
+        ArrayNode users = (ArrayNode) databaseLogic.generateUsers(definitionFile);
+
+        String dockerfile = databaseLogic.generateDockerfile(definitionFile);
+
+
+        if (databases == null) {
+            System.exit(1);
+        }
+        if (tables == null) {
+            System.exit(1);
+        }
+        if (users == null) {
+            System.exit(1);
+        }
+
+
+        List<String> databaseSqlFileLines = new ArrayList<>();
+        for (JsonNode database : databases) {
+            databaseSqlFileLines.add(database.get("createDatabaseStm").asText());
+        }
+
+
+        List<String> tableSqlFileLines = new ArrayList<>();
+        for (JsonNode table : tables) {
+            tableSqlFileLines.add("\\c " + table.get("databaseName").asText() + ";");
+            tableSqlFileLines.add(table.get("tableCreateStm").asText());
+            ArrayNode inserts = (ArrayNode) table.get("inserts");
+            if (inserts != null) {
+                for (JsonNode insert : inserts) {
+                    tableSqlFileLines.add(insert.asText());
+                }
+            }
+        }
+
+
+        List<String> userSqlFileLines = new ArrayList<>();
+        for (JsonNode user : users) {
+            userSqlFileLines.add(user.get("createUserStm").asText());
+            ArrayNode grants = (ArrayNode) user.get("grantPrivilegesStm");
+            if (grants != null) {
+                for (JsonNode grant : grants) {
+                    userSqlFileLines.add(grant.asText());
+                }
+            }
+        }
+
+
+        File databaseSqlFile = new File("database.sql");
+        try (FileOutputStream fos = new FileOutputStream(databaseSqlFile)) {
+            for (String line : databaseSqlFileLines) {
+                fos.write((line + "\n").getBytes());
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to write database.sql");
+            System.exit(1);
+        }
+
+
+        File tableSqlFile = new File("tables.sql");
+        try (FileOutputStream fos = new FileOutputStream(tableSqlFile)) {
+            for (String line : tableSqlFileLines) {
+                fos.write((line + "\n").getBytes());
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to write tables.sql");
+            System.exit(1);
+        }
+
+
+        File userSqlFile = new File("users.sql");
+        try (FileOutputStream fos = new FileOutputStream(userSqlFile)) {
+            for (String line : userSqlFileLines) {
+                fos.write((line + "\n").getBytes());
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to write users.sql");
+            System.exit(1);
+        }
+
+
+        File dockerfileFile = new File("Dockerfile-" + component);
+        try (FileOutputStream fos = new FileOutputStream(dockerfileFile)) {
+            fos.write(dockerfile.getBytes());
+        } catch (Exception e) {
+            System.out.println("Failed to write Dockerfile");
+            System.exit(1);
+        }
+
+
+        System.out.println("Run the following command to build the image:\n");
+        System.out.println("docker build -t [repository/]" + component + " .\n");
+        System.out.println("Run the following command to create and run a container:\n");
+        System.out.println("docker run -d -p 5432:5432 --name " + component + " [repository/]" + component + "\n");
+
+    }
+
+    private void idproviderGeneration(String component, File definitionFile) {
 //        DockerConfig.checkAndRestartDaemon(false);
         System.out.println("Starting temporary keycloak dev instance...");
         DockerUtils.createNewKeycloakDev();
@@ -144,7 +245,37 @@ public class GenerateSubcommand implements Runnable {
         }
 
         DockerUtils.removeKeycloakDev();
+    }
+
+    @Override
+    public void run() {
+
+        for (ComponentSpec spec : componentSpec) {
+
+            if (spec.component.equals("idprovider")) {
+                System.out.println("Generating idprovider with definition file: " + spec.definitionFile);
+                idproviderGeneration(spec.component, spec.definitionFile);
+            } else if (spec.component.equals("database")) {
+                System.out.println("Generating database with definition file: " + spec.definitionFile);
+                databaseGeneration(spec.component, spec.definitionFile);
+            } else {
+                System.out.println("Component " + spec.component + " not recognized");
+                System.exit(1);
+            }
+        }
 
         System.exit(0);
+    }
+
+    static class ComponentSpec {
+        @CommandLine.Option(names = {"-c", "--component"},
+                description = "The component to generate",
+                required = true)
+        private String component;
+
+        @CommandLine.Option(names = {"-d", "--definition"},
+                description = "The definition of the component",
+                required = true)
+        private File definitionFile;
     }
 }
