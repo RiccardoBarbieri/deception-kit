@@ -4,6 +4,7 @@ import com.deceptionkit.mockaroo.utils.RequestUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -12,8 +13,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MockarooApi {
 
@@ -53,7 +56,9 @@ public class MockarooApi {
 
         String[] lines = responseBody.split("\n");
 
-        return List.of(lines);
+        List<String> linesWithTableName = Arrays.stream(lines).map(line -> line.replace("insert into", "insert into " + tableName)).toList();
+
+        return linesWithTableName;
     }
 
     //returns arraynode containing mockaroo definition
@@ -88,10 +93,19 @@ public class MockarooApi {
             objectNode.put("type", dataType);
             objectNode.put("type_id", typeId);
             objectNode.remove("data_type");
+
             //remove null fields
+            //and reform values into an array
             Iterator<String> fieldNames = objectNode.fieldNames();
             while (fieldNames.hasNext()) {
                 String fieldName = fieldNames.next();
+
+                if (fieldName.equals("values") && !objectNode.get(fieldName).isNull()) {
+                    List<String> values = Arrays.stream(objectNode.get(fieldName).toString().replace("\"", "").split(", ")).toList();
+                    ArrayNode valuesNode = new ObjectMapper().valueToTree(values);
+                    objectNode.set(fieldName, valuesNode);
+                }
+
                 if (objectNode.get(fieldName).isNull()) {
                     fieldNames.remove();
                 }
