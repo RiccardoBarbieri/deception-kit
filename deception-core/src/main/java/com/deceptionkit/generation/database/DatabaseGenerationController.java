@@ -151,9 +151,9 @@ public class DatabaseGenerationController {
         builder.addCommand(CommandBuilder.env("POSTGRES_DB", database));
 
 
-        builder.addCommand(CommandBuilder.add("databases.sql", "/docker-entrypoint-initdb.d/databases.sql"));
-        builder.addCommand(CommandBuilder.add("tables.sql", "/docker-entrypoint-initdb.d/tables.sql"));
-        builder.addCommand(CommandBuilder.add("users.sql", "/docker-entrypoint-initdb.d/users.sql"));
+        builder.addCommand(CommandBuilder.add("databases.sql", "/docker-entrypoint-initdb.d/01-databases.sql"));
+        builder.addCommand(CommandBuilder.add("tables.sql", "/docker-entrypoint-initdb.d/02-tables.sql"));
+        builder.addCommand(CommandBuilder.add("users.sql", "/docker-entrypoint-initdb.d/03-users.sql"));
 
 
         return builder.build();
