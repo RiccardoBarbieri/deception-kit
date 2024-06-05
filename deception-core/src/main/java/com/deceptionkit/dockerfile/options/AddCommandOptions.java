@@ -1,7 +1,5 @@
 package com.deceptionkit.dockerfile.options;
 
-import java.util.List;
-
 public class AddCommandOptions extends CommandOptions {
 
     protected static final String KEEP_GIT_DIR = "--keep-git-dir";

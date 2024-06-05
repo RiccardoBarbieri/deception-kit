@@ -1,7 +1,5 @@
 package com.deceptionkit.spring.exception;
 
-import com.deceptionkit.spring.yaml.YamlErrorMessageUtils;
-
 public class YamlFormatException extends RuntimeException {
 
 

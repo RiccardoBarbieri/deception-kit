@@ -1,7 +1,5 @@
 package com.deceptionkit.mockaroo.utils;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;

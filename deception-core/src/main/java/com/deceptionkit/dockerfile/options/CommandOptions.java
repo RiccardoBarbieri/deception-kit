@@ -1,7 +1,6 @@
 package com.deceptionkit.dockerfile.options;
 
 import java.util.List;
-import java.util.Map;
 
 public abstract class CommandOptions {
 

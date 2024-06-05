@@ -2,7 +2,6 @@ package com.deceptionkit.yamlspecs.utils.validation;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.validator.routines.UrlValidator;
-import org.apache.http.annotation.Contract;
 
 import java.util.List;
 

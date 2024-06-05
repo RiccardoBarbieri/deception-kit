@@ -1,7 +1,5 @@
 package com.deceptionkit.dockerfile.commands;
 
-import com.deceptionkit.dockerfile.utils.CommandUtils;
-
 public class ArgCommand extends Command {
 
     public static final String COMMAND = "ARG";

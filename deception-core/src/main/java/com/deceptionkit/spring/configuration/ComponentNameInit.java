@@ -2,7 +2,6 @@ package com.deceptionkit.spring.configuration;
 
 import com.deceptionkit.database.validation.model.ComponentName;
 import com.deceptionkit.database.validation.repository.ComponentNameRepository;
-import com.deceptionkit.database.validation.repository.TldRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

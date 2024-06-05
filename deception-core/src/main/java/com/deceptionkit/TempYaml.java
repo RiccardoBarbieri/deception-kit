@@ -1,12 +1,10 @@
 package com.deceptionkit;
 
 import com.deceptionkit.yamlspecs.database.DatabaseDefinition;
-import com.deceptionkit.yamlspecs.idprovider.IdProviderDefinition;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.yaml.snakeyaml.LoaderOptions;
-import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 

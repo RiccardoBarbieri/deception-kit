@@ -3,8 +3,6 @@ package com.deceptionkit.mockaroo.utils;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.lang.reflect.Array;
-
 public class Utils {
 
     public static ArrayNode removeTypeId(ArrayNode schema) {
