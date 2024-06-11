@@ -78,10 +78,16 @@ public class IdproviderGenerationController {
         }
         //check uniqueness of client ids, role names, group names
 
-        List<Group> mockGroups = MockFactory.getGroups(totalGroups - groupDefinitions.size());
+        List<Group> mockGroups = new ArrayList<>();
+        if (totalGroups - groupDefinitions.size() > 0) {
+            mockGroups.addAll(MockFactory.getGroups(totalGroups - groupDefinitions.size()));
+        }
         List<Group> allGroups = MockMergeHelper.mergeGroups(idProviderDefinition.getSpecification().getGroups().convertGroups(), mockGroups);
 
-        List<User> mockUsers = MockFactory.getUsers(totalUsers - userDefinitions.size(), credentialsPerUser, domain);
+        List<User> mockUsers = new ArrayList<>();
+        if (totalUsers - userDefinitions.size() > 0) {
+            mockUsers.addAll(MockFactory.getUsers(totalUsers - userDefinitions.size(), credentialsPerUser, domain));
+        }
         List<User> groupedUsers = MockMergeHelper.assignGroups(mockUsers, allGroups, groupsPerUser);
         List<User> allUsers = MockMergeHelper.mergeUsers(idProviderDefinition.getSpecification().getUsers().convertUsers(), groupedUsers);
 
