@@ -2,8 +2,28 @@ version: '3'
 services:
   deception-core:
     container_name: deception-core
-    image: riccardoob/deception-core
+    image: riccardoob/deception-core:latest
     ports:
       - "8015:8015"
+    env_file:
+      - compose.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  mongo:
+    image: mongo:latest
+    restart: no
+    ports:
+      - "27017:27017"
     environment:
-      - MOCKAROO_API_KEY=${MOCKAROO_API_KEY}
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: no
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
