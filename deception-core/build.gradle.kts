@@ -24,7 +24,7 @@ java {
 }
 
 group = "com.deceptionkit"
-version = "1.0.1"
+version = "1.1.1"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -131,7 +131,7 @@ tasks.register<Dockerfile>("createDockerfile") {
         copyFile("./src/main/resources/*.json", "./resources/")
         val DECEPTION_CORE_OPTS = "-Dspring.profiles.active=${properties["activeProfile"]}"
         environmentVariable("DECEPTION_CORE_OPTS", DECEPTION_CORE_OPTS)
-        defaultCommand("bash", "./" + project.name)
+        defaultCommand("./" + project.name)
     }
 }
 
