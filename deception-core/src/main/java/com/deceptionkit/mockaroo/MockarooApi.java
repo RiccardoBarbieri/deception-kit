@@ -4,6 +4,7 @@ import com.deceptionkit.mockaroo.utils.RequestUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -34,6 +35,7 @@ public class MockarooApi {
 
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode root = null;
+
         try {
             root = (ArrayNode) mapper.readTree(response.body());
         } catch (JsonProcessingException e) {
@@ -126,18 +128,6 @@ public class MockarooApi {
             throw new RuntimeException("Could not find end of create statement");
         }
         return responseBody.substring(0, createEnd + 2);
-    }
-
-    public static void main(String[] args) {
-        MockarooApi mockarooApi = new MockarooApi();
-        ArrayNode table = mockarooApi.generateTableTypes("comprehensive details of user that make use of flight ticketing system", 15);
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            System.out.println(mapper.writeValueAsString(table));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }
