@@ -32,12 +32,16 @@ public class GenerateSubcommand implements Runnable {
 
 
         ArrayNode databases = (ArrayNode) databaseLogic.generateDatabases(definitionFile);
+        System.out.println("Databases generated successfully.");
 
         ArrayNode tables = (ArrayNode) databaseLogic.generateTables(definitionFile);
+        System.out.println("Tables generated successfully.");
 
         ArrayNode users = (ArrayNode) databaseLogic.generateUsers(definitionFile);
+        System.out.println("Users generated successfully.");
 
         String dockerfile = databaseLogic.generateDockerfile(definitionFile);
+        System.out.println("Dockerfile generated successfully.");
 
 
         if (databases == null) {
@@ -125,7 +129,7 @@ public class GenerateSubcommand implements Runnable {
 
 
         System.out.println("Run the following command to build the image:\n");
-        System.out.println("docker build -t [repository/]" + component + " .\n");
+        System.out.println("docker build -f " + "Dockerfile-" + component + " -t [repository/]" + component + " .\n");
         System.out.println("Run the following command to create and run a container:\n");
         System.out.println("docker run -d -p 5432:5432 --name " + component + " [repository/]" + component + "\n");
 
@@ -218,7 +222,7 @@ public class GenerateSubcommand implements Runnable {
         DockerUtils.exportKeycloakConfig("keycloak-config.json");
 
         Boolean defaultCredentials = true;
-        String Dockerfile = idProviderLogic.generateDockerfile(
+        String dockerfile = idProviderLogic.generateDockerfile(
                 false,
                 true,
                 true,
@@ -227,16 +231,16 @@ public class GenerateSubcommand implements Runnable {
                 "keycloak-config.json"
         );
 
-        File dockerfile = new File("Dockerfile");
-        try (FileOutputStream fos = new FileOutputStream(dockerfile)) {
-            fos.write(Dockerfile.getBytes());
+        File dockerfileFile = new File("Dockerfile-" + component);
+        try (FileOutputStream fos = new FileOutputStream(dockerfileFile)) {
+            fos.write(dockerfile.getBytes());
         } catch (Exception e) {
             System.out.println("Failed to write Dockerfile");
             System.exit(1);
         }
 
         System.out.println("Run the following command to build the image:\n");
-        System.out.println("docker build -t [repository/]" + component + " .\n");
+        System.out.println("docker build -f " + "Dockerfile-" + component + " -t [repository/]" + component + " .\n");
         System.out.println("Run the following command to create and run a container:\n");
         if (defaultCredentials) {
             System.out.println("docker run -d -p 8443:8443 --name " + component + " [repository/]" + component + "\n");
@@ -261,6 +265,9 @@ public class GenerateSubcommand implements Runnable {
             } else {
                 System.out.println("Component " + spec.component + " not recognized");
                 System.exit(1);
+            }
+            if (componentSpec.indexOf(spec) < componentSpec.size() - 1) {
+                System.out.println("------------------------------------------------------------------------------------------");
             }
         }
 
