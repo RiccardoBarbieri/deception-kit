@@ -9,6 +9,9 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 @Component
 public class RestResponseStatusExceptionResolver implements HandlerExceptionResolver {
 
@@ -18,6 +21,11 @@ public class RestResponseStatusExceptionResolver implements HandlerExceptionReso
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         log.error("Error occurred while processing request: {} at {}", request.getMethod(), request.getRequestURI());
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        ex.printStackTrace(pw);
+        String sStackTrace = sw.toString(); // stack trace as a string
+        log.error("Stacktracke:\n {}", sStackTrace);
         log.error("Error message: {}", ex.getMessage());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setView(new MappingJackson2JsonView());
