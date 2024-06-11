@@ -24,19 +24,19 @@ public class IdProviderLogic {
 
     private final String baseUrl = "http://localhost:8015";
 
-    private final String mockGenerationUrl = baseUrl + "/generateIdProviderResources";
+    private final String mockGenerationUrl = baseUrl + "/generation/idprovider/resources";
 
-    private final String clientsRegistrationUrl = baseUrl + "/registerClients";
+    private final String clientsRegistrationUrl = baseUrl + "/registration/clients";
 
-    private final String groupsRegistrationUrl = baseUrl + "/registerGroups";
+    private final String groupsRegistrationUrl = baseUrl + "/registration/groups";
 
-    private final String usersRegistrationUrl = baseUrl + "/registerUsers";
+    private final String usersRegistrationUrl = baseUrl + "/registration/users";
 
-    private final String rolesRegistrationUrl = baseUrl + "/registerRoles";
+    private final String rolesRegistrationUrl = baseUrl + "/registration/roles";
 
-    private final String roleAssignmentUrl = baseUrl + "/assignRoles";
+    private final String roleAssignmentUrl = baseUrl + "/registration/assign/roles";
 
-    private final String dockerfileGenerationUrl = baseUrl + "/generateDockerfile";
+    private final String dockerfileGenerationUrl = baseUrl + "/generation/idprovider/dockerfile";
 
     public IdProviderLogic() {
 
