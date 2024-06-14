@@ -102,7 +102,11 @@ else
 fi
 
 #cp ../keycloak/keycloak-compose.yaml /usr/bin
-sed "s|<destination>|$destination|" "./deception-cli-template" > /usr/bin/deception-cli
+# copying default config
+cp ./default_config.json $destination/config.json
+
+
+sed -e "s|<destination>|$destination|" -e "s|<config_path>|$destination/config.json|" "./deception-cli-template" > /usr/bin/deception-cli
 chmod ugo+x /usr/bin/deception-cli
 
 echo "deception-cli executable at $destination/deception-cli"

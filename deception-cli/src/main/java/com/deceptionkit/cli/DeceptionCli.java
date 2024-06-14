@@ -4,7 +4,7 @@
 package com.deceptionkit.cli;
 
 
-import com.deceptionkit.cli.docker.DockerUtils;
+import com.deceptionkit.cli.config.ConfigLoader;
 import com.deceptionkit.cli.error.ExecutionExceptionHandler;
 import com.deceptionkit.cli.subcommand.GenerateSubcommand;
 import com.deceptionkit.cli.utils.PingUtils;
@@ -29,13 +29,14 @@ public class DeceptionCli implements Callable<Integer> {
             defaultValue = "false")
     private boolean forceRestart;
 
+    @CommandLine.Option(names = {"-c", "--config"},
+            description = "Path to the configuration file",
+            required = false,
+            defaultValue = "${env:DEFAULT_CONFIG}")
+    private String configPath;
+
     public static void main(String[] args) {
         System.out.println("DECEPTION-KIT");
-
-        if (!PingUtils.pingDeceptionCore()) {
-            System.out.println("Deception Core is not running");
-            System.exit(1);
-        }
 
         CommandLine cmd = new picocli
                 .CommandLine(new DeceptionCli())
@@ -48,6 +49,13 @@ public class DeceptionCli implements Callable<Integer> {
     }
 
     public Integer call() throws Exception {
+        ConfigLoader.initInstance(configPath);
+
+        if (!PingUtils.pingDeceptionCore()) {
+            System.out.println("Deception Core is not running");
+            System.exit(1);
+        }
+
         spec.commandLine().usage(System.err);
         return 0;
     }

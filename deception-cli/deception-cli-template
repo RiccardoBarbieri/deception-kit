@@ -1,14 +1,5 @@
 #!/bin/bash
 
-#echo "Starting temporary keycloak dev instance..."
-
-#docker container stop keycloak-dev >/dev/null 2>&1
-#docker container rm keycloak-dev >/dev/null 2>&1
-
-#docker compose -f ../keycloak/keycloak-compose.yaml up -d >/dev/null 2>&1
-#docker compose -f keycloak-compose.yaml up -d >/dev/null 2>&1
-
-#sleep 15
-
+export DEFAULT_CONFIG=<config_path>
 
 <destination>/deception-cli/bin/deception-cli "$@"

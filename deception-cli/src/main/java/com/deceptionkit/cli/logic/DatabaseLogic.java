@@ -1,8 +1,8 @@
 package com.deceptionkit.cli.logic;
 
+import com.deceptionkit.cli.config.ConfigLoader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.FileEntity;
@@ -14,7 +14,7 @@ import java.io.File;
 
 public class DatabaseLogic {
 
-    private final String baseUrl = "http://localhost:8015";
+    private final String baseUrl = ConfigLoader.getInstance().getBaseUrl();
 
     private final String databaseGenerationUrl = baseUrl + "/generation/database/databases";
 

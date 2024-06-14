@@ -1,5 +1,6 @@
 package com.deceptionkit.cli.utils;
 
+import com.deceptionkit.cli.config.ConfigLoader;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -8,7 +9,7 @@ import org.apache.http.util.EntityUtils;
 
 public class PingUtils {
 
-    private static final String pingUrl = "http://localhost:8015/ping";
+    private static final String pingUrl = ConfigLoader.getInstance().getBaseUrl() + "/ping";
 
     public static boolean pingDeceptionCore() {
 

@@ -1,12 +1,12 @@
 package com.deceptionkit.cli.logic;
 
+import com.deceptionkit.cli.config.ConfigLoader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
@@ -22,7 +22,7 @@ import java.net.URISyntaxException;
 
 public class IdProviderLogic {
 
-    private final String baseUrl = "http://localhost:8015";
+    private final String baseUrl = ConfigLoader.getInstance().getBaseUrl();
 
     private final String mockGenerationUrl = baseUrl + "/generation/idprovider/resources";
 
