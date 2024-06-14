@@ -85,8 +85,12 @@ public class GenerateSubcommand implements Runnable {
             }
         }
 
+        File directory = new File(component);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
 
-        File databaseSqlFile = new File("database.sql");
+        File databaseSqlFile = new File(component + File.separator + "database.sql");
         try (FileOutputStream fos = new FileOutputStream(databaseSqlFile)) {
             for (String line : databaseSqlFileLines) {
                 fos.write((line + "\n").getBytes());
@@ -97,7 +101,7 @@ public class GenerateSubcommand implements Runnable {
         }
 
 
-        File tableSqlFile = new File("tables.sql");
+        File tableSqlFile = new File(component + File.separator + "tables.sql");
         try (FileOutputStream fos = new FileOutputStream(tableSqlFile)) {
             for (String line : tableSqlFileLines) {
                 fos.write((line + "\n").getBytes());
@@ -108,7 +112,7 @@ public class GenerateSubcommand implements Runnable {
         }
 
 
-        File userSqlFile = new File("users.sql");
+        File userSqlFile = new File(component + File.separator + "users.sql");
         try (FileOutputStream fos = new FileOutputStream(userSqlFile)) {
             for (String line : userSqlFileLines) {
                 fos.write((line + "\n").getBytes());
@@ -119,7 +123,7 @@ public class GenerateSubcommand implements Runnable {
         }
 
 
-        File dockerfileFile = new File("Dockerfile-" + component);
+        File dockerfileFile = new File(component + File.separator + "Dockerfile-" + component);
         try (FileOutputStream fos = new FileOutputStream(dockerfileFile)) {
             fos.write(dockerfile.getBytes());
         } catch (Exception e) {
@@ -219,7 +223,12 @@ public class GenerateSubcommand implements Runnable {
             System.out.println("Roles failed to map");
         }
 
-        DockerUtils.exportKeycloakConfig("keycloak-config.json");
+        File directory = new File(component);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
+        DockerUtils.exportKeycloakConfig(component + File.separator + "keycloak-config.json");
 
         Boolean defaultCredentials = true;
         String dockerfile = idProviderLogic.generateDockerfile(
@@ -231,7 +240,7 @@ public class GenerateSubcommand implements Runnable {
                 "keycloak-config.json"
         );
 
-        File dockerfileFile = new File("Dockerfile-" + component);
+        File dockerfileFile = new File(component + File.separator + "Dockerfile-" + component);
         try (FileOutputStream fos = new FileOutputStream(dockerfileFile)) {
             fos.write(dockerfile.getBytes());
         } catch (Exception e) {

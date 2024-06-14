@@ -16,7 +16,7 @@ repositories {
 }
 
 group = "com.deceptionkit"
-version = "1.0.2"
+version = "1.1.0"
 
 dependencies {
     implementation("info.picocli:picocli:4.7.5")
