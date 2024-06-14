@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n}{builder}\PYG{p}{.}\PYG{n+na}{addCommand}\PYG{p}{(}\PYG{n}{CommandBuilder}\PYG{p}{.}\PYG{n+na}{from}\PYG{p}{(}\PYG{n}{baseImage}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{22.0.5}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{.}\PYG{n+na}{name}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{builder}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}
+\PYG{n}{builder}\PYG{p}{.}\PYG{n+na}{addCommand}\PYG{p}{(}\PYG{n}{CommandBuilder}\PYG{p}{.}\PYG{n+na}{env}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{KC\PYGZus{}HEALTH\PYGZus{}ENABLED}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{enableHealth}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(}\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}
+\PYG{n}{builder}\PYG{p}{.}\PYG{n+na}{addCommand}\PYG{p}{(}\PYG{n}{CommandBuilder}\PYG{p}{.}\PYG{n+na}{env}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{KC\PYGZus{}METRICS\PYGZus{}ENABLED}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{enableMetrics}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(}\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}
+\PYG{n}{builder}\PYG{p}{.}\PYG{n+na}{addCommand}\PYG{p}{(}\PYG{n}{CommandBuilder}\PYG{p}{.}\PYG{n+na}{env}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{KC\PYGZus{}HTTP\PYGZus{}ENABLED}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{enableHttp}\PYG{p}{.}\PYG{n+na}{toString}\PYG{p}{(}\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}
+\PYG{n}{builder}\PYG{p}{.}\PYG{n+na}{addCommand}\PYG{p}{(}\PYG{n}{CommandBuilder}\PYG{p}{.}\PYG{n+na}{workdir}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{/opt/keycloak}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}
+\PYG{n}{builder}\PYG{p}{.}\PYG{n+na}{addCommand}\PYG{p}{(}\PYG{n}{CommandBuilder}\PYG{p}{.}\PYG{n+na}{from}\PYG{p}{(}\PYG{n}{baseImage}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{latest}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}
+\PYG{n}{builder}\PYG{p}{.}\PYG{n+na}{addCommand}\PYG{p}{(}
+\PYG{+w}{    }\PYG{n}{CommandBuilder}\PYG{p}{.}\PYG{n+na}{copy}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{opt/keycloak/}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{/opt/keycloak/}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
+\PYG{+w}{    }\PYG{n}{CommandOptionsBuilder}\PYG{p}{.}\PYG{n+na}{copy}\PYG{p}{(}\PYG{p}{)}\PYG{p}{.}\PYG{n+na}{from}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{builder}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}
+\PYG{p}{)}\PYG{p}{;}
+\PYG{n}{builder}\PYG{p}{.}\PYG{n+na}{addCommand}\PYG{p}{(}\PYG{n}{CommandBuilder}\PYG{p}{.}\PYG{n+na}{copy}\PYG{p}{(}\PYG{n}{configFile}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{/opt/keycloak/export.json}\PYG{l+s}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{)}\PYG{p}{;}
+\end{Verbatim}

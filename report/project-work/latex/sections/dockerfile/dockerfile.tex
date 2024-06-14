@@ -1,0 +1,32 @@
+\section{Dockerfile}
+
+Uno dei compiti del componente \texttt{deception-core} consiste nel generare Dockerfile che nell'ultima versione venivano generati tramite semplice ma confusionaria concatenazione di stringhe.
+
+Dato che questa operazione sarà sempre più frequente con l'aggiunta di nuovi componenti si è deciso di creare un modulo che permette di generare Dockerfile in modo object oriented, rendendo il processo più semplice e meno error-prone.
+
+La classe \texttt{DockerfileBuilder} permette di aggiungere comandi che possono essere specificati in diversi modi:
+\begin{itemize}
+    \item tramite la classe \texttt{CommandBuilder} che crea istanze delle singole classi comando
+    \item come semplici stringhe per gestire eventuali casi limite
+\end{itemize}
+
+Le classi di supporto \texttt{CommandOptions} e derivate e \texttt{CommandOptionsBuilder} gestiscono le opzioni relativi ai vari comandi.
+
+Lo strumento è progettato in modo da evitare errori nell'associazione delle corrette opzioni ai loro rispettivi comandi.
+
+Si riporta di seguito un esempio di utilizzo:
+\begin{minted}[bgcolor=lightgray,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,escapeinside=||,mathescape=true]{java}
+builder.addCommand(CommandBuilder.from(baseImage, "22.0.5").name("builder"));
+builder.addCommand(CommandBuilder.env("KC_HEALTH_ENABLED", enableHealth.toString()));
+builder.addCommand(CommandBuilder.env("KC_METRICS_ENABLED", enableMetrics.toString()));
+builder.addCommand(CommandBuilder.env("KC_HTTP_ENABLED", enableHttp.toString()));
+builder.addCommand(CommandBuilder.workdir("/opt/keycloak"));
+builder.addCommand(CommandBuilder.from(baseImage, "latest"));
+builder.addCommand(
+    CommandBuilder.copy("opt/keycloak/", "/opt/keycloak/"),
+    CommandOptionsBuilder.copy().from("builder")
+);
+builder.addCommand(CommandBuilder.copy(configFile, "/opt/keycloak/export.json"));
+\end{minted}
+
+In futuro verrà creata una suite apposita di script per automatizzare il processo di aggiornamento della libreria a seguito di modifiche alla specifica Dockerfile.

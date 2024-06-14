@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+deception\PYGZhy{}cli generate \PYGZhy{}c \PYG{l+s+s2}{\PYGZdq{}database\PYGZdq{}} \PYGZhy{}d id.yaml \PYGZhy{}c \PYG{l+s+s2}{\PYGZdq{}idprovider\PYGZdq{}} \PYGZhy{}d db.yaml
+\end{Verbatim}

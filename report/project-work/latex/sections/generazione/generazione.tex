@@ -1,0 +1,33 @@
+\section{Generazione}
+
+\subsection{Ristrutturazione endpoint API}
+
+L'API esposta dal componenente \texttt{deception-core} è stata estesa per supportare nuovi endpoint che implementano le strategie di generazione dei dati richiesti per il componente \texttt{database}.
+
+Si è deciso di modificare la struttura degli endpoint dell'api per marcare meglio la separazione tra i componenti:
+\begin{itemize}
+    \item gli endpoint nella forma \texttt{/generation/<component>/*} generano risorse statiche
+    \item gli endpoint nella forma \texttt{/registration/<component>/*} generano risorse dinamiche sfruttando un runtime (es. Keycloak per idprovider)
+\end{itemize}
+
+\subsection{Generazione componenti database}
+
+Al contrario del componente \texttt{idprovider}, il \texttt{database} non necessita di una fase di \textit{registrazione} a runtime di entità, vengono infatti generate soltanto risorse statiche.
+
+L'API è stata progettata per fornire le risorse al client (\texttt{deception-cli}) che la utilizza non sotto forma di file script già compilato ma in una apposita struttura dati intermedia dalla quale il client genera i file necessari, questa decisione è stata presa per non legare la generazione dei componenti a una tecnica specifica: si lascia la decisione di come strutturare l'output al client.
+
+\subsection{Tabelle}
+La generazione delle tabelle avviene sfruttando lo stesso servizio utilizzato per i dati dell'\texttt{idprovider}, Mockaroo offre una feature che permette di generare una tabella SQL a partire da un prompt testuale sfruttando un modello di intelligenza artificiale.
+
+La generazione si suddivide in una serie di passi:
+\begin{itemize}
+    \item richiesta di generazione di una lista di tipi Mockaroo basata sul prompt fornito
+    \item richiesta di generazione di una istruzione SQL \texttt{CREATE TABLE} dai tipi ottenuti
+    \item richieste di generazione di una serie di istruzioni SQL \texttt{INSERT} con i dati fittizi
+\end{itemize}
+
+I numeri di colonne e record sono generati casualmente nell'intervallo fornito alla definizione del componente.
+
+\subsection{Utenti e database}
+La generazione delle istruzioni SQL per creare utenti e database viene gestita da appositi endpoint che compongono i comandi \texttt{CREATE DATABASE}, \texttt{CREATE USER} e \texttt{GRANT} a partire dalle definizioni trovate nella \texttt{deception-def} fornita.
+

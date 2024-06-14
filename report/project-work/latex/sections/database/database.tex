@@ -1,0 +1,69 @@
+\section{Database}
+
+La prima scelta progettuale effettuata è stata la decisione di quale particolare DBMS utilizzare per la generazione del componente, è stato necessario scegliere un DBMS con distribuzioni sotto forma di immagine OCI e che permettesse di eseguire script di inizializzazione al primo startup per importare i dati generati.
+
+Questa scelta si è successivamente rivelata superflua in quanto tutti i principali DBMS dispongono di definizioni di immagine OCI e supportano inizializzazione tramite script, si è deciso però di supportare PostgreSQL in quanto si tratta della soluzione open source che offre la maggiore quantità di feature avanzate.
+
+Si denota che è comunque possibile istanziare le risorse generate in un server MySQL in quanto i due DBMS condividono tutte le funzionalità di SQL esteso che vengono usate dal generatore così come il meccanismo di inizializzazione che verrà dettagliato in seguito.
+
+\subsection{Definizione componente}
+La definizione delle caratteristiche del componente da generare è costituita da una estensione della specifica \underline{deception-def} usata anche per il componente \texttt{idprovider}.
+
+La specifica per il componente \texttt{database} richiede la definizione delle seguenti proprietà:
+\begin{itemize}
+    \item \texttt{connection}: definisce informazioni per la connesione al server
+    \item \texttt{databases}: dichiara i nomi dei database da creare
+    \item \texttt{tables}: specifica le caratteristiche delle tabelle da generare (dettagli in seguito)
+    \item \texttt{users}: lista di utenti e dichiarazione di un utente admin principale
+\end{itemize}
+
+\subsubsection{Tabelle}
+Per definire le tabelle da generare e popolare con dati fittizi si è deciso di permettere all'utente di specificare il nome della tabella e il database di appartenenza.
+
+Per creare lo schema per una tabella, l'utente deve definire un \texttt{prompt}: questo testo viene usato dal generatore per generare una serie di nomi ci campi e relativi tipi sfruttando un large language model.
+
+L'utente è inoltre in grado di specificare una serie di metaparametri che impongono al generatore limiti minimi e massimi sul numero di colonne e righe da generare per le tabelle.
+
+\begin{minted}[bgcolor=lightgray,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,escapeinside=||,mathescape=true]{yaml}
+tables:
+  min_columns_per_table: 5
+  max_columns_per_table: 10
+  min_rows_per_table: 5
+  max_rows_per_table: 10
+  definitions:
+    - name: "flight_schedule"
+      prompt: "Flight Schedule"
+      database: "flight_db"
+    - name: "passengers"
+      prompt: "Flight Passengers"
+      database: "customer_db"
+\end{minted}
+
+\subsubsection{Utenti}
+Gli utenti vengono definiti specificando uno username, una password e una serie di database ai quali hanno accesso dove vengono inclusi anche i permessi che possiedono su un determinato database.
+
+\begin{minted}[bgcolor=lightgray,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,escapeinside=||,mathescape=true]{yaml}
+users:
+  definitions:
+    - username: user1
+      password: password1
+      databases:
+        - name: flight_db
+          permissions:
+            - select
+            - insert
+            - update
+\end{minted}
+
+\subsection{Init script}
+Le risorse generate a partire dalla \texttt{deception-def} del componente vengono propriamente salvate in appositi file \texttt{.sql}, questi file vengono importati all'interno del container alla sua inizializzazione e successivamente eseguiti dal runtime di PostgreSQL per creare le entità nel server.
+
+Il meccanismo di inizializzazione implementato da PostgreSQL (e MySQL) esegue tutti gli script \texttt{.sql} che trova nella cartella \texttt{/docker-entrypoint-initdb.d/} del container con l'identità dell'utente principale specificato nella definizione del componente. \`E importante specificare che gli script di inizializzazione vengono eseguti solo se non esistono già dati nel database per non entrare in conflitto con dati esistenti.
+
+Questo meccanismo di inizializzione è molto flessibile in quanto permette anche di eseguire script \texttt{bash} complessi per configurare in modo più avanzato il server, questo particolare permetterà in futuro di aggiungere ulteriori configurazioni alla definizione del componente.
+
+
+
+
+
+

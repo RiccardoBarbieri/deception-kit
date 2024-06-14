@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+deception\PYGZhy{}cli generate \PYGZhy{}\PYGZhy{}component \PYG{l+s+s2}{\PYGZdq{}id\PYGZhy{}provider\PYGZdq{}} \PYGZhy{}\PYGZhy{}\PYGZhy{}definition definition.yaml
+\end{Verbatim}

@@ -1,0 +1,79 @@
+\documentclass[12pt]{article}    
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm]{geometry}    
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{titlesec}
+\usepackage{subcaption}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{mdframed}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage[italian]{babel}
+\usepackage{minted}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes}
+\usetikzlibrary{arrows}
+\usetikzlibrary{patterns}
+\usepackage{eurosym}
+\usepackage{interval}
+%\setlist{nosep}
+
+\definecolor{lightgray}{gray}{0.95}
+\definecolor{light blue}{rgb}{0.54, 0.81, 0.94}
+
+\pgfdeclarepatternformonly{sparsedots}{\pgfqpoint{-1pt}{-1pt}}{\pgfqpoint{1pt}{1pt}}{\pgfqpoint{8pt}{8pt}}
+{
+  \pgfpathcircle{\pgfqpoint{0pt}{0pt}}{.5pt}
+  \pgfusepath{fill}
+}
+
+
+%macro floor ceil
+\newcommand\floor[1]{\lfloor#1\rfloor}
+\newcommand\ceil[1]{\lceil#1\rceil}
+
+
+% Stile dei titoli dei capitoli
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]
+{\Huge\bfseries}
+{\thechapter\hsp\textcolor{gray75}{|}\hsp}
+{0pt}
+{\Huge\bfseries}
+
+\newcommand{\Input}[1]{\State \textbf{Input:} #1}
+\newcommand{\Output}[1]{\State \textbf{Output:} #1}
+
+\newenvironment{multicolfigure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
+
+\onehalfspacing                                                                                   
+\begin{document}
+
+\title{Deception Component Generator - Database}
+\author{Riccardo Barbieri}
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\input{sections/introduzione/introduzione.tex}
+\input{sections/database/database.tex}
+\input{sections/generazione/generazione.tex}
+\input{sections/cli/cli.tex}
+\input{sections/dockerfile/dockerfile.tex}
+
+
+
+\end{document}

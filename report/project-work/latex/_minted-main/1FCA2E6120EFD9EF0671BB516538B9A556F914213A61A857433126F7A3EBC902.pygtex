@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nt}{tables}\PYG{p}{:}
+\PYG{+w}{  }\PYG{n+nt}{min\PYGZus{}columns\PYGZus{}per\PYGZus{}table}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{5}
+\PYG{+w}{  }\PYG{n+nt}{max\PYGZus{}columns\PYGZus{}per\PYGZus{}table}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{10}
+\PYG{+w}{  }\PYG{n+nt}{min\PYGZus{}rows\PYGZus{}per\PYGZus{}table}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{5}
+\PYG{+w}{  }\PYG{n+nt}{max\PYGZus{}rows\PYGZus{}per\PYGZus{}table}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{10}
+\PYG{+w}{  }\PYG{n+nt}{definitions}\PYG{p}{:}
+\PYG{+w}{    }\PYG{p+pIndicator}{\PYGZhy{}}\PYG{+w}{ }\PYG{n+nt}{name}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{flight\PYGZus{}schedule}\PYG{l+s}{\PYGZdq{}}
+\PYG{+w}{      }\PYG{n+nt}{prompt}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Flight}\PYG{n+nv}{ }\PYG{l+s}{Schedule}\PYG{l+s}{\PYGZdq{}}
+\PYG{+w}{      }\PYG{n+nt}{database}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{flight\PYGZus{}db}\PYG{l+s}{\PYGZdq{}}
+\PYG{+w}{    }\PYG{p+pIndicator}{\PYGZhy{}}\PYG{+w}{ }\PYG{n+nt}{name}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{passengers}\PYG{l+s}{\PYGZdq{}}
+\PYG{+w}{      }\PYG{n+nt}{prompt}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{Flight}\PYG{n+nv}{ }\PYG{l+s}{Passengers}\PYG{l+s}{\PYGZdq{}}
+\PYG{+w}{      }\PYG{n+nt}{database}\PYG{p}{:}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}}\PYG{l+s}{customer\PYGZus{}db}\PYG{l+s}{\PYGZdq{}}
+\end{Verbatim}

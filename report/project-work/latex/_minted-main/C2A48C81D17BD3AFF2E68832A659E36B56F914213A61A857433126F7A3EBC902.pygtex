@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nt}{users}\PYG{p}{:}
+\PYG{+w}{  }\PYG{n+nt}{definitions}\PYG{p}{:}
+\PYG{+w}{    }\PYG{p+pIndicator}{\PYGZhy{}}\PYG{+w}{ }\PYG{n+nt}{username}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{user1}
+\PYG{+w}{      }\PYG{n+nt}{password}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{password1}
+\PYG{+w}{      }\PYG{n+nt}{databases}\PYG{p}{:}
+\PYG{+w}{        }\PYG{p+pIndicator}{\PYGZhy{}}\PYG{+w}{ }\PYG{n+nt}{name}\PYG{p}{:}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{flight\PYGZus{}db}
+\PYG{+w}{          }\PYG{n+nt}{permissions}\PYG{p}{:}
+\PYG{+w}{            }\PYG{p+pIndicator}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{select}
+\PYG{+w}{            }\PYG{p+pIndicator}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{insert}
+\PYG{+w}{            }\PYG{p+pIndicator}{\PYGZhy{}}\PYG{+w}{ }\PYG{l+lScalar+lScalarPlain}{update}
+\end{Verbatim}

@@ -1,0 +1,32 @@
+\section{Miglioramenti CLI}
+
+Le modifiche apportate all'interfaccia da linea di comando consistono in:
+\begin{itemize}
+    \item ping a \texttt{deception-core} per verificare l'esecuzione del server
+    \item generazione di componenti multipli
+    \item sistema di configurazione
+\end{itemize}
+
+\subsection{Generazioni multiple}
+
+La CLI è stata adattata per poter accettare configurazioni multiple con un solo comando.
+
+Data la possibilità di generare più componenti viene aggiunto al nome del Dockerfile il nome del componente generato e sono suddivisi insieme agli asset necessari in apposite cartelle separate.
+
+\begin{minted}[bgcolor=lightgray,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,escapeinside=||,mathescape=true]{bash}
+deception-cli generate -c "database" -d id.yaml -c "idprovider" -d db.yaml
+\end{minted}
+
+\subsection{Configurazione}
+
+\`E stato aggiunto un file di configurazione all'installazione della CLI che permette di specificare proprietà di configurazione del client, al momento accetta soltanto la proprietà \texttt{baseUrl} che indica l'URL di base della API \texttt{deception-core}.
+
+\`E possibile specificare un file di configurazione personalizzato tramite il flag \texttt{-c}.
+
+\begin{minted}[bgcolor=lightgray,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,escapeinside=||,mathescape=true]{bash}
+deception-cli -c <path-to-config> generate ...
+\end{minted}
+
+
+
+
