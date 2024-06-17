@@ -22,7 +22,8 @@ import java.net.URISyntaxException;
 
 public class IdProviderLogic {
 
-    private final String baseUrl = ConfigLoader.getInstance().getBaseUrl();
+//    private final String baseUrl = ConfigLoader.getInstance().getBaseUrl();
+    private final String baseUrl = "http://localhost:8015";
 
     private final String mockGenerationUrl = baseUrl + "/generation/idprovider/resources";
 

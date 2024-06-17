@@ -49,8 +49,8 @@ public class DeceptionCli implements Callable<Integer> {
     }
 
     public Integer call() throws Exception {
-        ConfigLoader.initInstance(configPath);
-
+        ConfigLoader configLoader = ConfigLoader.getInstance();
+        configLoader.setConfigPath(configPath);
         if (!PingUtils.pingDeceptionCore()) {
             System.out.println("Deception Core is not running");
             System.exit(1);

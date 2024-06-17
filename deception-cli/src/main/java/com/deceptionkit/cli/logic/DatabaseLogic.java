@@ -14,7 +14,8 @@ import java.io.File;
 
 public class DatabaseLogic {
 
-    private final String baseUrl = ConfigLoader.getInstance().getBaseUrl();
+//    private final String baseUrl = ConfigLoader.getInstance().getBaseUrl();
+    private final String baseUrl = "http://localhost:8015";
 
     private final String databaseGenerationUrl = baseUrl + "/generation/database/databases";
 

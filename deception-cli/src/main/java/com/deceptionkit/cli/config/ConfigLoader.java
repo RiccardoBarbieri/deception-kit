@@ -13,26 +13,41 @@ public class ConfigLoader {
 
     private ObjectNode config;
 
-    private ConfigLoader(String configPath) {
+    private String configPath;
+
+    private ConfigLoader() {
     }
 
-    public static ConfigLoader initInstance(String configPath) throws IOException {
-        if (INSTANCE == null) {
-            INSTANCE = new ConfigLoader(configPath);
-        }
-        INSTANCE.config = (ObjectNode) new ObjectMapper().readTree((new File(configPath)));
-        return INSTANCE;
+    public void setConfigPath(String configPath) {
+        this.configPath = configPath;
+    }
+
+    public String getConfigPath() {
+        return this.configPath;
+    }
+
+    public ObjectNode getConfig() {
+        return this.config;
+    }
+
+    public void setConfig(ObjectNode config) {
+        this.config = config;
     }
 
     public static ConfigLoader getInstance() {
         if (INSTANCE == null) {
-            throw new RuntimeException("ConfigLoader not initialized");
+            INSTANCE = new ConfigLoader();
         }
         return INSTANCE;
     }
 
     public String getBaseUrl() {
-        return config.get("baseUrl").asText();
+        try {
+            this.setConfig((ObjectNode) new ObjectMapper().readTree((new File(configPath))));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return this.getConfig().get("baseUrl").asText();
     }
 
 

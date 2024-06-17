@@ -9,7 +9,8 @@ import org.apache.http.util.EntityUtils;
 
 public class PingUtils {
 
-    private static final String pingUrl = ConfigLoader.getInstance().getBaseUrl() + "/ping";
+//    private static final String pingUrl = ConfigLoader.getInstance().getBaseUrl() + "/ping";
+    private static final String pingUrl = "http://localhost:8015/ping";
 
     public static boolean pingDeceptionCore() {
 
